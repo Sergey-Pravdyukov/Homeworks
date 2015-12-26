@@ -3,6 +3,18 @@
 *.lo
 *.o
 *.obj
+*.sdf
+*.vcxproj
+*.vcxproj.filters
+*.depend
+*.layout
+*.ilk
+*.pdb
+*.tlog
+*.idb
+*.suo
+*.log
+
 
 # Precompiled Headers
 *.gch
@@ -26,3 +38,4 @@
 *.exe
 *.out
 *.app
+*.rar
