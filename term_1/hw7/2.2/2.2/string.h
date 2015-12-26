@@ -17,3 +17,4 @@ bool isEqual(String *currentString);
 bool isEmpty(String *currentString);
 char* transformation(String *currentString);
 String createString(int size, int capacity);
+
