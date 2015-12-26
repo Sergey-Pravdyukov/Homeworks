@@ -1,10 +1,13 @@
 #include "string.h"
-#include <cstdio>
 #include <iostream>
 
 using namespace std;
 
-const int capacity = int(1e3);
+String createString(int size, int capacity) 
+{
+	String newString = { nullptr, size, capacity };
+	return newString;
+}
 
 int sizeOfString(String *currentString)
 {
@@ -15,13 +18,14 @@ void debugOutput(String *currentString)
 {
 	for (int i = 0; i < currentString->size; ++i)
 	{
-		cout << currentString->data[i] << " ";
+		cout << currentString->data[i];
 	}
 	cout << endl;
 }
 
 void deleteString(String *currentString)
 {
+	const int capacity = int(1e3);
 	char *data = new char[capacity];
 	currentString->size = 0;
 	currentString->data = data;
@@ -68,7 +72,7 @@ void input(String *currentString)
 
 String clone(String *currentString, int left, int right)
 {
-	String newString = { nullptr, 0, currentString->capacity};
+	String newString = createString(0, currentString->capacity);
 	for (int i = 0; i < currentString->size; ++i)
 	{
 		if (left <= i && i <= right)

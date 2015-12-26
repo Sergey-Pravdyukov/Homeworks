@@ -1,6 +1,4 @@
 #include <iostream>
-#include <cstdio>
-#include <cstring>
 #include "string.h"
 
 using namespace std;
@@ -8,14 +6,15 @@ using namespace std;
 int main()
 {
 	setlocale(LC_CTYPE, "rus");
-	int type = -1;
 	const int capacity = int(1e3);
 	const int size = 0;
-	String currentString = { nullptr, size, capacity };
-	enum {exit ,create, remove, copy, addString, compare, lenght, empty, substring, convert};
+	String currentString = createString(size, capacity);
+	enum {exit ,create, remove, copy, addString, compare, lenght, empty, substring, convert, init};
+	int type = init;
 	while (type != exit)
 	{
-		cout << "1 - создать строку" << endl
+		cout << "0 - выход" << endl 
+			<< "1 - создать строку" << endl
 			<< "2 - удалить строку" << endl
 			<< "3 - копировать строку" << endl
 			<< "4 - добавить строку" << endl
