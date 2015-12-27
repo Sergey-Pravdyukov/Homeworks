@@ -31,7 +31,6 @@ int main()
 			{
 				cout << "Введите строку: ";
 				input(&currentString);
-				//debugOutput(&currentString);
 				cout << "Строка создана." << endl << endl;
 				break;
 			}
@@ -39,14 +38,12 @@ int main()
 			{
 				deleteString(&currentString);
 				cout << "Строка удалена." << endl << endl;
-				//debugOutput(&currentString);
 				break;
 			}
 			case copy:
 			{
 				String cloneString = clone(&currentString, 0, sizeOfString(&currentString));
 				cout << "Строка скопирована." << endl << endl;
-				//debugOutput(&cloneString);
 				break;
 			}
 			case addString:
@@ -54,7 +51,6 @@ int main()
 				cout << "Введите строку: ";
 				input(&currentString);
 				cout << "Строка добавлена" << endl << endl;
-				//debugOutput(&currentString);
 				break;
 			}
 			case compare:
@@ -72,7 +68,6 @@ int main()
 			case lenght:
 			{
 				cout << "Длина текущей строки: " << sizeOfString(&currentString) << endl << endl;
-				//debugOutput(&currentString);
 				break;
 			}
 			case empty:
@@ -83,7 +78,6 @@ int main()
 					cout << "не ";
 				}
 				cout << "пустая." << endl << endl;
-				//debugOutput(&currentString);
 				break;
 			}
 			case substring:
@@ -99,7 +93,6 @@ int main()
 				cin >> left >> right;
 				String newString = clone(&currentString, left - 1, right - 1);
 				cout << "Подстрока с " << left << "-го по " << right << "-й символ: ";
-				//debugOutput(&newString);
 				cout << endl << endl;
 				debugOutput(&currentString);
 				break;

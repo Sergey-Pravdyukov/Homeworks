@@ -7,8 +7,8 @@ struct String
 	int capacity;
 };
 
-void debugOutput(String *currentString);
 void add(String *currentString, char character);
+void debugOutput(String *currentString);
 void deleteString(String *currentString);
 String clone(String *currentString, int left, int right);
 int sizeOfString(String *currentString);

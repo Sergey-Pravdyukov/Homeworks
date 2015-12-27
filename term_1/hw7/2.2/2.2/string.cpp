@@ -61,7 +61,7 @@ void add(String *currentString, char character)
 
 void input(String *currentString)
 {
-	char character = '?';
+	char character = '~';
 	int count = 0;
 	while ((character = getchar()) != '\n' || count == 0)
 	{
