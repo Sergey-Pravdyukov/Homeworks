@@ -4,6 +4,12 @@
 
 using namespace std;
 
+struct Edge
+{
+	int from;
+	int to;
+};
+
 int haveFindMinimumEdge(int numberOfVerteces, bool used[], int minimumEdge[])
 {
     int vertex = -1;
@@ -60,6 +66,7 @@ int main()
     }
     minimumEdge[0] = 0;
     int numberOfEdges = 0;
+	Edge minimumSpanningTree[maxSize];
     for (int i = 0; i < numberOfVerteces; ++i)
     {
         int vertex = haveFindMinimumEdge(numberOfVerteces, used, minimumEdge);
@@ -69,6 +76,10 @@ int main()
             return 0;
         }
         used[vertex] = 1;
+		if (indexOfVertexFrom[vertex] != -1)
+		{
+			minimumSpanningTree[numberOfEdges++] = { vertex + 1, indexOfVertexFrom[vertex] + 1 };
+		}
         relax (numberOfVerteces, edge, minimumEdge, indexOfVertexFrom, vertex, used);
     }
     int sumOfEdges = 0;
@@ -77,6 +88,11 @@ int main()
         sumOfEdges += minimumEdge[vertex];
     }
     cout << "При обходе графа получается минимальный оcтов веса " << sumOfEdges << endl;
+	cout << "Минимальный остов состоит из ребер: " << endl;
+	for (int i = 0; i < numberOfEdges; ++i)
+	{
+		cout << minimumSpanningTree[i].from << " " << minimumSpanningTree[i].to << endl;
+	}
     return 0;
 }
 
