@@ -1,0 +1,8 @@
+for (int i = 0; i < n; i++) c++; // eto kakaoy-to kommentariy
+bla bla bla; // nu i eto tozhe
+/* la la la la la; // a eto ne dolzhno vyvesti
+lalala; // potomu chto eto
+lalalalalalala   lala la; // vlozhenniy kommentariy #1
+la la end; */ // i snova vyvodim =). nomer etogo kommentariya 00003
+// plus eshche 100500 // takih vot kommentariev...
+s russkimi kommentariyami pochemu-to ne ochen' horosho rabotaet =(
