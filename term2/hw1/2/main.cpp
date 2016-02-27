@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 const int sizeOfExpression = 9;
 //const char expression[sizeOfExpression] = {'3', '4', '+', '2', '-', '2', '-', '3', '*', '1', '-', '4', '/'}; // sizeOfExpression = 13;
 //const char expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+', '+'}; // sizeOfExpression = 10;
