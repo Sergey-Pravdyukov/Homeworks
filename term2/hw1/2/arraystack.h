@@ -4,7 +4,7 @@
 class ArrayStack : public Stack
 {
 public:
-    ArrayStack();
+    ArrayStack(){}
     ~ArrayStack();
     void push(int value);
     int pop();

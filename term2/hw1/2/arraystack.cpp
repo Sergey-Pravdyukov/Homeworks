@@ -1,10 +1,6 @@
-#include "arraystack.h"
 #include <iostream>
 
-ArrayStack::ArrayStack()
-{
-    size = 0;
-}
+#include "arraystack.h"
 
 void ArrayStack::push(int value)
 {
@@ -13,22 +9,13 @@ void ArrayStack::push(int value)
 
 int ArrayStack::pop()
 {
-    if (size == 0)
-    {
-        return notANumber;
-    }
-    int poppedElement = currentStack[--size];
-    return poppedElement;
+    return (size == 0) ? notANumber : currentStack[--size];
 }
 
 void ArrayStack::top()
 {
-    if (size == 0)
-    {
-        std::cout << "Stack is empty!" << std::endl;
-        return;
-    }
-    std::cout << currentStack[size - 1] << std::endl;
+    (size == 0) ? std::cout << "Stack is empty!" << std::endl
+                : std::cout << currentStack[size - 1] << std::endl;
 }
 
 void ArrayStack::debugOutput()
