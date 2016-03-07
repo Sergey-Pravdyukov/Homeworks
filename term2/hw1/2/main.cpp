@@ -1,7 +1,9 @@
 #include <iostream>
+
 #include "stack.h"
 #include "arraystack.h"
 #include "pointerstack.h"
+#include "calculator.h"
 
 using namespace std;
 
@@ -14,27 +16,6 @@ const char expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+
 int haveConvertFromCharToInt(char digit)
 {
     return digit - char('0');
-}
-
-int haveOperation(char operation, int firstOperand, int secondOperand)
-{
-    switch (operation)
-    {
-    case '+':
-    {
-        return firstOperand + secondOperand;
-    }
-    case '-':
-    {
-        return firstOperand - secondOperand;
-    }
-    case '*':
-    {
-        return firstOperand * secondOperand;
-    }
-    case '/':
-        return firstOperand / secondOperand;
-    }
 }
 
 int main()
@@ -52,15 +33,16 @@ int main()
         {
             int firstOperand = pointerStack->pop();
             int secondOperand = pointerStack->pop();
-            if (firstOperand == pointerStack->notADigit || secondOperand == pointerStack->notADigit)
+            if (firstOperand == pointerStack->notANumber || secondOperand == pointerStack->notANumber)
             {
                 isEmpty = true;
                 cout << "Stack is empty!" << endl;
                 break;
             }
-            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = "
-                 << haveOperation(expression[i], secondOperand, firstOperand) << endl;
-            pointerStack->push(haveOperation(expression[i], secondOperand, firstOperand));
+            Calculator *myCalculator = new Calculator();
+            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = " <<
+                    myCalculator->calculate(expression[i], secondOperand, firstOperand) << endl;
+            pointerStack->push(myCalculator->calculate(expression[i], secondOperand, firstOperand));
         }
     }
     if (!isEmpty)
@@ -68,7 +50,6 @@ int main()
         cout << "Result is " << pointerStack->pop() << endl;
     }
     cout << "end" << endl << endl;
-    delete pointerStack;
 
     Stack *arrayStack = new ArrayStack();
     cout << "Array stack" << endl << "begin" << endl;
@@ -83,15 +64,16 @@ int main()
         {
             int firstOperand = arrayStack->pop();
             int secondOperand = arrayStack->pop();
-            if (firstOperand == arrayStack->notADigit || secondOperand == arrayStack->notADigit)
+            if (firstOperand == arrayStack->notANumber || secondOperand == arrayStack->notANumber)
             {
                 isEmpty = true;
                 cout << "Stack is empty!" << endl;
                 break;
             }
-            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = "
-                 << haveOperation(expression[i], secondOperand, firstOperand) << endl;
-            arrayStack->push(haveOperation(expression[i], secondOperand, firstOperand));
+            Calculator *myCalculator = new Calculator();
+            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = " <<
+                    myCalculator->calculate(expression[i], secondOperand, firstOperand) << endl;
+            arrayStack->push(myCalculator->calculate(expression[i], secondOperand, firstOperand));
         }
     }
     if (!isEmpty)
@@ -99,6 +81,4 @@ int main()
         cout << "Result is " << arrayStack->pop() << endl;
     }
     cout << "end" << endl;
-    delete arrayStack;
-
 }

@@ -1,10 +1,14 @@
 #pragma once
+
 #include "stack.h"
+
+const int init = 0;
 
 class PointerStack : public Stack
 {
 public:
-    PointerStack();
+    PointerStack(){}
+    ~PointerStack();
     void push(int value);
     int pop();
     void debugOutput();
@@ -15,13 +19,11 @@ public:
         StackElement(int currentValue)
         {
             value = currentValue;
-            next = nullptr;
         }
-        int value;
-        StackElement *next;
+        int value = init;
+        StackElement *next = nullptr;
     };
 private:
-    StackElement *head;
-    StackElement *tail;
-    int size;
+    void deleteTail(StackElement *tail);
+    StackElement *tail = nullptr;
 };

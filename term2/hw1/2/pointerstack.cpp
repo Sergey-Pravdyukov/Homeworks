@@ -1,34 +1,25 @@
-#include "pointerstack.h"
 #include <iostream>
 
-PointerStack::PointerStack()
-{
-    head = tail = nullptr;
-    size = 0;
-}
+#include "pointerstack.h"
 
 void PointerStack::push(int value)
 {
     StackElement *newElement = new StackElement(value);
     ++size;
-    if (size == 1)
-    {
-        head = tail = newElement;
-        return;
-    }
-    newElement->next = tail;
-    tail = newElement;
+    (tail == nullptr) ? tail = newElement : newElement->next = tail, tail = newElement;
 }
 
 int PointerStack::pop()
 {
     if (size == 0)
     {
-        return notADigit;
+        return notANumber;
     }
     --size;
     int poppedElement = tail->value;
-    tail = tail->next;
+    StackElement *temp = tail->next;
+    delete tail;
+    tail = temp;
     return poppedElement;
 }
 
@@ -52,4 +43,14 @@ void PointerStack::top()
         return;
     }
     std::cout << tail->value << std::endl;
+}
+
+PointerStack::~PointerStack()
+{
+    while (tail != nullptr)
+    {
+        StackElement *temp = tail->next;
+        delete tail;
+        tail = temp;
+    }
 }

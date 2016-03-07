@@ -1,5 +1,7 @@
 #pragma once
 
+#include <climits>
+
 class Stack
 {
 public:
@@ -7,5 +9,9 @@ public:
     virtual int pop() = 0;
     virtual void debugOutput() = 0;
     virtual void top() = 0;
-    const int notADigit = 10;
+
+    const int notANumber = INT_MAX;
+protected:
+    virtual ~Stack(){}
+    int size = 0;
 };

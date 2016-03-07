@@ -11,9 +11,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     pointerstack.cpp \
-    arraystack.cpp
+    arraystack.cpp \
+    calculator.cpp
 
 HEADERS += \
     stack.h \
     pointerstack.h \
-    arraystack.h
+    arraystack.h \
+    calculator.h

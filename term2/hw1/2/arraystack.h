@@ -11,7 +11,6 @@ public:
     void debugOutput();
     void top();
 private:
-    int size;
     const int maxSize = int(1e3);
     int *currentStack = new int[maxSize];
 };

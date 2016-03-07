@@ -15,7 +15,7 @@ int ArrayStack::pop()
 {
     if (size == 0)
     {
-        return notADigit;
+        return notANumber;
     }
     int poppedElement = currentStack[--size];
     return poppedElement;
