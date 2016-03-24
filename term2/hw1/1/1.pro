@@ -9,9 +9,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    arraylinkedlist.cpp \
-    pointerlinkedlist.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     list.h \

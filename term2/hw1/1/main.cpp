@@ -7,9 +7,9 @@ using namespace std;
 
 int main()
 {
-    List *pointerList = new PointerLinkedList();
+    List <long long> *pointerList = new PointerLinkedList <long long> ();
     cout << "begin" << endl;
-    pointerList->add(9);
+    pointerList->add(10000000000);
     pointerList->remove(6);
     pointerList->debugOutput();
     pointerList->add(5);
@@ -25,9 +25,10 @@ int main()
     cout << "Current lenght of list: " << pointerList->lenght() << endl;
     pointerList->debugOutput();
     cout << "end" << endl << endl;
-    List *arrayList = new ArrayLinkedList();
+
+    List <long long> *arrayList = new ArrayLinkedList <long long> ();
     cout << "begin" << endl;
-    arrayList->add(9);
+    arrayList->add(10000000000);
     arrayList->remove(6);
     arrayList->debugOutput();
     arrayList->add(5);

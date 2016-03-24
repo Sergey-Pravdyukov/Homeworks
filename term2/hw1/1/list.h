@@ -1,13 +1,14 @@
 #pragma once
 
+template <typename Type>
 class List
 {
 public:
-    virtual void add(int value) = 0;
-    virtual void remove(int value) = 0;
+    virtual void add(Type value) = 0;
+    virtual void remove(Type value) = 0;
     virtual void debugOutput() = 0;
     virtual int lenght() = 0;
-protected:
     virtual ~List(){}
+protected:
     int size = 0;
 };
