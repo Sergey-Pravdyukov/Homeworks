@@ -16,6 +16,8 @@
 *.log
 *.user
 *Makefile*
+ui_mainwindow.h
+*moc_mainwimdow.cpp
 
 
 # Precompiled Headers
