@@ -22,10 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::calc()
 {
     QString operation = ui->comboBox->currentText();
-    int firstOperand = ui->firstOperand->value();
-    int secondOperand = ui->secondOperand->value();
-    const int init = -INT_MAX;
-    int result = init;
+    double firstOperand = ui->firstOperand->value();
+    double secondOperand = ui->secondOperand->value();
+    const double init = -1e12;
+    double result = init;
     char* oper = operation.toLatin1().data();
     switch (oper[0])
     {
@@ -46,6 +46,11 @@ void MainWindow::calc()
     }
     case '/':
     {
+        if (secondOperand == 0.0)
+        {
+            ui->lineEdit->setText("Error");
+            return;
+        }
         result = firstOperand / secondOperand;
         break;
     }
