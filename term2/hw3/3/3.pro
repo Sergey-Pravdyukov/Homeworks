@@ -17,10 +17,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     calculator.cpp \
-    stack.cpp
+    stack.cpp \
+    sortingfacility.cpp
 
 HEADERS  += mainwindow.h \
     calculator.h \
-    stack.h
+    stack.h \
+    sortingfacility.h
 
 FORMS    += mainwindow.ui
