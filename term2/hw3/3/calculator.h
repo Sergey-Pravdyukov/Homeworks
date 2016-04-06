@@ -5,6 +5,8 @@
 class Calculator
 {
 public:
-    Calculator(){};
-    int calc(QString *expression);
+    Calculator(){}
+
+    static int calculate(const QVector<QString> expression);
+
 };

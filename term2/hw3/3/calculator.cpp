@@ -1,16 +1,16 @@
-#include <cctype>
+#include <QVector>
+#include <QString>
 
 #include "calculator.h"
 #include "sortingfacility.h"
 
-int haveSum(QString *expression)
+int haveSum(QVector<QString> const &expression)
 {
-    SortingFacility *sortingFacility = new SortingFacility();
-    QString newExpression = sortingFacility->haveInfixToPostfix(*expression);
-    return sortingFacility->havePostfixToSum(newExpression).toInt();
+    QVector<QString> newExpression = SortingFacility::haveInfixToPostfix(expression);
+    return SortingFacility::havePostfixToSum(newExpression).toInt();
 }
 
-int Calculator::calc(QString *expression)
+int Calculator::calculate(const QVector<QString> expression)
 {
     return haveSum(expression);
 }

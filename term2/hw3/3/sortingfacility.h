@@ -6,6 +6,6 @@ class SortingFacility
 {
 public:
     SortingFacility(){}
-    QString haveInfixToPostfix(QString expression);
-    QString havePostfixToSum(QString postfixData);
+    static QVector<QString> haveInfixToPostfix(const QVector<QString> &expression);
+    static QString havePostfixToSum(QVector<QString> &postfixData);
 };

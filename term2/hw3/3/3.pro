@@ -18,11 +18,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     calculator.cpp \
     stack.cpp \
-    sortingfacility.cpp
+    sortingfacility.cpp \
+    parser.cpp
 
 HEADERS  += mainwindow.h \
     calculator.h \
     stack.h \
-    sortingfacility.h
+    sortingfacility.h \
+    parser.h
 
 FORMS    += mainwindow.ui

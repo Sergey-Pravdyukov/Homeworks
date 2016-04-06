@@ -2,9 +2,25 @@
 #include "stack.h"
 
 #include <QString>
+#include <QVector>
+#include <QChar>
+#include <cstring>
 
-bool isOperation(char character)
+bool isNumber(const QString &token)
 {
+    const int notADigit = -1;
+    for (int i = 0; i < token.size(); ++i)
+        if (token[i].digitValue() == notADigit)
+            return false;
+    return true;
+}
+
+bool isOperation(const QString &token)
+{
+    const int sizeOfOperation = 1;
+    if (token.size() != sizeOfOperation)
+        return false;
+    const char character = token.toLatin1().at(sizeOfOperation - 1);
     switch (character)
     {
     case '+':
@@ -15,85 +31,88 @@ bool isOperation(char character)
         return true;
     case '/':
         return true;
+    default:
+        return false;
     }
-    return false;
 }
 
-bool isBracket(char character)
+bool isBracket(const QString &token)
 {
+    const int sizeOfBracket = 1;
+    if (token.size() != sizeOfBracket)
+        return false;
+    const QChar character = token[sizeOfBracket - 1];
     return (character == '(' || character == ')');
 }
 
-QString SortingFacility::havePostfixToSum(QString postfixData)
+QString SortingFacility::havePostfixToSum(QVector<QString> &postfixData)
 {
-    Stack *stackForDigits = new Stack();
+    Stack *stackForNumbers = new Stack();
     for (int i = 0; i < postfixData.size(); ++i)
     {
-        char character = QString(postfixData).at(i).toLatin1();
-        if (isdigit(character))
-            stackForDigits->push(character);
-        if (isOperation(character))
+        const QString token = postfixData[i];
+        if (isNumber(token))
+            stackForNumbers->push(token);
+        if (isOperation(token))
         {
-            int firstDigit = stackForDigits->pop().digitValue();
-            int secondDigit = stackForDigits->pop().digitValue();
+            const int firstNumber = stackForNumbers->pop().toInt();
+            const int secondNumber = stackForNumbers->pop().toInt();
             int result = 0;
-            switch (character)
+            switch (int(token.toLatin1().at(0)))
             {
             case '+':
             {
-                result = secondDigit + firstDigit;
+                result = secondNumber + firstNumber;
                 break;
             }
             case '-':
             {
-                result = secondDigit - firstDigit;
+                result = secondNumber - firstNumber;
                 break;
             }
             case '*':
             {
-                result = secondDigit * firstDigit;
+                result = secondNumber * firstNumber;
                 break;
             }
             case '/':
             {
-                result = secondDigit / firstDigit;
+                result = secondNumber / firstNumber;
                 break;
             }
             }
-            stackForDigits->push(QString::number(result).at(0));
+            stackForNumbers->push(QString::number(result));
         }
     }
-    return (stackForDigits->top());
+    return (stackForNumbers->top());
 }
 
-QString SortingFacility::haveInfixToPostfix(QString expression)
+QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &expression)
 {
     Stack *stackForOperations = new Stack();
-    QString *infixData = new QString();
+    QVector<QString> infixData;
     for (int i = 0; i < expression.size(); ++i)
     {
-        char character = QString(expression).at(i).toLatin1();
-        if (isdigit(character) || character == '0')
-            infixData->push_back(character);
-        if (isOperation(character))
-            stackForOperations->push(character);
-        if (isBracket(character))
+        const QString token = expression[i];
+        if (isNumber(token))
+            infixData.push_back(token);
+        if (isOperation(token))
+            stackForOperations->push(token);
+        if (isBracket(token))
         {
-            if (character == '(')
-                stackForOperations->push(character);
+            if (token == "(")
+                stackForOperations->push(token);
             else
                 while (stackForOperations->size)
                 {
-                    QChar head = stackForOperations->top();
-                    stackForOperations->pop();
-                    if (head == '(')
+                    const QString head = stackForOperations->pop();
+                    if (head == "(")
                         break;
-                    else
-                        infixData->push_back(head);
+                    infixData.push_back(head);
                 }
         }
     }
     while (stackForOperations->size)
-        infixData->push_back(stackForOperations->pop());
-    return *infixData;
+        infixData.push_back(stackForOperations->pop());
+    return infixData;
 }

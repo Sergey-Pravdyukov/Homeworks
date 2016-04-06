@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "calculator.h"
+#include "parser.h"
 
 int getColumnForDigits(int i)
 {
@@ -70,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->gridLayout->addWidget(pushButton, getRow(i), getColumnForOtherButtons());
     }
 
+    MainWindow::clear();
+
     pushButton = new QPushButton(otherButtons[numberOfOtherButtons - 1]);
     ui->gridLayout->addWidget(pushButton, getRow(numberOfOtherButtons - 1), getColumnForOtherButtons());
     connect(pushButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
@@ -77,11 +80,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(clicked(QString)));
 }
 
-
-
 void MainWindow::clear()
 {
     lineEdit->clear();
+    lineEdit->insert("0");
 }
 
 void MainWindow::clicked(const QString &text)
@@ -91,10 +93,10 @@ void MainWindow::clicked(const QString &text)
 
 void MainWindow::calculate()
 {
-    QString *expression = new QString();
-    *expression = lineEdit->displayText();
+    QString displayText = lineEdit->displayText();
+    QVector<QString> expression = Parser::haveParse(displayText);
     lineEdit->clear();
-    int result = calculator->calc(expression);
+    int result = Calculator::calculate(expression);
     lineEdit->insert(QString::number(result));
 }
 

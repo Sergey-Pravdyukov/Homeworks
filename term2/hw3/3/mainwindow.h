@@ -30,6 +30,5 @@ private:
     QLineEdit *lineEdit = new QLineEdit();
     QSignalMapper *signalMapper = new QSignalMapper();
     QPushButton *pushButton = new QPushButton();
-    Calculator *calculator = new Calculator();
 };
 

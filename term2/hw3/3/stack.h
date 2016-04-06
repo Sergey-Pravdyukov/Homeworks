@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QChar>
+#include <QString>
 
 class Stack
 {
@@ -10,19 +10,19 @@ public:
     class StackElement
     {
     public:
-        StackElement(const QChar currentValue)
+        StackElement(const QString currentValue)
         {
             value = currentValue;
         }
-        const QChar notAStackElement = '?';
-        QChar value = notAStackElement;
+        const QString notAStackElement = "?";
+        QString value = notAStackElement;
         StackElement *next = nullptr;
     };
 
     StackElement *head = nullptr;
-    void push(const QChar value);
-    QChar pop();
-    QChar top();
+    void push(const QString value);
+    QString pop();
+    QString top();
 
     int size = 0;
 };
