@@ -15,7 +15,7 @@ bool isNumber(const QString &token)
     return true;
 }
 
-bool isOperation(const QString &token)
+bool isHighPriorityOperation(const QString &token)
 {
     const int sizeOfOperation = 1;
     if (token.size() != sizeOfOperation)
@@ -23,13 +23,28 @@ bool isOperation(const QString &token)
     const char character = token.toLatin1().at(sizeOfOperation - 1);
     switch (character)
     {
-    case '+':
-        return true;
-    case '-':
-        return true;
     case '*':
         return true;
     case '/':
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool isOperation(const QString &token)
+{
+    const int sizeOfOperation = 1;
+    if (token.size() != sizeOfOperation)
+        return false;
+    const char character = token.toLatin1().at(sizeOfOperation - 1);
+    if (isHighPriorityOperation(token))
+        return true;
+    switch (character)
+    {
+    case '+':
+        return true;
+    case '-':
         return true;
     default:
         return false;
@@ -97,7 +112,12 @@ QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &exp
         if (isNumber(token))
             infixData.push_back(token);
         if (isOperation(token))
+        {
+            if (!isHighPriorityOperation(token))
+                while(stackForOperations->size != 0 && isHighPriorityOperation(stackForOperations->top()))
+                    infixData.push_back(stackForOperations->pop());
             stackForOperations->push(token);
+        }
         if (isBracket(token))
         {
             if (token == "(")
