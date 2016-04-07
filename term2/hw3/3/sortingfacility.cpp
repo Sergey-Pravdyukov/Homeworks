@@ -136,4 +136,3 @@ QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &exp
         infixData.push_back(stackForOperations->pop());
     return infixData;
 }
-
