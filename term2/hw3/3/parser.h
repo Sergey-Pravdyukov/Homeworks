@@ -9,7 +9,4 @@ public:
     Parser(){}
 
     static QVector<QString> haveParse(const QString &displayText);
-
 };
-
-

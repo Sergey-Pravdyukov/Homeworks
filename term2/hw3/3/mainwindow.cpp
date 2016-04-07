@@ -4,17 +4,17 @@
 #include "calculator.h"
 #include "parser.h"
 
-int getColumnForDigits(int i)
+int getColumnForDigits(const int i)
 {
     return (i - 1) % 3;
 }
 
-int getRowForDigits(int i)
+int getRowForDigits(const int i)
 {
     return 4 - ((i - 1) / 3);
 }
 
-int getRow(int i)
+int getRow(const int i)
 {
     return i + 2;
 }
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     const int numberOfOperations = 5;
-    QChar operations[numberOfOperations] = {'+', '-', '*', '/', '='};
+    const QChar operations[numberOfOperations] = {'+', '-', '*', '/', '='};
     for (int i = 0; i < numberOfOperations - 1; ++i)
     {
         pushButton = new QPushButton(operations[i]);
@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pushButton, SIGNAL(clicked(bool)), this, SLOT(calculate()));
 
     const int numberOfOtherButtons = 4;
-    QString otherButtons[numberOfOtherButtons] = {"(", ")", ".", "CE"};
+    const QString otherButtons[numberOfOtherButtons] = {"(", ")", ".", "CE"};
     for (int i = 0; i < numberOfOtherButtons - 1; ++i)
     {
         pushButton = new QPushButton(otherButtons[i]);
@@ -70,8 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(pushButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
         ui->gridLayout->addWidget(pushButton, getRow(i), getColumnForOtherButtons());
     }
-
-    MainWindow::clear();
 
     pushButton = new QPushButton(otherButtons[numberOfOtherButtons - 1]);
     ui->gridLayout->addWidget(pushButton, getRow(numberOfOtherButtons - 1), getColumnForOtherButtons());
@@ -83,7 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::clear()
 {
     lineEdit->clear();
-    lineEdit->insert("0");
 }
 
 void MainWindow::clicked(const QString &text)
@@ -96,8 +93,7 @@ void MainWindow::calculate()
     QString displayText = lineEdit->displayText();
     QVector<QString> expression = Parser::haveParse(displayText);
     lineEdit->clear();
-    int result = Calculator::calculate(expression);
-    lineEdit->insert(QString::number(result));
+    lineEdit->insert(QString::number(Calculator::calculate(expression)));
 }
 
 MainWindow::~MainWindow()

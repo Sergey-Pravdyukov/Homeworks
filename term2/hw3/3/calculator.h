@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QVector>
 #include <QString>
 
 class Calculator
@@ -7,6 +8,5 @@ class Calculator
 public:
     Calculator(){}
 
-    static int calculate(const QVector<QString> expression);
-
+    static double calculate(const QVector<QString> &expression);
 };

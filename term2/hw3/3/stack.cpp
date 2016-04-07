@@ -1,6 +1,6 @@
 #include "stack.h"
 
-void Stack::push(const QString value)
+void Stack::push(const QString &value)
 {
     StackElement *newElement = new StackElement(value);
     if (size != 0)
@@ -11,8 +11,7 @@ void Stack::push(const QString value)
 
 QString Stack::top()
 {
-    StackElement *topElement = head;
-    return topElement->value;
+    return head->value;
 }
 
 QString Stack::pop()

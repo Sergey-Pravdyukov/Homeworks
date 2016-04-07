@@ -19,12 +19,14 @@ SOURCES += main.cpp\
     calculator.cpp \
     stack.cpp \
     sortingfacility.cpp \
-    parser.cpp
+    parser.cpp \
+    token.cpp
 
 HEADERS  += mainwindow.h \
     calculator.h \
     stack.h \
     sortingfacility.h \
-    parser.h
+    parser.h \
+    token.h
 
 FORMS    += mainwindow.ui

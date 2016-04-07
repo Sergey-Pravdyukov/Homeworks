@@ -10,7 +10,7 @@ public:
     class StackElement
     {
     public:
-        StackElement(const QString currentValue)
+        StackElement(const QString &currentValue)
         {
             value = currentValue;
         }
@@ -20,7 +20,7 @@ public:
     };
 
     StackElement *head = nullptr;
-    void push(const QString value);
+    void push(const QString &value);
     QString pop();
     QString top();
 

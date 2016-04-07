@@ -1,27 +1,5 @@
 #include "parser.h"
-
-#include <QString>
-
-bool isOperation(QChar character)
-{
-    switch (character.toLatin1())
-    {
-    case '+':
-        return true;
-    case '-':
-        return true;
-    case '*':
-        return true;
-    case '/':
-        return true;
-    }
-    return false;
-}
-
-bool isBracket(QChar character)
-{
-    return (character == '(' || character == ')');
-}
+#include "token.h"
 
 QVector<QString> Parser::haveParse(QString const &displayText)
 {
@@ -29,7 +7,9 @@ QVector<QString> Parser::haveParse(QString const &displayText)
     QString number = "";
     for (int i = 0; i < displayText.size(); ++i)
     {
-        if (isOperation(displayText[i]) || isBracket(displayText[i]))
+        if (displayText[i] == '-' && (i == 0 || displayText[i - 1] == '('))
+            expression.push_back("0");
+        if (Token::isOperation(displayText[i]) || Token::isBracket(displayText[i]))
         {
             if (!number.isEmpty())
             {
@@ -38,7 +18,7 @@ QVector<QString> Parser::haveParse(QString const &displayText)
             }
             expression.push_back(displayText[i]);
         }
-        else if (isdigit(displayText[i].toLatin1()))
+        else if (isdigit(displayText[i].toLatin1()) || displayText[i].toLatin1() == '.')
             number += displayText[i].toLatin1();
     }
     if (!number.isEmpty())
