@@ -12,10 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->firstOperand, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, MainWindow::calc);
+            this, Calculator::calc);
     connect(ui->secondOperand, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, MainWindow::calc);
-    connect(ui->comboBox, QComboBox::currentTextChanged, this, MainWindow::calc);
+            this, Calculator::calc);
+    connect(ui->comboBox, QComboBox::currentTextChanged, this, Calculator::calc);
     calc();
 }
 

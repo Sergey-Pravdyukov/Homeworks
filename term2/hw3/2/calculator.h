@@ -6,7 +6,7 @@ class Calculator
 {
 public:
     Calculator(){}
-    int calculate(char operation, int firstOperand, int secondOperand);
+    slots static int calc(char operation, int firstOperand, int secondOperand);
 private:
     const char notAOperation = '?';
 
