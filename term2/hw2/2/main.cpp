@@ -9,13 +9,11 @@ using namespace std;
 
 const int maxSize = int(1e3);
 
-/// set of avaliable status for output
-
 enum
 {
-    init, ///< initialized type of output
-    fileOutput, ///< output in file
-    consoleOutput ///< output in console
+    init,
+    fileOutput,
+    consoleOutput
 };
 
 int main()
@@ -38,16 +36,16 @@ int main()
     {
     case fileOutput:
     {
-        FileOutput();
+        FileOutput *output = new FileOutput(array, size);
+        output->snake();
         break;
     }
     case consoleOutput:
     {
-        ConsoleOutput();
+        ConsoleOutput *output = new ConsoleOutput(array, size);
+        output->snake();
         break;
     }
     }
-    Outputer *output = new Outputer(array, size);
-    output->snake();
     return 0;
 }

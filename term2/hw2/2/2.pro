@@ -11,7 +11,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     outputer.cpp \
-    fileoutput.cpp
+    fileoutput.cpp \
+    consoleoutput.cpp
 
 HEADERS += \
     outputer.h \

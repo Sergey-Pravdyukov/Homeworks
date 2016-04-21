@@ -1,20 +1,16 @@
 #include <iostream>
-#include <cstdio>
 
-#include "fileoutput.h"
+#include "consoleoutput.h"
 
 enum {init, fileOutput, consoleOutput};
 
-FileOutput::FileOutput(int **currentArray, int currentSize)
+ConsoleOutput::ConsoleOutput(int **currentArray, int currentSize)
 {
-    std::cout << "Please press Enter.";
-    freopen("output.txt", "w", stdout);
     array = currentArray;
     size = currentSize;
 }
 
-
-void FileOutput::snake()
+void ConsoleOutput::snake()
 {
     int currentX = size / 2;
     int currentY = size / 2;
