@@ -1,9 +1,9 @@
 #pragma once
 
 #include "list.h"
-/*!
- * \brief The ListOfLists class is list which contains sorted by size lists
- */
+
+const int initListOfLists = 0;
+
 class ListOfLists
 {
 public:
@@ -11,8 +11,8 @@ public:
     ~ListOfLists();
     void add(List addedList);
     void debugOutput();
-private:
+
     List *headOfListOfLists = nullptr;
     List *tailOfListOfLists = nullptr;
-    int sizeOfListOfLists = initInList;
+    int sizeOfListOfLists = initListOfLists;
 };

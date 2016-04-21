@@ -11,11 +11,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     list.cpp \
-    listoflists.cpp
+    listoflists.cpp \
+    listcomparator.cpp
 
 HEADERS += \
     list.h \
-    listoflists.h
+    listoflists.h \
+    listcomparator.h
 
 DISTFILES += \
     thoughts.txt
