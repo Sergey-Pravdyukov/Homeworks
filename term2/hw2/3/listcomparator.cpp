@@ -23,13 +23,10 @@ bool isEqualLists(List *firstList, List *secondList)
 int haveFindList(List *currentList, ListOfLists *currentListOfLists)
 {
     List *newList = currentListOfLists->headOfListOfLists;
-    int order = 1;
     while (newList != nullptr)
     {
-        newList->debugOutput();
         if (isEqualLists(newList, currentList))
-            return order;
-        ++order;
+            return newList->sizeOfList;
         newList = newList->nextList;
     }
     return notFound;
@@ -38,13 +35,11 @@ int haveFindList(List *currentList, ListOfLists *currentListOfLists)
 int ListComparator::haveCompareLists(List *firstList, List *secondList,
                                      ListOfLists *currentListOfLists)
 {
-    std::cout << "sad" << std::endl;
-    int firstOrder = haveFindList(firstList, currentListOfLists);
-    int secondOrder = haveFindList(secondList, currentListOfLists);
-    std::cout << firstOrder << " " << secondOrder << std::endl;
-    if (firstOrder == notFound || secondOrder == notFound)
+    int sizeOfFirstList = haveFindList(firstList, currentListOfLists);
+    int sizeOfSecondList = haveFindList(secondList, currentListOfLists);
+    if (sizeOfFirstList == notFound || sizeOfSecondList == notFound)
         return notFound;
-    if (firstOrder == secondOrder)
+    if (sizeOfFirstList == sizeOfSecondList)
         return isEqual;
-    return (firstOrder < secondOrder) ? firstLess : secondLess;
+    return (sizeOfFirstList < sizeOfSecondList) ? firstLess : secondLess;
 }
