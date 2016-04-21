@@ -1,10 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <climits>
 #include <Qstring>
-
-#include "calculator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,22 +9,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->firstOperand, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, Calculator::calc);
+            this, MainWindow::calc);
     connect(ui->secondOperand, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, Calculator::calc);
-    connect(ui->comboBox, QComboBox::currentTextChanged, this, Calculator::calc);
+            this, MainWindow::calc);
+    connect(ui->comboBox, QComboBox::currentTextChanged, this, MainWindow::calc);
     calc();
 }
 
 void MainWindow::calc()
 {
-    QString operation = ui->comboBox->currentText();
-    double firstOperand = ui->firstOperand->value();
-    double secondOperand = ui->secondOperand->value();
+    const QString operation = ui->comboBox->currentText();
+    const double firstOperand = ui->firstOperand->value();
+    const double secondOperand = ui->secondOperand->value();
     const double init = -1e12;
     double result = init;
-    char* oper = operation.toLatin1().data();
-    switch (oper[0])
+    char* currentOperation = operation.toLatin1().data();
+    switch (currentOperation[0])
     {
     case '+':
     {

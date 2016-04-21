@@ -6,6 +6,9 @@ namespace Ui {
 class MainWindow;
 }
 
+/*!
+ * \brief The MainWindow class that calculated value of arithmetic expression
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,5 +20,9 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    void calc()
+private slots:
+    /*!
+     * \brief calculate value of expression with two operands and operation
+     */
+    void calc();
 };
