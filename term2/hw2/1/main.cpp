@@ -16,9 +16,7 @@ int main()
     cout << "Input array of " << size << " elements" << endl;
     int *array = new int[maxSize];
     for (int i = 0; i < size; ++i)
-    {
         cin >> array[i];
-    }
 
     Sort *bubbleSort = new BubbleSort(size);
     bubbleSort->sort(array);

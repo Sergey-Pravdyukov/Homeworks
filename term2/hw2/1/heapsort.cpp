@@ -8,13 +8,13 @@ HeapSort::HeapSort(int currentSize)
     size = currentSize;
 }
 
-void siftDown(int *array, int root, int bottom) {
+void siftDown(int *array, int root, const int bottom) {
     int done = 0;
     int maxChild = 0;
     while ((root * 2 <= bottom) && (!done))
     {
-        int left = root * 2;
-        int right = root * 2 + 1;
+        const int left = root * 2;
+        const int right = root * 2 + 1;
         if (left == bottom)
         {
             maxChild = left;
@@ -40,10 +40,10 @@ void siftDown(int *array, int root, int bottom) {
 }
 
 void HeapSort::heapSort(int *array) {
-    for (int i = (size / 2) - 1; i >= 0; i--) {
+    for (int i = (size / 2) - 1; i >= 0; i--)
         siftDown(array, i, size);
-    }
-    for (int i = size - 1; i >= 1; i--) {
+    for (int i = size - 1; i >= 1; i--)
+    {
         std::swap(array[0], array[i]);
         siftDown(array, 0, i - 1);
     }
