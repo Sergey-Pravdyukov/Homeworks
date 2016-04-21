@@ -12,9 +12,7 @@ void PointerStack::push(int value)
 int PointerStack::pop()
 {
     if (size == 0)
-    {
         return notANumber;
-    }
     --size;
     int poppedElement = tail->value;
     StackElement *temp = tail->next;
@@ -33,16 +31,6 @@ void PointerStack::debugOutput()
         currentElement = currentElement->next;
     }
     std::cout << std::endl;
-}
-
-void PointerStack::top()
-{
-    if (size == 0)
-    {
-        std::cout << "Stack is empty!" << std::endl;
-        return;
-    }
-    std::cout << tail->value << std::endl;
 }
 
 PointerStack::~PointerStack()

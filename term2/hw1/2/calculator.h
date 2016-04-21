@@ -2,6 +2,9 @@
 
 #include <climits>
 
+/*!
+ * \brief The Calculator class for calculate expression of two operands
+ */
 class Calculator
 {
 public:

@@ -18,5 +18,7 @@ int Calculator::calculate(char operation, int firstOperand, int secondOperand)
     }
     case '/':
         return firstOperand / secondOperand;
+    default:
+        return 0;
     }
 }
