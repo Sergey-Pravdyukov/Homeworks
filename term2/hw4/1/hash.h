@@ -2,6 +2,9 @@
 
 #include <QString>
 
+/*!
+ * \brief The Hash class for calculate any hash function
+ */
 class Hash
 {
 public:
