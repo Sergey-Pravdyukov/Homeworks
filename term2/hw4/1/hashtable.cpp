@@ -6,7 +6,7 @@ HashTable::HashTable(const int &currentSize, const int &currentHashType)
     hashType = currentHashType;
 }
 
-void HashTable::debugOutput()
+void HashTable::debugOutput() const
 {
     for (int i = 0; i < size; ++i)
     {
@@ -39,7 +39,7 @@ void findPrime(int &size)
         }
 }
 
-HashElement HashTable::compareHash(const QString &currentString)
+HashElement HashTable::compareHash(const QString &currentString) const
 {
     HashElement hashElement = HashElement();
     switch (hashType)
@@ -125,7 +125,7 @@ HashElement HashTable::remove(const QString &currentString)
 
 bool HashTable::find(const QString &currentString)
 {
-    HashElement hashElement = HashElement(currentString, Hash::hashH37(currentString));
+    HashElement hashElement = compareHash(currentString);
     const int index = hashElement.hash % size;
     for (QList<HashElement>::iterator it = hashTableCells[index].begin(); it != hashTableCells[index].end(); ++it)
         if (*it == hashElement)
@@ -133,17 +133,17 @@ bool HashTable::find(const QString &currentString)
     return false;
 }
 
-int HashTable::haveNumberOfCells()
+int HashTable::haveNumberOfCells() const
 {
     return numberOfCells;
 }
 
-double HashTable::haveLoadFactor()
+double HashTable::haveLoadFactor() const
 {
     return double(numberOfCells) / size;
 }
 
-int HashTable::haveNumberOfConflicts()
+int HashTable::haveNumberOfConflicts() const
 {
     int result = 0;
     for (int i = 0; i < size; ++i)
@@ -151,7 +151,7 @@ int HashTable::haveNumberOfConflicts()
     return result;
 }
 
-int HashTable::haveMaxSizeOfConflictList()
+int HashTable::haveMaxSizeOfConflictList() const
 {
     int result = 0;
     for (int i = 0; i < size; ++i)
@@ -159,7 +159,7 @@ int HashTable::haveMaxSizeOfConflictList()
     return result;
 }
 
-void HashTable::haveStatisctics()
+void HashTable::haveStatisctics() const
 {
     std::cout << "number of cells: " << haveNumberOfCells() << std::endl
               << "load factor: " << haveLoadFactor() << std::endl

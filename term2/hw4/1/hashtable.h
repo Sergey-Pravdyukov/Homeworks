@@ -35,7 +35,7 @@ public:
      * Calculate number of cells, load factor,
      * number of cinflict cells, max size of list in conflict cell
      */
-    void haveStatisctics();
+    void haveStatisctics() const;
     /*!
      * \brief changeHash current status of HashTable
      * \param newHashType of HashTable
@@ -44,7 +44,7 @@ public:
     /*!
      * \brief debugOutput all HashTable
      */
-    void debugOutput();
+    void debugOutput() const;
 
     /*!
      * \brief maximalDifferenceBetweenAdjacentPrimes - magic constant for adjacent primes less than 10^9
@@ -66,14 +66,14 @@ private:
      * \param currentString
      * \return HashElement with suitable hash
      */
-    HashElement compareHash(const QString &currentString);
+    HashElement compareHash(const QString &currentString) const;
     /*!
      * \brief haveLoadFactor recalc load factor of increased HashTable
      */
-    double haveLoadFactor();
-    int haveNumberOfConflicts();
-    int haveMaxSizeOfConflictList();
-    int haveNumberOfCells();
+    double haveLoadFactor() const;
+    int haveNumberOfConflicts() const;
+    int haveMaxSizeOfConflictList() const;
+    int haveNumberOfCells() const;
 
     static const int maxPrimeNumber = 9369319;
     const int hashTableInit = 0;
