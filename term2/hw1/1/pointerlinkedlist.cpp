@@ -9,45 +9,39 @@ void PointerLinkedList::add(int value)
     if (size == 1)
     {
         head = tail = newElement;
-        std::cout << value << " added" << std::endl;
         return;
     }
     if (size == 2)
-    {
         head->next = newElement;
-    }
     tail->next = newElement;
     tail = tail->next;
-    std::cout << value << " added" << std::endl;
 }
 
-void PointerLinkedList::remove(int value)
+int PointerLinkedList::remove(int value)
 {
     ListElement *currentElement = head;
     if (currentElement->value == value)
     {
-        ListElement *newElement = new ListElement(head->value);
-        newElement->next = head->next;
+        int removedValue = value;
+        ListElement *newHead = head->next;
         delete head;
-        head = newElement->next;
-        std::cout << value << " founded" << std::endl;
-        delete newElement;
+        head = newHead;
         --size;
-        return;
+        return removedValue;
     }
+
     ListElement *previousElement = currentElement;
     currentElement = currentElement->next;
     for (int i = 1; i < size; ++i)
-    {
         if (currentElement->value == value)
         {
+            int removedValue = value;
             previousElement->next = currentElement->next;
-            std::cout << value << " founded" << std::endl;
+            delete currentElement;
             --size;
-            return;
+            return removedValue;
         }
-    }
-    std::cout << value << " not founded" << std::endl;
+    return notANumber;
 }
 
 void PointerLinkedList::debugOutput()

@@ -2,47 +2,46 @@
 
 #include "pointerlinkedlist.h"
 #include "arraylinkedlist.h"
+#include "pointerlisttest.h"
+#include "arraylisttest.h"
+
+#include <QtTest/QtTest>
 
 using namespace std;
 
+void operations(List *currentList)
+{
+    cout << "begin" << endl;
+    currentList->add(9);
+    currentList->remove(6);
+    currentList->debugOutput();
+    currentList->add(5);
+    currentList->remove(9);
+    cout << "Current lenght of list: " << currentList->lenght() << endl;
+    currentList->add(4);
+    currentList->debugOutput();
+    currentList->add(17);
+    cout << "Current lenght of list: " << currentList->lenght() << endl;
+    currentList->debugOutput();
+    currentList->remove(4);
+    currentList->remove(17);
+    cout << "Current lenght of list: " << currentList->lenght() << endl;
+    currentList->debugOutput();
+    cout << "end" << endl << endl;
+}
+
 int main()
 {
-    List <long long> *pointerList = new PointerLinkedList <long long> ();
-    cout << "begin" << endl;
-    pointerList->add(10000000000);
-    pointerList->remove(6);
-    pointerList->debugOutput();
-    pointerList->add(5);
-    pointerList->remove(9);
-    cout << "Current lenght of list: " << pointerList->lenght() << endl;
-    pointerList->add(4);
-    pointerList->debugOutput();
-    pointerList->add(17);
-    cout << "Current lenght of list: " << pointerList->lenght() << endl;
-    pointerList->debugOutput();
-    pointerList->remove(4);
-    pointerList->remove(17);
-    cout << "Current lenght of list: " << pointerList->lenght() << endl;
-    pointerList->debugOutput();
-    cout << "end" << endl << endl;
+    List *pointerList = new PointerLinkedList();
+    cout << "Pointer linked list: " << endl;
+    operations(pointerList);
+    PointerListTest testPointerList;
+    QTest::qExec(&testPointerList);
 
-    List <long long> *arrayList = new ArrayLinkedList <long long> ();
-    cout << "begin" << endl;
-    arrayList->add(10000000000);
-    arrayList->remove(6);
-    arrayList->debugOutput();
-    arrayList->add(5);
-    arrayList->remove(9);
-    cout << "Current lenght of list: " << arrayList->lenght() << endl;
-    arrayList->add(4);
-    arrayList->debugOutput();
-    arrayList->add(17);
-    cout << "Current lenght of list: " << arrayList->lenght() << endl;
-    arrayList->debugOutput();
-    arrayList->remove(4);
-    arrayList->remove(17);
-    cout << "Current lenght of list: " << arrayList->lenght() << endl;
-    arrayList->debugOutput();
-    cout << "end" << endl;
+    List *arrayList = new ArrayLinkedList();
+    cout << "Array linked list: " << endl;
+    operations(arrayList);
+    ArrayListTest testArrayList;
+    QTest::qExec(&testArrayList);
     return 0;
 }

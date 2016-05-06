@@ -1,14 +1,19 @@
 #pragma once
 
-template <typename Type>
+#include <climits>
+
 class List
 {
 public:
-    virtual void add(Type value) = 0;
-    virtual void remove(Type value) = 0;
+    virtual ~List(){}
+    virtual void add(int value) = 0;
+    virtual int remove(int value) = 0;
     virtual void debugOutput() = 0;
     virtual int lenght() = 0;
-    virtual ~List(){}
 protected:
-    int size = 0;
+    const int sizeInit = 0;
+    static const int notANumber = INT_MIN;
+
+    int size = sizeInit;
+
 };
