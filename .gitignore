@@ -41,3 +41,8 @@
 *.out
 *.app
 *.rar
+*debug*
+*dox*
+*html*
+*latex*
+*txt*
