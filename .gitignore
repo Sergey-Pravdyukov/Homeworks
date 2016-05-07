@@ -41,3 +41,15 @@
 *.out
 *.app
 *.rar
+*debug*
+*dox*
+*html*
+*latex*
+*txt*
+*.png
+*.html
+*.js
+*.css
+*.tex
+*.eps
+
