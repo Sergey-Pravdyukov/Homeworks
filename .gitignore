@@ -16,8 +16,6 @@
 *.log
 *.user
 *Makefile*
-ui_mainwindow.h
-*moc_mainwimdow.cpp
 
 
 # Precompiled Headers
@@ -43,3 +41,15 @@ ui_mainwindow.h
 *.out
 *.app
 *.rar
+*debug*
+*dox*
+*html*
+*latex*
+*txt*
+*.png
+*.html
+*.js
+*.css
+*.tex
+*.eps
+
