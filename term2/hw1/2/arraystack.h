@@ -10,6 +10,7 @@ class ArrayStack : public Stack
 {
 public:
     ~ArrayStack();
+
     /*!
      * \brief push value to array stack
      */
@@ -23,11 +24,24 @@ public:
      * \brief debugOutput all array stack from left to right
      */
     void debugOutput();
-
+    /*!
+     * \brief lenght of ArrayStack
+     */
+    int lenght();
 private:
+    const int initMaxSize = 100;
+
     /*!
      * \brief maxSize of array stack
      */
-    const int maxSize = int(1e3);
+    int maxSize = initMaxSize;
+    /*!
+     * \brief currentStack array for Stack
+     */
     int *currentStack = new int[maxSize];
+
+    /*!
+     * \brief updateMaxSizeOfStack where size more than maxSize
+     */
+    void updateMaxSizeOfStack();
 };

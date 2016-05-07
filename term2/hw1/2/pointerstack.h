@@ -2,8 +2,6 @@
 
 #include "stack.h"
 
-const int init = 0;
-
 /*!
  * \brief The PointerStack class for working with pointer stack
  *
@@ -12,8 +10,8 @@ const int init = 0;
 class PointerStack : public Stack
 {
 public:
-    PointerStack(){}
     ~PointerStack();
+
     /*!
      * \brief push value to pointer stack
      */
@@ -28,10 +26,16 @@ public:
      */
     void debugOutput();
     /*!
+     * \brief lenght of PointerStack
+     * \return
+     */
+    int lenght();
+    /*!
      * \brief The StackElement class for element of pointer stack
      *
      * Contains value and pointer to next element
      */
+private:
     class StackElement
     {
     public:
@@ -39,11 +43,14 @@ public:
         {
             value = currentValue;
         }
-        int value = init;
+
+        int value = notANumber;
+        /*!
+         * \brief next StackElement in Stack
+         */
         StackElement *next = nullptr;
     };
 
-private:
     /*!
      * \brief tail of pointer stack
      */

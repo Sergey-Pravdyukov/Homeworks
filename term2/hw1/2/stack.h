@@ -14,6 +14,7 @@ public:
     /*!
      * \brief push - add element to stack
      */
+
     virtual void push(int value) = 0;
     /*!
      * \brief pop element from stack
@@ -24,8 +25,16 @@ public:
      * \brief debugOutput all of stack
      */
     virtual void debugOutput() = 0;
-
-    static const int notANumber = INT_MAX;
-
+    /*!
+     * \brief lenght of Stack
+     * \return
+     */
+    virtual int lenght() = 0;
+protected:
     int size = 0;
+
+    /*!
+     * \brief notANumber initialization constant for integer variables
+     */
+    static const int notANumber = INT_MIN;
 };

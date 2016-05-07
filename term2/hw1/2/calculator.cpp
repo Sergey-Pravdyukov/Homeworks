@@ -17,8 +17,12 @@ int Calculator::calculate(char operation, int firstOperand, int secondOperand)
         return firstOperand * secondOperand;
     }
     case '/':
-        return firstOperand / secondOperand;
+    {
+        if (secondOperand != 0)
+            return firstOperand / secondOperand;
+        return notANumber;
+    }
     default:
-        return 0;
+        return notANumber;
     }
 }

@@ -33,6 +33,11 @@ void PointerStack::debugOutput()
     std::cout << std::endl;
 }
 
+int PointerStack::lenght()
+{
+    return size;
+}
+
 PointerStack::~PointerStack()
 {
     while (tail != nullptr)

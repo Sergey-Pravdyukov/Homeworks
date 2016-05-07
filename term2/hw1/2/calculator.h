@@ -3,17 +3,30 @@
 #include <climits>
 
 /*!
- * \brief The Calculator class for calculate expression of two operands
+ * \brief This class calculates binary expressions
  */
 class Calculator
 {
 public:
-    Calculator(){}
+    /*!
+     * \brief calculate binary expression
+     * \param operation
+     * \param firstOperand
+     * \param secondOperand
+     * \return value of expression
+     */
     int calculate(char operation, int firstOperand, int secondOperand);
 private:
-    const char notAOperation = '?';
+    /*!
+     * \brief notAnOperation for initialization default of operation
+     */
+    const char notAnOperation = '?';
+    /*!
+     * \brief notANumber for initilization integer values
+     */
+    const int notANumber = INT_MIN;
 
-    char operation = notAOperation;
-    int firstOperand = INT_MAX;
-    int secondOperand = INT_MAX;
+    char operation = notAnOperation;
+    int firstOperand = notANumber;
+    int secondOperand = notANumber;
 };
