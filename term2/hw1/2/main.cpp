@@ -25,14 +25,12 @@ void calculate(Stack *currentStack)
     for (int i = 0; i < sizeOfExpression; ++i)
     {
         const int token = expression[i].digitValue();
-        if (token != notADigit)
-            currentStack->push(token);
-        else
+        if (token == notADigit)
         {
-            const int firstOperand = currentStack->pop();
             const int secondOperand = currentStack->pop();
+            const int firstOperand = currentStack->pop();
             Calculator *myCalculator = new Calculator();
-            result = myCalculator->calculate(expression[i].toLatin1(), secondOperand, firstOperand);
+            result = myCalculator->calculate(expression[i].toLatin1(), firstOperand, secondOperand);
             if (result == notANumber)
             {
                 cout << "Error!" << endl;
@@ -44,6 +42,8 @@ void calculate(Stack *currentStack)
                  << result << endl;
             currentStack->push(result);
         }
+        else
+            currentStack->push(token);
     }
     if (result != notANumber)
         cout << "Result is " << currentStack->pop() << endl;
