@@ -21,4 +21,5 @@ HEADERS += \
     arraystack.h \
     calculator.h \
     testpointerstack.h \
-    testarraystack.h
+    testarraystack.h \
+    testcalculator.h

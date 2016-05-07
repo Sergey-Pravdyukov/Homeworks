@@ -7,6 +7,7 @@
 #include "calculator.h"
 #include "testpointerstack.h"
 #include "testarraystack.h"
+#include "testcalculator.h"
 
 using namespace std;
 
@@ -61,6 +62,10 @@ int main()
     Stack *arrayStack = new ArrayStack();
     cout << "Array stack: " << endl;
     calculate(arrayStack);
-    TestArrayStack TestArrayStack;
-    QTest::qExec(&TestArrayStack);
+    TestArrayStack testArrayStack;
+    QTest::qExec(&testArrayStack);
+
+    cout << endl;
+    TestCalculator testCalculator;
+    QTest::qExec(&testCalculator);
 }

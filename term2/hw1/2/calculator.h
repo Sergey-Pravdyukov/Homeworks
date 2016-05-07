@@ -16,16 +16,16 @@ public:
      * \return value of expression
      */
     int calculate(char operation, int firstOperand, int secondOperand);
-private:
+
     /*!
      * \brief notAnOperation for initialization default of operation
      */
-    const char notAnOperation = '?';
+    static const char notAnOperation = '?';
     /*!
      * \brief notANumber for initilization integer values
      */
-    const int notANumber = INT_MIN;
-
+    static const int notANumber = INT_MIN;
+private:
     char operation = notAnOperation;
     int firstOperand = notANumber;
     int secondOperand = notANumber;

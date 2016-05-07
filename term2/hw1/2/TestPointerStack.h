@@ -27,7 +27,7 @@ private slots:
         currentStack = new PointerStack();
     }
 
-    void clean()
+    void cleanup()
     {
         delete currentStack;
     }

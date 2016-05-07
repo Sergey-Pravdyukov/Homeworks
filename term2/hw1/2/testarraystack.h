@@ -23,7 +23,7 @@ private slots:
         currentStack = new ArrayStack();
     }
 
-    void clean()
+    void cleanup()
     {
         delete currentStack;
     }
