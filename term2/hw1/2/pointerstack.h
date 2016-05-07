@@ -31,6 +31,12 @@ public:
      */
     int lenght();
     /*!
+     * \brief top of PointerStack
+     * \return value of PointerStack tail
+     */
+    int top();
+
+    /*!
      * \brief The StackElement class for element of pointer stack
      *
      * Contains value and pointer to next element

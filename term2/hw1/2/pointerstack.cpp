@@ -38,6 +38,11 @@ int PointerStack::lenght()
     return size;
 }
 
+int PointerStack::top()
+{
+    return tail->value;
+}
+
 PointerStack::~PointerStack()
 {
     while (tail != nullptr)

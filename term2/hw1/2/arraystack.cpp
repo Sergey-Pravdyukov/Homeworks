@@ -36,6 +36,11 @@ int ArrayStack::lenght()
     return size;
 }
 
+int ArrayStack::top()
+{
+    return currentStack[0];
+}
+
 ArrayStack::~ArrayStack()
 {
     delete []currentStack;

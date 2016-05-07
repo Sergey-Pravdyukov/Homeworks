@@ -30,6 +30,11 @@ public:
      * \return
      */
     virtual int lenght() = 0;
+    /*!
+     * \brief top of Stack
+     * \return
+     */
+    virtual int top() = 0;
 protected:
     int size = 0;
 

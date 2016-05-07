@@ -28,6 +28,11 @@ public:
      * \brief lenght of ArrayStack
      */
     int lenght();
+    /*!
+     * \brief top element of ArrayStack
+     * \return
+     */
+    int top();
 private:
     const int initMaxSize = 100;
 

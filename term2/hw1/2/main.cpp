@@ -5,15 +5,15 @@
 #include "arraystack.h"
 #include "pointerstack.h"
 #include "calculator.h"
+#include "testpointerstack.h"
+#include "testarraystack.h"
 
 using namespace std;
 
-const int sizeOfExpression = 3;
+const int sizeOfExpression = 9;
 //const QChar expression[sizeOfExpression] = {'3', '4', '+', '2', '-', '2', '-', '3', '*', '1', '-', '4', '/'}; // sizeOfExpression = 13;
-//const QChar expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+'}; // sizeOfExpression = 9;
-const QChar expression[sizeOfExpression] = {'3', '0', '/'}; // sizeOfExpression = 3;
-
-
+const QChar expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+'}; // sizeOfExpression = 9;
+//const QChar expression[sizeOfExpression] = {'3', '0', '/'}; // sizeOfExpression = 3;
 
 void calculate(Stack *currentStack)
 {
@@ -54,8 +54,13 @@ int main()
     Stack *pointerStack = new PointerStack();
     cout << "Pointer stack: " << endl;
     calculate(pointerStack);
+    TestPointerStack testPointerStack;
+    QTest::qExec(&testPointerStack);
+    cout << endl;
 
     Stack *arrayStack = new ArrayStack();
     cout << "Array stack: " << endl;
     calculate(arrayStack);
+    TestArrayStack TestArrayStack;
+    QTest::qExec(&TestArrayStack);
 }
