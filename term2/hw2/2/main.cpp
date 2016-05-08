@@ -7,11 +7,9 @@
 
 using namespace std;
 
-const int maxSize = int(1e3);
-
 enum
 {
-    init,
+    typeOfOutputInit,
     fileOutput,
     consoleOutput
 };
@@ -19,31 +17,31 @@ enum
 int main()
 {
     ifstream in("input.txt");
-    int size = 0;
+    const int maxSize = 100;
+    const int sizeInit = 0;
+    int size = sizeInit;
     in >> size;
     int **array = new int*[maxSize];
     for (int i = 0; i < size; ++i)
     {
         array[i] = new int[maxSize];
         for (int j = 0; j < size; ++j)
-        {
             in >> array[i][j];
-        }
     }
-    int typeOfOutput = init;
+    int typeOfOutput = typeOfOutputInit;
     in >> typeOfOutput;
     switch (typeOfOutput)
     {
     case fileOutput:
     {
         FileOutput *output = new FileOutput(array, size);
-        output->snake();
+        output->print();
         break;
     }
     case consoleOutput:
     {
         ConsoleOutput *output = new ConsoleOutput(array, size);
-        output->snake();
+        output->print();
         break;
     }
     }

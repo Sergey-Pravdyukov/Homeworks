@@ -1,18 +1,21 @@
 #pragma once
 
+#include <fstream>
+
 #include "outputer.h"
 
-class FileOutput : public Outputer
+class FileOutput
 {
 public:
     FileOutput(int **currentArray, int currentSize);
-    /*!
-     * \brief print 2D array bypass snake
-     *
-     * Printing begining from center
-     */
-    void snake();
+    ~FileOutput();
+
+    void print();
 protected:
-    int size;
-    int **array;
+    const int initSize = 0;
+
+    int size = initSize;
+    int **array = nullptr;
+private:
+    std::ofstream fout;
 };

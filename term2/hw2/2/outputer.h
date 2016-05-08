@@ -1,15 +1,16 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
+#include <cctype>
+
 class Outputer
 {
 public:
+    static void snakePrint(int &size, int **&array, std::ostream &fout);
+private:
     /*!
      * \brief check going beyond the bounds of array
      */
-    static bool check(int currentX, int currentY, int size);
-    /*!
-     * \brief output some elements in the line
-     */
-    static void output(int &step, int &index, int &currentX, int &currentY,
-                       int **array, int x[], int y[], int size);
+    static bool check(const int &currentX, const int &currentY, const int &size);
 };

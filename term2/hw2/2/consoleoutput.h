@@ -11,7 +11,7 @@ public:
      *
      * Printing begining from center
      */
-    void snake();
+    void print();
 protected:
     int size;
     int **array;
