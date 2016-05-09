@@ -1,6 +1,8 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
+#include <stdio.h>
 
 #include "outputer.h"
 
@@ -11,11 +13,9 @@ public:
     ~FileOutput();
 
     void print();
-protected:
+private:
     const int initSize = 0;
 
     int size = initSize;
     int **array = nullptr;
-private:
-    std::ofstream fout;
 };

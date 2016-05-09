@@ -2,15 +2,24 @@
 
 #include <fstream>
 #include <iostream>
-#include <cctype>
+#include <stdio.h>
+#include <QVector>
 
 class Outputer
 {
 public:
-    static void snakePrint(int &size, int **&array, std::ostream &fout);
+    void snakePrint(int &size, int **&array, const bool &toOutput);
+
+    QVector<int> recieveBypassSnake();
 private:
     /*!
      * \brief check going beyond the bounds of array
      */
-    static bool check(const int &currentX, const int &currentY, const int &size);
+    bool check(const int &currentX, const int &currentY, const int &size);
+
+    QVector<int> bypassSnake;
+
+    void prepareItemsToAdd(const bool &toOutput);
+
+    void addItems(const bool &toOutput, const int &value);
 };

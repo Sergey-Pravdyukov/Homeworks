@@ -10,5 +10,6 @@ ConsoleOutput::ConsoleOutput(int **currentArray, int currentSize)
 
 void ConsoleOutput::print()
 {
-    Outputer::snakePrint(size, array, std::cout);
+    const bool isOutput = true;
+    Outputer::snakePrint(size, array, isOutput);
 }

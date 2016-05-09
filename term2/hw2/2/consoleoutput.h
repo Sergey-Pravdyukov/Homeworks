@@ -12,7 +12,7 @@ public:
      * Printing begining from center
      */
     void print();
-protected:
+private:
     int size;
     int **array;
 };

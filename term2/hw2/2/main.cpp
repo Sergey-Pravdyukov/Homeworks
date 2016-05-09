@@ -1,18 +1,19 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <QtTest/QtTest>
+
 #include "outputer.h"
 #include "fileoutput.h"
 #include "consoleoutput.h"
+#include "testoutputer.h"
 
 using namespace std;
 
-enum
-{
+enum {
     typeOfOutputInit,
     fileOutput,
-    consoleOutput
-};
+    consoleOutput};
 
 int main()
 {
@@ -45,5 +46,9 @@ int main()
         break;
     }
     }
+
+    cout << endl;
+    TestOutputer test;
+    QTest::qExec(&test);
     return 0;
 }

@@ -1,4 +1,5 @@
 QT += core
+QT += testlib
 QT -= gui
 
 CONFIG += c++11
@@ -17,7 +18,8 @@ SOURCES += main.cpp \
 HEADERS += \
     outputer.h \
     consoleoutput.h \
-    fileoutput.h
+    fileoutput.h \
+    testoutputer.h
 
 DISTFILES += \
     output.txt \
