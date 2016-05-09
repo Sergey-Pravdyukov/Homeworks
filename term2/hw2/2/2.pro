@@ -11,15 +11,17 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    outputer.cpp \
     fileoutput.cpp \
-    consoleoutput.cpp
+    consoleoutput.cpp \
+    output.cpp \
+    snake.cpp
 
 HEADERS += \
-    outputer.h \
     consoleoutput.h \
     fileoutput.h \
-    testoutputer.h
+    output.h \
+    testprinter.h \
+    snake.h
 
 DISTFILES += \
     output.txt \

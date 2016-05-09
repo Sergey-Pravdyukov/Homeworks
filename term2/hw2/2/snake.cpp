@@ -1,36 +1,41 @@
-#include "outputer.h"
+#include "snake.h"
 
-void debugOutput(const QVector<int> &bypassSnake)
+Snake::Snake(const bool &currentToOutput)
+{
+    toOutput = currentToOutput;
+}
+
+void debugOutput(const QVector<int> &elementsOfArray)
 {
     std::cout << "DEBUG OUTPUT: " << std::endl;
-    for (int i = 0; i < bypassSnake.size(); ++i)
-        std::cout << bypassSnake[i] << " ";
+    for (int i = 0; i < elementsOfArray.size(); ++i)
+        std::cout << elementsOfArray[i] << " ";
     std::cout << std::endl;
 }
 
-bool Outputer::check(const int &currentX, const int &currentY, const int &size)
+bool Snake::check(const int &currentX, const int &currentY, const int &size)
 {
     return ((0 <= currentX && currentX < size) &&
             (0 <= currentY && currentY < size));
 }
 
-void Outputer::prepareItemsToAdd(const bool &toOutput)
+void Snake::prepareItemsToAdd()
 {
     if (toOutput)
         std::cout << "Output of array bypass snake: " << std::endl;
     else
-        this->bypassSnake.clear();
+        this->elementsOfArray.clear();
 }
 
-void Outputer::addItems(const bool &toOutput, const int &value)
+void Snake::addItems(const int &value)
 {
     if (toOutput)
         std::cout << value << " ";
     else
-        this->bypassSnake.push_back(value);
+        this->elementsOfArray.push_back(value);
 }
 
-void Outputer::snakePrint(int &size, int **&array, const bool &toOutput)
+void Snake::bypassSnake(int &size, int **array)
 {
     const int numberOfDimensions = 4;
     const int stepInit = 1;
@@ -41,8 +46,8 @@ void Outputer::snakePrint(int &size, int **&array, const bool &toOutput)
     int indexOfDimension = indexOfDimensionInit;
     int x[numberOfDimensions] = {1, 0, -1, 0};
     int y[numberOfDimensions] = {0, 1, 0, -1};
-    this->prepareItemsToAdd(toOutput);
-    this->addItems(toOutput, array[currentX][currentY]);
+    this->prepareItemsToAdd();
+    this->addItems(array[currentX][currentY]);
     while (this->check(currentX, currentY, size))
     {
         for (int i = 0; i < step; ++i)
@@ -52,17 +57,17 @@ void Outputer::snakePrint(int &size, int **&array, const bool &toOutput)
             if (!this->check(currentX, currentY, size))
             {
                 //std::cout << "begin debugOutput!" << std::endl;
-                //debugOutput(this->bypassSnake);
+                //debugOutput(this->elementsOfArray);
                 return;
             }
-            this->addItems(toOutput, array[currentX][currentY]);
+            this->addItems(array[currentX][currentY]);
         }
         step += (indexOfDimension % 2);
         indexOfDimension = (indexOfDimension + 1) % numberOfDimensions;
     }
 }
 
-QVector<int> Outputer::recieveBypassSnake()
+QVector<int> Snake::recieveElementsOfArray()
 {
-    return this->bypassSnake;
+    return this->elementsOfArray;
 }

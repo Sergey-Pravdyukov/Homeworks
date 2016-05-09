@@ -5,20 +5,20 @@
 #include <QVector>
 #include <iostream>
 
-#include "outputer.h"
+#include "snake.h"
 
-class TestOutputer : public QObject
+class TestPrinter : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit TestOutputer(QObject *parent = 0):
+    explicit TestPrinter(QObject *parent = 0):
         QObject(parent)
     {}
 private:
     const int size = 9;
-    const bool isOutput = false;
-    Outputer output;
+    const bool toOutput = false;
+    Snake *test = new Snake(toOutput);
     int **array;
     QVector<int> recordSnakeCrawling;
     QVector<int> correctSnakeCrawling;
@@ -45,8 +45,8 @@ private slots:
         const int value = 4;
         correctSnakeCrawling.push_back(value);
         array[0][0] = {value};
-        output.snakePrint(size, array, isOutput);
-        recordSnakeCrawling = output.recieveBypassSnake();
+        test->bypassSnake(size, array);
+        recordSnakeCrawling = test->recieveElementsOfArray();
         QCOMPARE(recordSnakeCrawling, correctSnakeCrawling);
     }
 
@@ -59,8 +59,8 @@ private slots:
         const int arrayWithCorrectSnakeCrawling[size * size] = {5, 8, 9, 6, 3, 2, 1, 4, 7};
         for (int i = 0; i < size * size; ++i)
             correctSnakeCrawling.push_back(arrayWithCorrectSnakeCrawling[i]);
-        output.snakePrint(size, array, isOutput);
-        recordSnakeCrawling = output.recieveBypassSnake();
+        test->bypassSnake(size, array);
+        recordSnakeCrawling = test->recieveElementsOfArray();
         QCOMPARE(recordSnakeCrawling, correctSnakeCrawling);
     }
 };

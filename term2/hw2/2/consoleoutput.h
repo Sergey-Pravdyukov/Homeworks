@@ -1,19 +1,13 @@
 #pragma once
 
-#include "outputer.h"
+#include "output.h"
 
-class ConsoleOutput : public Outputer
+/*!
+ * \brief This class for output 2D array to console
+ */
+class ConsoleOutput : public Output
 {
 public:
-    ConsoleOutput(int **currentArray, int currentSize);
-    /*!
-     * \brief print 2D array bypass snake
-     *
-     * Printing begining from center
-     */
-    void print();
-private:
-    int size;
-    int **array;
+    ConsoleOutput(int **currentArray, const int &currentSize);
 };
 

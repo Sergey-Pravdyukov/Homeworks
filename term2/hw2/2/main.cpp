@@ -3,17 +3,18 @@
 #include <cstdio>
 #include <QtTest/QtTest>
 
-#include "outputer.h"
 #include "fileoutput.h"
 #include "consoleoutput.h"
-#include "testoutputer.h"
+#include "testprinter.h"
 
 using namespace std;
 
-enum {
+enum
+{
     typeOfOutputInit,
     fileOutput,
-    consoleOutput};
+    consoleOutput
+};
 
 int main()
 {
@@ -31,24 +32,13 @@ int main()
     }
     int typeOfOutput = typeOfOutputInit;
     in >> typeOfOutput;
-    switch (typeOfOutput)
-    {
-    case fileOutput:
-    {
-        FileOutput *output = new FileOutput(array, size);
-        output->print();
-        break;
-    }
-    case consoleOutput:
-    {
-        ConsoleOutput *output = new ConsoleOutput(array, size);
-        output->print();
-        break;
-    }
-    }
+    Output *output;
+    (typeOfOutput == fileOutput) ? output = new FileOutput(array, size)
+                                 : output = new ConsoleOutput(array, size);
+    output->print();
 
     cout << endl;
-    TestOutputer test;
+    TestPrinter test;
     QTest::qExec(&test);
     return 0;
 }
