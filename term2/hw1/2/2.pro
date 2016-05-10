@@ -1,4 +1,5 @@
 QT += core
+QT += testlib
 QT -= gui
 
 CONFIG += c++11
@@ -18,4 +19,7 @@ HEADERS += \
     stack.h \
     pointerstack.h \
     arraystack.h \
-    calculator.h
+    calculator.h \
+    testpointerstack.h \
+    testarraystack.h \
+    testcalculator.h

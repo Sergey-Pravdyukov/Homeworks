@@ -1,84 +1,71 @@
 #include <iostream>
+#include <QString>
 
 #include "stack.h"
 #include "arraystack.h"
 #include "pointerstack.h"
 #include "calculator.h"
+#include "testpointerstack.h"
+#include "testarraystack.h"
+#include "testcalculator.h"
 
 using namespace std;
 
-
 const int sizeOfExpression = 9;
-//const char expression[sizeOfExpression] = {'3', '4', '+', '2', '-', '2', '-', '3', '*', '1', '-', '4', '/'}; // sizeOfExpression = 13;
-//const char expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+', '+'}; // sizeOfExpression = 10;
-const char expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+'}; // sizeOfExpression = 9;
+//const QChar expression[sizeOfExpression] = {'3', '4', '+', '2', '-', '2', '-', '3', '*', '1', '-', '4', '/'}; // sizeOfExpression = 13;
+const QChar expression[sizeOfExpression] = {'3', '4', '5', '6', '7', '+', '+', '+', '+'}; // sizeOfExpression = 9;
+//const QChar expression[sizeOfExpression] = {'3', '0', '/'}; // sizeOfExpression = 3;
 
-int haveConvertFromCharToInt(char digit)
+void calculate(Stack *currentStack)
 {
-    return digit - char('0');
+    const int notADigit = -1;
+    const int notANumber = INT_MIN;
+    int result = notANumber;
+    cout << "begin" << endl;
+    for (int i = 0; i < sizeOfExpression; ++i)
+    {
+        const int token = expression[i].digitValue();
+        if (token == notADigit)
+        {
+            const int secondOperand = currentStack->pop();
+            const int firstOperand = currentStack->pop();
+            Calculator *myCalculator = new Calculator();
+            result = myCalculator->calculate(expression[i].toLatin1(), firstOperand, secondOperand);
+            if (result == notANumber)
+            {
+                cout << "Error!" << endl;
+                break;
+            }
+            cout << secondOperand << " "
+                 << expression[i].toLatin1() << " "
+                 << firstOperand << " = "
+                 << result << endl;
+            currentStack->push(result);
+        }
+        else
+            currentStack->push(token);
+    }
+    if (result != notANumber)
+        cout << "Result is " << currentStack->pop() << endl;
+    cout << "end" << endl << endl;
 }
 
 int main()
 {
     Stack *pointerStack = new PointerStack();
-    cout << "Pointer stack" << endl << "begin" << endl;
-    bool isEmpty = false;
-    for (int i = 0; i < sizeOfExpression; ++i)
-    {
-        if (isdigit(expression[i]))
-        {
-            pointerStack->push(haveConvertFromCharToInt(expression[i]));
-        }
-        else
-        {
-            int firstOperand = pointerStack->pop();
-            int secondOperand = pointerStack->pop();
-            if (firstOperand == pointerStack->notANumber || secondOperand == pointerStack->notANumber)
-            {
-                isEmpty = true;
-                cout << "Stack is empty!" << endl;
-                break;
-            }
-            Calculator *myCalculator = new Calculator();
-            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = " <<
-                    myCalculator->calculate(expression[i], secondOperand, firstOperand) << endl;
-            pointerStack->push(myCalculator->calculate(expression[i], secondOperand, firstOperand));
-        }
-    }
-    if (!isEmpty)
-    {
-        cout << "Result is " << pointerStack->pop() << endl;
-    }
-    cout << "end" << endl << endl;
+    cout << "Pointer stack: " << endl;
+    calculate(pointerStack);
+    TestPointerStack testPointerStack;
+    QTest::qExec(&testPointerStack);
+    cout << endl;
 
     Stack *arrayStack = new ArrayStack();
-    cout << "Array stack" << endl << "begin" << endl;
-    isEmpty = false;
-    for (int i = 0; i < sizeOfExpression; ++i)
-    {
-        if (isdigit(expression[i]))
-        {
-            arrayStack->push(haveConvertFromCharToInt(expression[i]));
-        }
-        else
-        {
-            int firstOperand = arrayStack->pop();
-            int secondOperand = arrayStack->pop();
-            if (firstOperand == arrayStack->notANumber || secondOperand == arrayStack->notANumber)
-            {
-                isEmpty = true;
-                cout << "Stack is empty!" << endl;
-                break;
-            }
-            Calculator *myCalculator = new Calculator();
-            cout << secondOperand << " " << expression[i] << " " << firstOperand << " = " <<
-                    myCalculator->calculate(expression[i], secondOperand, firstOperand) << endl;
-            arrayStack->push(myCalculator->calculate(expression[i], secondOperand, firstOperand));
-        }
-    }
-    if (!isEmpty)
-    {
-        cout << "Result is " << arrayStack->pop() << endl;
-    }
-    cout << "end" << endl;
+    cout << "Array stack: " << endl;
+    calculate(arrayStack);
+    TestArrayStack testArrayStack;
+    QTest::qExec(&testArrayStack);
+
+    cout << endl;
+    TestCalculator testCalculator;
+    QTest::qExec(&testCalculator);
 }
