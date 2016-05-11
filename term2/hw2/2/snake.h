@@ -3,9 +3,12 @@
 #include <iostream>
 #include <stdio.h>
 #include <QVector>
+#include <QString>
+
+#include "output.h"
 
 /*!
- * \brief This class for print 2D array bypass snake
+ * \brief This class for array bypass snake
  */
 class Snake
 {

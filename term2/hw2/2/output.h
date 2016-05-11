@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QString>
+
 #include "snake.h"
 
 /*!
@@ -12,6 +14,8 @@ public:
      * \brief print 2D array
      */
     void print();
+
+    void out(const QString &stringForOutput);
 protected:
     const int sizeInit = 0;
 

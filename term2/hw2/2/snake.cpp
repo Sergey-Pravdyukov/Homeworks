@@ -22,7 +22,11 @@ bool Snake::check(const int &currentX, const int &currentY, const int &size)
 void Snake::prepareItemsToAdd()
 {
     if (toOutput)
-        std::cout << "Output of array bypass snake: " << std::endl;
+    {
+        Output *output = new Output();
+        QString stringForOutput = "Output of array bypass snake: ";
+        output->out(stringForOutput);
+    }
     else
         this->elementsOfArray.clear();
 }
@@ -30,7 +34,11 @@ void Snake::prepareItemsToAdd()
 void Snake::addItems(const int &value)
 {
     if (toOutput)
-        std::cout << value << " ";
+    {
+        Output *output = new Output();
+        QString stringForOutput = QString::number(value);
+        output->out(stringForOutput);
+    }
     else
         this->elementsOfArray.push_back(value);
 }
