@@ -26,6 +26,7 @@ void Snake::prepareItemsToAdd()
         Output *output = new Output();
         QString stringForOutput = "Output of array bypass snake: ";
         output->out(stringForOutput);
+        delete output;
     }
     else
         this->elementsOfArray.clear();
@@ -38,6 +39,7 @@ void Snake::addItems(const int &value)
         Output *output = new Output();
         QString stringForOutput = QString::number(value);
         output->out(stringForOutput);
+        delete output;
     }
     else
         this->elementsOfArray.push_back(value);

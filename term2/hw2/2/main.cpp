@@ -40,5 +40,8 @@ int main()
     cout << endl;
     TestPrinter test;
     QTest::qExec(&test);
+
+    delete output;
+    delete[] array;
     return 0;
 }
