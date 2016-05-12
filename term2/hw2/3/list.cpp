@@ -1,8 +1,6 @@
-#include <iostream>
-
 #include "list.h"
 
-void List::add(int value)
+void List::add(const int &value)
 {
     ListElement *newElement = new ListElement(value);
     ++sizeOfList;
@@ -12,14 +10,12 @@ void List::add(int value)
         return;
     }
     if (sizeOfList == 2)
-    {
         headOfList->nextElement = newElement;
-    }
     tailOfList->nextElement = newElement;
     tailOfList = tailOfList->nextElement;
 }
 
-void List::debugOutput()
+void List::debugOutput() const
 {
     if (headOfList == nullptr)
     {
@@ -34,4 +30,29 @@ void List::debugOutput()
         currentElement = currentElement->nextElement;
     }
     std::cout << std::endl;
+}
+
+void List::nextListInit(List *newList)
+{
+    this->nextList = newList;
+}
+
+List *List::next()
+{
+    return this->nextList;
+}
+
+int List::lenght() const
+{
+    return sizeOfList;
+}
+
+List::~List()
+{
+    while (headOfList != nullptr)
+    {
+        ListElement *nextListElement = headOfList->nextElement;
+        delete headOfList;
+        headOfList = nextListElement;
+    }
 }

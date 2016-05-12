@@ -1,7 +1,6 @@
 #pragma once
 
 #include "list.h"
-#include "listoflists.h"
 
 /*!
  * \brief The ListComparator class that compare two lists by size
@@ -9,12 +8,11 @@
 class ListComparator
 {
 public:
-    ListComparator();
     /*!
-     * \param currentListOfLists for finding appropriate list
-     * \return number that means one of lists has more size,
-     * sizes are equal, or any list not finding
+     * \brief method for compare two Lists
+     * \param firstList
+     * \param secondList
+     * \return true if firstList less than secondList otherwise false
      */
-    static int haveCompareLists(List *firstList, List *secondList,
-                                ListOfLists *currentListOfLists);
+    static bool isFirstLessThanSecond(List *firstList, List *secondList);
 };

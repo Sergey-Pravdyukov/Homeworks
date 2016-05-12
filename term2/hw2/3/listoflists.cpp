@@ -1,59 +1,36 @@
-#include <iostream>
-
 #include "listoflists.h"
-#include "list.h"
 
-void ListOfLists::add(List addedList)
+void ListOfLists::add(List *addedList)
 {
-    List *newList = new List();
-    List::ListElement *addedElement = addedList.headOfList;
-    while (addedElement != nullptr)
-    {
-        newList->add(addedElement->value);
-        addedElement = addedElement->nextElement;
-    }
     ++sizeOfListOfLists;
     if (sizeOfListOfLists == 1)
     {
-        headOfListOfLists = tailOfListOfLists = newList;
-        return;
-    }
-    if (sizeOfListOfLists == 2)
-    {
-        if (headOfListOfLists->sizeOfList <= newList->sizeOfList)
-        {
-            headOfListOfLists->nextList = tailOfListOfLists->nextList = newList;
-            tailOfListOfLists = tailOfListOfLists->nextList;
-        }
-        else
-        {
-            headOfListOfLists = newList;
-            headOfListOfLists->nextList = tailOfListOfLists;
-        }
+        headOfListOfLists = addedList;
         return;
     }
     List *currentList = headOfListOfLists;
     List *precurrentList = nullptr;
     while (currentList != nullptr)
     {
-        if (newList->sizeOfList <= currentList->sizeOfList)
+        if (ListComparator::isFirstLessThanSecond(addedList, currentList))
         {
-            newList->nextList = currentList;
-            (precurrentList == nullptr) ? headOfListOfLists = newList
-                                        : precurrentList->nextList = newList;
+            addedList->nextListInit(currentList);
+            if (precurrentList == nullptr)
+                headOfListOfLists = addedList;
+            else
+                precurrentList->nextListInit(addedList);
             return;
         }
         else
         {
             precurrentList = currentList;
-            currentList = currentList->nextList;
+            currentList = currentList->next();
         }
     }
-    tailOfListOfLists->nextList = newList;
-    tailOfListOfLists = tailOfListOfLists->nextList;
+    precurrentList->nextListInit(addedList);
 }
 
-void ListOfLists::debugOutput()
+void ListOfLists::debugOutput() const
 {
     if (sizeOfListOfLists == 0)
     {
@@ -64,7 +41,7 @@ void ListOfLists::debugOutput()
     while (currentList != nullptr)
     {
         currentList->debugOutput();
-        currentList = currentList->nextList;
+        currentList = currentList->next();
     }
 }
 
@@ -72,14 +49,10 @@ ListOfLists::~ListOfLists()
 {
     while (headOfListOfLists != nullptr)
     {
-        List *tempList = headOfListOfLists->nextList;
-        while (tempList->headOfList != nullptr)
-        {
-            List::ListElement *tempElement = tempList->headOfList->nextElement;
-            delete tempList->headOfList;
-            tempList->headOfList = tempElement;
-        }
+        List *nextList = headOfListOfLists->next();
+        headOfListOfLists->~List();
         delete headOfListOfLists;
-        headOfListOfLists = tempList;
+        headOfListOfLists = nextList;
     }
 }
+

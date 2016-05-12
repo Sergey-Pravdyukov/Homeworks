@@ -2,39 +2,68 @@
 
 #include "list.h"
 
-using namespace std;
+#include <iostream>
 
-const int initListElement = 0;
-const int initList = 0;
-
+/*!
+ * \brief This class contains List of elements
+ */
 class List
 {
 public:
-    class ListElement
-    {
-    public:
-        ListElement(int currentValue)
-        {
-            value = currentValue;
-        }
-        int value = initListElement;
-        ListElement *nextElement = nullptr;
-    };
+    ~List();
+
     /*!
      * \brief add ListElement to list
      * \param add with current value
      */
-    void add(int value);
-
+    void add(const int &value);
     /*!
      * \brief debugOutput of list from head to tail
      */
-    void debugOutput();
+    void debugOutput() const;
+    /*!
+     * \brief lenght of List
+     * \return
+     */
+    int lenght() const;
+    /*!
+     * \brief initialize currentList->nextList
+     * \param new nextList
+     */
+    void nextListInit(List *newList);
+    /*!
+     * \brief next List
+     * \return
+     */
+    List *next();
+    /*!
+     * \brief compare two List
+     * \param firstList
+     * \param secondList
+     * \return true if it equal
+     */
+    static bool isEqualLists(List *firstList, List *secondList);
+private:
+    class ListElement
+    {
+    public:
+        ListElement(const int &currentValue)
+        {
+            value = currentValue;
+        }
+        const int valueInit = 0;
+
+        int value = valueInit;
+        ListElement *nextElement = nullptr;
+    };
+
+    const int sizeOfListInit = 0;
+
     ListElement *headOfList = nullptr;
     ListElement *tailOfList = nullptr;
     /*!
      * \brief nextList in list of some lists
      */
     List *nextList = nullptr;
-    int sizeOfList = initList;
+    int sizeOfList = sizeOfListInit;
 };

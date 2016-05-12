@@ -1,24 +1,26 @@
 #pragma once
 
-#include "list.h"
+#include <iostream>
 
-const int initListOfLists = 0;
+#include "list.h"
+#include "listcomparator.h"
 
 class ListOfLists
 {
 public:
-    ListOfLists(){}
     ~ListOfLists();
+
     /*!
      * \brief add List to the ListOfLists
      */
-    void add(List addedList);
+    void add(List *addedList);
     /*!
      * \brief debugOutput each List that contained in ListOfLists
      */
-    void debugOutput();
+    void debugOutput() const;
+private:
+    const int sizeOfListOfListsInit = 0;
 
     List *headOfListOfLists = nullptr;
-    List *tailOfListOfLists = nullptr;
-    int sizeOfListOfLists = initListOfLists;
+    int sizeOfListOfLists = sizeOfListOfListsInit;
 };
