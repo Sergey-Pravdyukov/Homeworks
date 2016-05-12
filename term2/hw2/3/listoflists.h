@@ -5,6 +5,9 @@
 #include "list.h"
 #include "listcomparator.h"
 
+/*!
+ * \brief This class contains List that contains other Lists
+ */
 class ListOfLists
 {
 public:
