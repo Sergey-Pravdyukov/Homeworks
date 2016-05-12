@@ -14,7 +14,7 @@ public:
 
     /*!
      * \brief add ListElement to list
-     * \param add with current value
+     * \param
      */
     void add(const int &value);
     /*!
@@ -40,9 +40,14 @@ public:
      * \brief compare two List
      * \param firstList
      * \param secondList
-     * \return true if it equal
+     * \return true if it equal otherwise false
      */
     static bool isEqualLists(List *firstList, List *secondList);
+    /*!
+     * \brief transformation from List to array
+     * \return
+     */
+    int *fromListToArray();
 private:
     class ListElement
     {
@@ -51,10 +56,10 @@ private:
         {
             value = currentValue;
         }
-        const int valueInit = 0;
-
         int value = valueInit;
         ListElement *nextElement = nullptr;
+    private:
+        const int valueInit = 0;
     };
 
     const int sizeOfListInit = 0;

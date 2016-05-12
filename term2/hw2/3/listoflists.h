@@ -21,6 +21,16 @@ public:
      * \brief debugOutput each List that contained in ListOfLists
      */
     void debugOutput() const;
+    /*!
+     * \brief lenght of ListOfLists
+     * \return
+     */
+    int lenght() const;
+    /*!
+     * \brief
+     * \return current head of ListOfLists
+     */
+    List *getHeadOfListOfLists();
 private:
     const int sizeOfListOfListsInit = 0;
 

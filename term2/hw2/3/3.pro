@@ -1,4 +1,5 @@
 QT += core
+QT += testlib
 QT -= gui
 
 CONFIG += c++11
@@ -17,7 +18,10 @@ SOURCES += main.cpp \
 HEADERS += \
     list.h \
     listoflists.h \
-    listcomparator.h
+    listcomparator.h \
+    testlistcomparator.h \
+    testlist.h \
+    testlistoflists.h
 
 DISTFILES += \
     thoughts.txt

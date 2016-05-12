@@ -3,6 +3,9 @@
 #include "list.h"
 #include "listoflists.h"
 #include "listcomparator.h"
+#include "testlistcomparator.h"
+#include "testlist.h"
+#include "testlistoflists.h"
 
 using namespace std;
 
@@ -67,6 +70,18 @@ int main()
         }
     }
     delete currentListOfLists;
-    cout << "End." << endl;
+    cout << "End." << endl << endl;
+
+    TestListComparator testListComparator;
+    QTest::qExec(&testListComparator);
+    cout << endl;
+
+    TestList testList;
+    QTest::qExec(&testList);
+    cout << endl;
+
+    TestListOfLists testListOfLists;
+    QTest::qExec(&testListOfLists);
+    cout << endl;
     return 0;
 }

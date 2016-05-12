@@ -45,6 +45,16 @@ void ListOfLists::debugOutput() const
     }
 }
 
+int ListOfLists::lenght() const
+{
+    return sizeOfListOfLists;
+}
+
+List* ListOfLists::getHeadOfListOfLists()
+{
+    return this->headOfListOfLists;
+}
+
 ListOfLists::~ListOfLists()
 {
     while (headOfListOfLists != nullptr)

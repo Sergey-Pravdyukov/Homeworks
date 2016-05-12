@@ -47,6 +47,21 @@ int List::lenght() const
     return sizeOfList;
 }
 
+int *List::fromListToArray()
+{
+    const int sizeInit = 0;
+    int size = sizeInit;
+    int *array = new int[sizeOfList];
+    ListElement *currentElement = headOfList;
+    while (currentElement != nullptr)
+    {
+        array[size++] = currentElement->value;
+        currentElement = currentElement->nextElement;
+    }
+    return array;
+}
+
+
 List::~List()
 {
     while (headOfList != nullptr)
