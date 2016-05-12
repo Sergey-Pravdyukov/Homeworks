@@ -2,13 +2,8 @@
 
 void Output::print()
 {
-    const bool toOutput = true;
-    Snake *print = new Snake(toOutput);
-    print->bypassSnake(size, array);
-    delete print;
-}
-
-void Output::out(const QString &stringForOutput)
-{
-    std::cout << stringForOutput.toStdString() << " ";
+    QVector<int> recordSnakeCrawing = Snake::bypassSnake(size, array);
+    std::cout << "Output of array bypass snake: ";
+    for (int i = 0; i < recordSnakeCrawing.size(); ++i)
+        std::cout << recordSnakeCrawing[i] << " ";
 }

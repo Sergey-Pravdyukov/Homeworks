@@ -17,8 +17,7 @@ public:
     {}
 private:
     const int size = 9;
-    const bool toOutput = false;
-    Snake *test = new Snake(toOutput);
+    Snake *test = new Snake();
     int **array;
     QVector<int> recordSnakeCrawling;
     QVector<int> correctSnakeCrawling;
@@ -45,8 +44,7 @@ private slots:
         const int value = 4;
         correctSnakeCrawling.push_back(value);
         array[0][0] = {value};
-        test->bypassSnake(size, array);
-        recordSnakeCrawling = test->recieveElementsOfArray();
+        recordSnakeCrawling = test->bypassSnake(size, array);
         QCOMPARE(recordSnakeCrawling, correctSnakeCrawling);
     }
 
@@ -59,8 +57,7 @@ private slots:
         const int arrayWithCorrectSnakeCrawling[size * size] = {5, 8, 9, 6, 3, 2, 1, 4, 7};
         for (int i = 0; i < size * size; ++i)
             correctSnakeCrawling.push_back(arrayWithCorrectSnakeCrawling[i]);
-        test->bypassSnake(size, array);
-        recordSnakeCrawling = test->recieveElementsOfArray();
+        recordSnakeCrawling = test->bypassSnake(size, array);
         QCOMPARE(recordSnakeCrawling, correctSnakeCrawling);
     }
 };
