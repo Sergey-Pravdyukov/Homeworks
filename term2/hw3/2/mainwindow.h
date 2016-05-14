@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QMainWindow>
+#include <climits>
+
+#include "calculator.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,7 +25,7 @@ private:
 
 private slots:
     /*!
-     * \brief calculate value of expression with two operands and operation
+     * \brief calculates binary expression
      */
     void calc();
 };
