@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += testlib
 
 CONFIG += warn_off
 CONFIG += c++11
@@ -28,6 +29,10 @@ HEADERS  += mainwindow.h \
     stack.h \
     sortingfacility.h \
     parser.h \
-    token.h
+    token.h \
+    testtoken.h \
+    testparser.h \
+    testsortingfacility.h \
+    teststack.h
 
 FORMS    += mainwindow.ui

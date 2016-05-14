@@ -1,15 +1,15 @@
 #include "parser.h"
 #include "token.h"
 
-QVector<QString> Parser::haveParse(QString const &displayText)
+QVector<QString> Parser::haveParseDisplayTextToExpressions(QString const &displayText)
 {
     QVector<QString> expression;
     QString number = "";
     for (int i = 0; i < displayText.size(); ++i)
     {
-        if (displayText[i] == '-' && (i == 0 || displayText[i - 1] == '('))
+        if ((displayText[i] == '-') && ((i == 0) || (displayText[i - 1] == '(')))
             expression.push_back("0");
-        if (Token::isOperation(displayText[i]) || Token::isBracket(displayText[i]))
+        if ((Token::operationPriority(displayText[i]) != notAnOperation) || (Token::isBracket(displayText[i])))
         {
             if (!number.isEmpty())
             {

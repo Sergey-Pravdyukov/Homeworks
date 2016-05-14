@@ -23,3 +23,8 @@ QString Stack::pop()
    head = newTopElement;
    return topElement.value;
 }
+
+int Stack::haveSize()
+{
+    return size;
+}

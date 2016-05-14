@@ -1,8 +1,6 @@
 #include "sortingfacility.h"
-#include "stack.h"
-#include "token.h"
 
-QString SortingFacility::havePostfixToSum(QVector<QString> &postfixData)
+QString SortingFacility::postfixToSum(QVector<QString> &postfixData)
 {
     Stack *stackForNumbers = new Stack();
     for (int i = 0; i < postfixData.size(); ++i)
@@ -10,7 +8,7 @@ QString SortingFacility::havePostfixToSum(QVector<QString> &postfixData)
         const QString token = postfixData[i];
         if (Token::isNumber(token))
             stackForNumbers->push(token);
-        if (Token::isOperation(token))
+        if (Token::operationPriority(token) != notAnOperation)
         {
             const double firstNumber = stackForNumbers->pop().toDouble();
             const double secondNumber = stackForNumbers->pop().toDouble();
@@ -44,7 +42,7 @@ QString SortingFacility::havePostfixToSum(QVector<QString> &postfixData)
     return (stackForNumbers->top());
 }
 
-QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &expression)
+QVector<QString> SortingFacility::infixToPostfix(const QVector<QString> &expression)
 {
     Stack *stackForOperations = new Stack();
     QVector<QString> infixData;
@@ -53,10 +51,12 @@ QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &exp
         const QString token = expression[i];
         if (Token::isNumber(token))
             infixData.push_back(token);
-        if (Token::isOperation(token))
+        if (Token::operationPriority(token) != notAnOperation)
         {
-            if (!Token::isHighPriorityOperation(token))
-                while(stackForOperations->size != 0 && Token::isHighPriorityOperation(stackForOperations->top()))
+            if (Token::operationPriority(token) == lowPriorityOperation)
+                while((stackForOperations->haveSize() != 0)
+                      && ((Token::operationPriority(stackForOperations->top()) == highPriorityOperation)
+                      || (infixData[infixData.size() - 2] == "0")))
                     infixData.push_back(stackForOperations->pop());
             stackForOperations->push(token);
         }
@@ -65,7 +65,7 @@ QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &exp
             if (token == "(")
                 stackForOperations->push(token);
             else
-                while (stackForOperations->size)
+                while (stackForOperations->haveSize())
                 {
                     const QString head = stackForOperations->pop();
                     if (head == "(")
@@ -74,7 +74,7 @@ QVector<QString> SortingFacility::haveInfixToPostfix(const QVector<QString> &exp
                 }
         }
     }
-    while (stackForOperations->size)
+    while (stackForOperations->haveSize())
         infixData.push_back(stackForOperations->pop());
     return infixData;
 }

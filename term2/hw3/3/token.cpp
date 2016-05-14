@@ -11,39 +11,24 @@ bool Token::isNumber(const QString &token)
     return true;
 }
 
-bool Token::isHighPriorityOperation(const QString &token)
+int Token::operationPriority(const QString &token)
 {
     const int sizeOfOperation = 1;
     if (token.size() != sizeOfOperation)
-        return false;
+        return notAnOperation;
     const char character = token.toLatin1().at(sizeOfOperation - 1);
     switch (character)
     {
     case '*':
-        return true;
+        return highPriorityOperation;
     case '/':
-        return true;
-    default:
-        return false;
-    }
-}
-
-bool Token::isOperation(const QString &token)
-{
-    const int sizeOfOperation = 1;
-    if (token.size() != sizeOfOperation)
-        return false;
-    const char character = token.toLatin1().at(sizeOfOperation - 1);
-    if (isHighPriorityOperation(token))
-        return true;
-    switch (character)
-    {
+        return highPriorityOperation;
     case '+':
-        return true;
+        return lowPriorityOperation;
     case '-':
-        return true;
+        return lowPriorityOperation;
     default:
-        return false;
+        return notAnOperation;
     }
 }
 

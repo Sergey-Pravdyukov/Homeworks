@@ -91,7 +91,7 @@ void MainWindow::clicked(const QString &text)
 void MainWindow::calculate()
 {
     QString displayText = lineEdit->displayText();
-    QVector<QString> expression = Parser::haveParse(displayText);
+    QVector<QString> expression = Parser::haveParseDisplayTextToExpressions(displayText);
     lineEdit->clear();
     lineEdit->insert(QString::number(Calculator::calculate(expression)));
 }
