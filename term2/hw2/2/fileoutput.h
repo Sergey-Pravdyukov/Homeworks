@@ -13,4 +13,6 @@ class FileOutput : public Output
 public:
     FileOutput(int **currentArray, const int &currentSize);
     ~FileOutput();
+
+    void print(const QVector<int> &recordSnakeCrawling);
 };

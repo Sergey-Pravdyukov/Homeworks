@@ -35,7 +35,7 @@ int main()
     Output *output;
     (typeOfOutput == fileOutput) ? output = new FileOutput(array, size)
                                  : output = new ConsoleOutput(array, size);
-    output->print();
+    output->out();
 
     cout << endl;
     TestPrinter test;

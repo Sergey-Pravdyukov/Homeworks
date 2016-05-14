@@ -11,7 +11,9 @@ public:
     /*!
      * \brief print 2D array
      */
-    void print();
+    void out();
+
+    virtual void print(const QVector<int> &recordSnakeCrawling) = 0;
 protected:
     const int sizeInit = 0;
 

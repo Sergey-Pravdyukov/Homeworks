@@ -1,9 +1,7 @@
 #include "output.h"
 
-void Output::print()
+void Output::out()
 {
     QVector<int> recordSnakeCrawing = Snake::bypassSnake(size, array);
-    std::cout << "Output of array bypass snake: ";
-    for (int i = 0; i < recordSnakeCrawing.size(); ++i)
-        std::cout << recordSnakeCrawing[i] << " ";
+    this->print(recordSnakeCrawing);
 }
