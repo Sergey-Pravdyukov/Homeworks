@@ -21,22 +21,22 @@ public:
     {
         return (left.hash == right.hash && left.string == right.string);
     }
-    HashElement &operator =(const HashElement &right)
+    HashElement &operator =(const HashElement &rightValue)
     {
-        string = right.string;
-        hash = right.hash;
+        string = rightValue.string;
+        hash = rightValue.hash;
         return *this;
     }
 
     /*!
      * \brief initForHash - special constant for init hash
      */
-    const unsigned int initForHash = 0;
+    const unsigned int hashInit = 0;
     /*!
      * \brief initForString - special constant for init string
      */
-    const QString initForString = "";
+    const QString stringInit = "/0";
 
-    QString string = initForString;
-    unsigned int hash = initForHash;
+    QString string = stringInit;
+    unsigned int hash = hashInit;
 };

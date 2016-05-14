@@ -5,7 +5,17 @@
 #include <iostream>
 
 #include "hashelement.h"
-#include "hash.h"
+#include "hashh37.h"
+#include "hashfaq6.h"
+#include "hashly.h"
+
+enum HashTypeForHashTable
+{
+    init,
+    H37,
+    FAQ6,
+    Ly
+};
 
 /*!
  * \brief The HashTable class contains array of HashElement lists
@@ -13,7 +23,8 @@
 class HashTable
 {
 public:
-    HashTable(const int &currentSize, const int &currentHashType);
+    HashTable(const int &currentSize);
+    ~HashTable();
 
     /*!
      * \brief add current string to HashTable
@@ -23,19 +34,20 @@ public:
      * \brief remove sought string from HashTable
      * \return HashElement of string
      */
-    HashElement remove(const QString &currentString);
+    QString remove(const QString &currentString);
     /*!
      * \brief find current string in HashTable
-     * \return true if string founded otherwise false
+     * \return if found return index of hashTable list, otherwise return -1
      */
-    bool find(const QString &currentString);
+    int find(const QString &currentString);
     /*!
      * \brief haveStatisctics current status of HashTable
      *
      * Calculate number of cells, load factor,
      * number of cinflict cells, max size of list in conflict cell
      */
-    void haveStatisctics() const;
+    void haveStatisctics(int &numberOfCells, double &loadFactor,
+                         int &numberOfConflicts, int &maxSizeOfConflictList) const;
     /*!
      * \brief changeHash current status of HashTable
      * \param newHashType of HashTable
@@ -44,13 +56,18 @@ public:
     /*!
      * \brief debugOutput all HashTable
      */
-    void debugOutput() const;
-
+    int haveSize() const;
+    /*!
+     * \brief have number of added elements
+     * \return
+     */
+    int haveNumberOfCells() const;
+private:
     /*!
      * \brief maximalDifferenceBetweenAdjacentPrimes - magic constant for adjacent primes less than 10^9
      */
-    static const int maximalDifferenceBetweenAdjacentPrimes = 1476;
-private:
+    const int maximalDifferenceBetweenAdjacentPrimes = 1476;
+
     /*!
      * \brief rebuildHashTable changed size of HashTable and recalcHashTable();
      */
@@ -62,27 +79,26 @@ private:
      */
     void recalcHashTable();
     /*!
-     * \brief compareHash
-     * \param currentString
-     * \return HashElement with suitable hash
-     */
-    HashElement compareHash(const QString &currentString) const;
-    /*!
      * \brief haveLoadFactor recalc load factor of increased HashTable
+     */
+    void debugOutput() const;
+    /*!
+     * \brief haveSize
+     * \return size of HashTable array
      */
     double haveLoadFactor() const;
     int haveNumberOfConflicts() const;
     int haveMaxSizeOfConflictList() const;
-    int haveNumberOfCells() const;
 
     static const int maxPrimeNumber = 9369319;
-    const int hashTableInit = 0;
+    const int sizeInit = 0;
+    const int numberOfCellsInit = 0;
     const int conflictFreeCellSize = 1;
     const double maxLoadFactor = 0.5;
 
-    int hashType = hashTableInit;
-
-    int numberOfCells = hashTableInit;
-    int size = hashTableInit;
-    QList<HashElement> hashTableCells[maxPrimeNumber];
+    int hashType = init;
+    Hash *hash;
+    int numberOfCells = numberOfCellsInit;
+    int size = sizeInit;
+    QList<HashElement> *hashTableCells;
 };

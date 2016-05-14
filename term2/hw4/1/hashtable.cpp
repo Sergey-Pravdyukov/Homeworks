@@ -1,9 +1,11 @@
 #include "hashtable.h"
 
-HashTable::HashTable(const int &currentSize, const int &currentHashType)
+HashTable::HashTable(const int &currentSize)
+    : hashType(H37)
 {
+    hashTableCells = new QList<HashElement>[maxPrimeNumber];
     size = currentSize;
-    hashType = currentHashType;
+    hash = new HashH37();
 }
 
 void HashTable::debugOutput() const
@@ -28,10 +30,10 @@ bool isPrime(const int &value)
     return true;
 }
 
-void findPrime(int &size)
+void findPrime(int &size, const int &maxSize)
 {
     size *= 5;
-    for (int i = 0; i <= HashTable::maximalDifferenceBetweenAdjacentPrimes; ++i)
+    for (int i = 0; i <= maxSize; ++i)
         if (isPrime(size + i))
         {
             size += i;
@@ -39,41 +41,13 @@ void findPrime(int &size)
         }
 }
 
-HashElement HashTable::compareHash(const QString &currentString) const
-{
-    HashElement hashElement = HashElement();
-    switch (hashType)
-    {
-    case 1:
-    {
-        hashElement = HashElement(currentString, Hash::hashH37(currentString));
-        break;
-    }
-    case 2:
-    {
-        hashElement = HashElement(currentString, Hash::hashFAQ6(currentString));
-        break;
-    }
-    case 3:
-    {
-        hashElement = HashElement(currentString, Hash::hashLy(currentString));
-        break;
-    }
-    default:
-        break;
-    }
-    return hashElement;
-}
-
 void HashTable::recalcHashTable()
 {
     numberOfCells = 0;
     for (int i = 0; i < size; ++i)
-    {
         for (QList<HashElement>::iterator it = hashTableCells[i].begin(); it != hashTableCells[i].end(); ++it)
         {
-            *it = compareHash(it->string);
-
+            *it = HashElement(it->string, hash->calculateHash(it->string));
             if (i != int(it->hash % size))
             {
                 HashElement removedElement = *it;
@@ -81,25 +55,38 @@ void HashTable::recalcHashTable()
                 add(removedElement.string);
             }
         }
-    }
 }
 
 void HashTable::changeHash(const int &newHashType)
 {
-    hashType = newHashType;
+    switch(newHashType)
+    {
+    case H37:
+    {
+        hash = new HashH37();
+        break;
+    }
+    case FAQ6:
+    {
+        hash = new HashFAQ6();
+        break;
+    }
+    case Ly:
+        hash = new HashLy();
+        break;
+    }
     recalcHashTable();
 }
 
 void HashTable::rebuildHashTable()
 {
-    findPrime(size);
+    findPrime(size, maximalDifferenceBetweenAdjacentPrimes);
     HashTable::recalcHashTable();
 }
 
 void HashTable::add(const QString &currentString)
 {
-
-    HashElement hashElement = compareHash(currentString);
+    HashElement hashElement = HashElement(currentString, hash->calculateHash(currentString));
     const int index = hashElement.hash % size;
     hashTableCells[index].push_back(hashElement);
     ++numberOfCells;
@@ -107,10 +94,10 @@ void HashTable::add(const QString &currentString)
         rebuildHashTable();
 }
 
-HashElement HashTable::remove(const QString &currentString)
+QString HashTable::remove(const QString &currentString)
 {
     HashElement removedElement = HashElement();
-    HashElement hashElement = compareHash(currentString);
+    HashElement hashElement = HashElement(currentString, hash->calculateHash(currentString));
     const int index = hashElement.hash % size;
     for (QList<HashElement>::iterator it = hashTableCells[index].begin(); it != hashTableCells[index].end(); ++it)
         if (*it == hashElement)
@@ -120,17 +107,18 @@ HashElement HashTable::remove(const QString &currentString)
             --numberOfCells;
             break;
         }
-    return removedElement;
+    return removedElement.string;
 }
 
-bool HashTable::find(const QString &currentString)
+int HashTable::find(const QString &currentString)
 {
-    HashElement hashElement = compareHash(currentString);
+    HashElement hashElement = HashElement(currentString, hash->calculateHash(currentString));
     const int index = hashElement.hash % size;
+    const int notFound = -1;
     for (QList<HashElement>::iterator it = hashTableCells[index].begin(); it != hashTableCells[index].end(); ++it)
         if (*it == hashElement)
-            return true;
-    return false;
+            return index;
+    return notFound;
 }
 
 int HashTable::haveNumberOfCells() const
@@ -159,10 +147,21 @@ int HashTable::haveMaxSizeOfConflictList() const
     return result;
 }
 
-void HashTable::haveStatisctics() const
+void HashTable::haveStatisctics(int &numberOfCells, double &loadFactor, int &numberOfConflicts, int &maxSizeOfConflictList) const
 {
-    std::cout << "number of cells: " << haveNumberOfCells() << std::endl
-              << "load factor: " << haveLoadFactor() << std::endl
-              << "number of conflicts: " << haveNumberOfConflicts() << std::endl
-              << "maximal size of list in conflict cells: " << haveMaxSizeOfConflictList() << std::endl;
+    numberOfCells = haveNumberOfCells();
+    loadFactor = haveLoadFactor();
+    numberOfConflicts = haveNumberOfConflicts();
+    maxSizeOfConflictList = haveMaxSizeOfConflictList();
+}
+
+int HashTable::haveSize() const
+{
+    return size;
+}
+
+HashTable::~HashTable()
+{
+    delete hashTableCells;
+    delete hash;
 }

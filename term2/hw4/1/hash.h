@@ -8,7 +8,10 @@
 class Hash
 {
 public:
-    static unsigned int hashH37(const QString &string);
-    static unsigned int hashFAQ6(const QString &string);
-    static unsigned int hashLy(const QString &string);
+    /*!
+     * \brief calculate hash for current string
+     * \param string
+     * \return
+     */
+    virtual unsigned int calculateHash(const QString &string) = 0;
 };
