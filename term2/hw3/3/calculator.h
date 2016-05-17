@@ -16,3 +16,4 @@ public:
      */
     static double calculate(const QVector<QString> &expression);
 };
+
