@@ -10,7 +10,6 @@
 class HashElement
 {
 public:
-    HashElement(){}
     HashElement(QString currentString, int currentHash)
     {
         string = currentString;
@@ -27,7 +26,7 @@ public:
         hash = rightValue.hash;
         return *this;
     }
-
+private:
     /*!
      * \brief initForHash - special constant for init hash
      */
