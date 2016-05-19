@@ -11,3 +11,4 @@ int main()
     QTest::qExec(&testTree);
     return 0;
 }
+
