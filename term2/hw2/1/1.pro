@@ -10,10 +10,13 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    pointerlinkedlist.cpp \
-    arraylinkedlist.cpp
+    bubblesort.cpp \
+    quicksort.cpp \
+    heapsort.cpp \
+    sort.cpp
 
 HEADERS += \
-    list.h \
-    pointerlinkedlist.h \
-    arraylinkedlist.h
+    sort.h \
+    bubblesort.h \
+    quicksort.h \
+    heapsort.h
