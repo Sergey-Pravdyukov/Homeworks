@@ -16,5 +16,4 @@ HEADERS += \
     testbubblesort.h \
     bubblesort.h \
     comparator.h \
-    numbercomparator.h \
-    stringcomparator.h
+    numbercomparator.h
