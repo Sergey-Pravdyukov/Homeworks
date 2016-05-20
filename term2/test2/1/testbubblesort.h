@@ -10,6 +10,9 @@
 #include "bubblesort.h"
 #include "numbercomparator.h"
 
+/*!
+ * \brief This class for testing bubble sort with random type
+ */
 class TestBubbleSort : public QObject
 {
     Q_OBJECT
