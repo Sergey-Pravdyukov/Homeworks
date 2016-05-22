@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm>
 
 #include "redblacktree.h"
 
@@ -76,6 +77,53 @@ private slots:
         int counter = counterInit;
         for (std::set<int>::iterator it = set.begin(); it != set.end(); ++it)
             QCOMPARE(recordedTree[counter++], *it);
+    }
+/*
+    void testRemoveElement()
+    {
+        const int value = 26;
+        redBlackTree->add(value);
+        const int removedValue = redBlackTree->remove(value);
+        const int correctSize = 0;
+        const int size = redBlackTree->getSize();
+        QCOMPARE(size, correctSize);
+        QCOMPARE(removedValue, value);
+    }
+*/
+    void testRemoveElements()
+    {
+        srand(time(NULL));
+        //const int maxNumberOfElements = 3;
+        const int numberOfElements = 10;
+        //const int numberOfElements = rand() % maxNumberOfElements + 1;
+        //int array[numberOfElements] = {21, 21, 28};
+        int array[10] = {24, 12, 3, 9, 21, 27, 9, 23, 27, 22};
+        for (int i = 0; i < numberOfElements; ++i)
+        {
+            //const int value = rand() % 29 + 1;
+            //array[i] = value;
+            std::cout << array[i] << " ";
+            redBlackTree->add(array[i]);
+        }
+        std::cout << std::endl << std::endl;
+        for (int i = 0; i < numberOfElements; ++i)
+        {
+            const int correctRemovedValue = array[i];
+            const int removedValue = redBlackTree->remove(array[i]);
+            QCOMPARE(removedValue, correctRemovedValue);
+            redBlackTree->recordedTree.clear();
+            redBlackTree->treeRecord(redBlackTree->getRoot());
+            recordedTree = redBlackTree->recordedTree;
+            //std::cout << "Size: " << recordedTree.size() << " !" << endl;
+            for (int i = 0; i < recordedTree.size(); ++i)
+                std::cout << recordedTree[i] << " ";
+            std::cout << std::endl;
+            for (int i = 1; i < recordedTree.size(); ++i)
+                QVERIFY(recordedTree[i - 1] <= recordedTree[i]);
+            //std::cout << removedValue << " " << correctRemovedValue << std::endl;
+            //std::cout << correctRemovedValue << std::endl;
+            //QCOMPARE(removedValue, correctRemovedValue);
+        }
     }
 
 };
