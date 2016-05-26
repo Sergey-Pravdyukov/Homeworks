@@ -60,11 +60,13 @@ private slots:
     {
         srand(time(NULL));
         const int maxSize = 17;
-        const int correctSize = rand() % maxSize + 1;
+        const int numberOfElements = rand() % maxSize + 1;
+        int correctSize = numberOfElements;
         const int maxNumber = 29;
-        for (int i = 0; i < correctSize; ++i)
+        for (int i = 0; i < numberOfElements; ++i)
         {
             const int value = rand() % maxNumber;
+            correctSize -= tree->find(value);
             tree->add(value);
         }
         tree->record();
@@ -87,13 +89,15 @@ private slots:
     {
         srand(time(NULL));
         const int maxSize = 17;
-        const int correctSize = rand() % maxSize + 1;
+        const int numberOfElements = rand() % maxSize + 1;
+        int correctSize = numberOfElements;
         const int maxNumber = 29;
         int array[maxSize];
-        for (int i = 0; i < correctSize; ++i)
+        int counter = 0;
+        for (int i = 0; i < numberOfElements; ++i)
         {
             const int value = rand() % maxNumber;
-            array[i] = value;
+            (tree->find(value)) ? --correctSize : array[counter++] = value;
             tree->add(value);
         }
         for (int i = 0; i < correctSize; ++i)
@@ -160,25 +164,29 @@ private slots:
         const int maxNumber = 29;
         const int intersectionArraySizeInit = 0;
         srand(time(NULL));
-        const int treeSize = rand() % maxSize + 1;
+        const int numberOfElementsForTree = rand() % maxSize + 1;
+        int treeSize = numberOfElementsForTree;
         int arrayForTree[maxSize];
         bool usedForTree[maxSize];
         std::fill(usedForTree, usedForTree + maxSize, false);
-        for (int i = 0; i < treeSize; ++i)
+        int counter = 0;
+        for (int i = 0; i < numberOfElementsForTree; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForTree[i] = value;
+            (tree->find(value)) ? --treeSize : arrayForTree[counter++] = value;
             tree->add(value);
         }
         Set<int> *disjointSet = new AVLTree<int>();
-        const int disjointSetSize = rand() % maxSize + 1;
+        const int numberOfElementsForDisjointSet = rand() % maxSize + 1;
+        int disjointSetSize = numberOfElementsForDisjointSet;
         int arrayForDisjointSet[maxSize];
         bool usedForDisjointSet[maxSize];
         std::fill(usedForDisjointSet, usedForDisjointSet + maxSize, false);
-        for (int i = 0; i < disjointSetSize; ++i)
+        counter = 0;
+        for (int i = 0; i < numberOfElementsForDisjointSet; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForDisjointSet[i] = value;
+            (disjointSet->find(value)) ? --disjointSetSize : arrayForDisjointSet[counter++] = value;
             disjointSet->add(value);
         }
         tree->intersection(disjointSet);
@@ -204,25 +212,29 @@ private slots:
 
     void testMerge()
     {
-        const int maxSize = 5;
+        const int maxSize = 17;
         const int maxNumber = 29;
         srand(time(NULL));
-        const int treeSize = rand() % maxSize + 1;
+        const int numberOfElementsForTree = rand() % maxSize + 1;
+        int treeSize = numberOfElementsForTree;
         int arrayForTree[maxSize];
-        for (int i = 0; i < treeSize; ++i)
+        int counter = 0;
+        for (int i = 0; i < numberOfElementsForTree; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForTree[i] = value;
+            (tree->find(value)) ? --treeSize : arrayForTree[counter++] = value;
             tree->add(value);
         }
         std::sort(arrayForTree, arrayForTree + treeSize);
         Set<int> *mergeSet = new AVLTree<int>();
-        const int mergeSetSize = rand() % maxSize + 1;
+        const int numberOfElementsForMergeSet = rand() % maxSize + 1;
+        int mergeSetSize = numberOfElementsForMergeSet;
         int arrayForMergeSet[maxSize];
-        for (int i = 0; i < mergeSetSize; ++i)
+        counter = 0;
+        for (int i = 0; i < numberOfElementsForMergeSet; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForMergeSet[i] = value;
+            (mergeSet->find(value)) ? --mergeSetSize : arrayForMergeSet[counter++] = value;
             mergeSet->add(value);
         }
         std::sort(arrayForMergeSet, arrayForMergeSet + mergeSetSize);

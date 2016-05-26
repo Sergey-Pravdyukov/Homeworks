@@ -28,11 +28,11 @@ public:
      */
     T remove(const T &removingValue);
     /*!
-     * \brief find
+     * \brief find value in AVLTree
      * \param currentValue
-     * \return number of finding elements
+     * \return
      */
-    int find(const T &currentValue) const;
+    bool find(const T &currentValue) const;
     /*!
      * \brief intersection this AVLTree with disjointSet
      * \param disjointSet
@@ -47,6 +47,7 @@ public:
      * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
      */
     QVector<T> recordedTree;
+    int size = sizeInit;
 private:
     /*!
      * \brief This class contains TreeNode for working with AVLTree
@@ -54,22 +55,19 @@ private:
     class TreeNode
     {
     public:
-        TreeNode(const T &currentValue, const int &currentCount)
+        TreeNode(const T &currentValue)
         {
             value = currentValue;
             height = 1;
-            count = currentCount;
         }
 
         int height = heightInit;
         T value = valueInit;
-        int count = countInit;
         TreeNode *left = nullptr;
         TreeNode *right = nullptr;
     private:
         const T valueInit = 0;
         const int heightInit = 0;
-        const int countInit = 0;
     };
     /*!
      * \brief balanced AVLTree
@@ -115,12 +113,6 @@ private:
      * \return addedNode
      */
     TreeNode *add(TreeNode *currentNode, TreeNode *addedNode);
-    /*!
-     * \brief add currentCount currentValues in AVLTree
-     * \param currentValue
-     * \param currentCount
-     */
-    void add(const T &currentValue, const int &currentCount);
     /*!
      * \brief remove currentValue from this subtree with root in currentNode
      * \param currentNode
@@ -180,16 +172,9 @@ private:
      * \return
      */
     T getValue(TreeNode *currentNode) const;
-    /*!
-     * \brief get number of elements of currentNode
-     * \param currentNode
-     * \return
-     */
-    int getCount(TreeNode *currentNode) const;
 
     const int sizeInit = 0;
 
-    int size = sizeInit;
     TreeNode *removedNode = nullptr;
     TreeNode *root = nullptr;
 };
@@ -209,20 +194,13 @@ T AVLTree<T>::getValue(TreeNode *currentNode) const
 }
 
 template <typename T>
-int AVLTree<T>::getCount(TreeNode *currentNode) const
-{
-    return currentNode->count;
-}
-
-template <typename T>
 void AVLTree<T>::record(TreeNode *currentNode)
 {
     if (currentNode == nullptr)
         return;
     if (currentNode->left != nullptr)
         record(currentNode->left);
-    for (int i = 0; i < currentNode->count; ++i)
-        recordedTree.push_back(currentNode->value);
+    recordedTree.push_back(currentNode->value);
     if (currentNode->right != nullptr)
         record(currentNode->right);
 }
@@ -306,13 +284,11 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::add(TreeNode *currentNode, TreeNode *
         currentNode = addedNode;
         if (!root)
             root = currentNode;
+        ++size;
         return currentNode;
     }
     if (addedNode->value == currentNode->value)
-    {
-        currentNode->count += addedNode->count;
         return currentNode;
-    }
     (addedNode->value < currentNode->value) ? currentNode->left = add(currentNode->left, addedNode)
                                             : currentNode->right = add(currentNode->right, addedNode);
     return balance(currentNode);
@@ -321,16 +297,8 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::add(TreeNode *currentNode, TreeNode *
 template <typename T>
 void AVLTree<T>::add(const T &currentValue)
 {
-    const int currentCount = 1;
-    add(currentValue, currentCount);
-}
-
-template <typename T>
-void AVLTree<T>::add(const T &currentValue, const int &currentCount)
-{
-    TreeNode *currentNode = new TreeNode(currentValue, currentCount);
+    TreeNode *currentNode = new TreeNode(currentValue);
     add(root, currentNode);
-    size += currentCount;
 }
 
 template <typename T>
@@ -352,10 +320,7 @@ template <typename T>
 typename AVLTree<T>::TreeNode *AVLTree<T>::remove(TreeNode *currentNode, const T &currentValue)
 {
     if (!currentNode)
-    {
-        const int currentCount = 1;
-        return new TreeNode(currentValue, currentCount);
-    }
+        return new TreeNode(currentValue);
     if (currentValue < currentNode->value)
         currentNode->left = remove(currentNode->left, currentValue);
     else if (currentValue > currentNode->value)
@@ -366,27 +331,19 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::remove(TreeNode *currentNode, const T
         TreeNode *rightNode = currentNode->right;
         removedNode = currentNode;
         --size;
-        if (currentNode->count == 0)
+        delete currentNode;
+        if (!rightNode)
         {
-            delete currentNode;
-            if (!rightNode)
-            {
-                if (currentNode == root)
-                    root = leftNode;
-                return leftNode;
-            }
-            TreeNode *minNode = findMinNode(rightNode);
             if (currentNode == root)
-                root = minNode;
-            minNode->right = removeMinNode(rightNode);
-            minNode->left = leftNode;
-            return balance(minNode);
+                root = leftNode;
+            return leftNode;
         }
-        else
-        {
-            --currentNode->count;
-            return currentNode;
-        }
+        TreeNode *minNode = findMinNode(rightNode);
+        if (currentNode == root)
+            root = minNode;
+        minNode->right = removeMinNode(rightNode);
+        minNode->left = leftNode;
+        return balance(minNode);
     }
     return balance(currentNode);
 }
@@ -410,10 +367,10 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::find(TreeNode *currentNode, const T &
 }
 
 template <typename T>
-int AVLTree<T>::find(const T &currentValue) const
+bool AVLTree<T>::find(const T &currentValue) const
 {
     TreeNode *foundNode = find(root, currentValue);
-    return (foundNode) ? foundNode->count : 0;
+    return (foundNode);
 }
 
 template <typename T>
@@ -429,7 +386,6 @@ void AVLTree<T>::intersection(AVLTree<T> *disjointTree, TreeNode *currentNode)
     }
     else
     {
-        currentNode->count = std::min(currentNode->count, foundNode->count);
         intersection(disjointTree, currentNode->left);
         intersection(disjointTree, currentNode->right);
     }
@@ -449,10 +405,8 @@ void AVLTree<T>::merge(AVLTree<T> *mergeTree, TreeNode *mergeTreeNode)
     recordedTree.clear();
     record(root);
     TreeNode *foundNode = find(root, mergeTree->getValue(mergeTreeNode));
-    if (foundNode)
-        foundNode->count = std::max(foundNode->count, mergeTreeNode->count);
-    else
-        add(getValue(mergeTreeNode), getCount(mergeTreeNode));
+    if (!foundNode)
+        add(getValue(mergeTreeNode));
     merge(mergeTree, mergeTreeNode->left);
     merge(mergeTree, mergeTreeNode->right);
 }

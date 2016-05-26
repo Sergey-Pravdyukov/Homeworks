@@ -21,9 +21,9 @@ public:
     /*!
      * \brief find value in Set
      * \param currentValue
-     * \return number of found elements in Set
+     * \return
      */
-    virtual int find(const T &currentValue) const = 0;
+    virtual bool find(const T &currentValue) const = 0;
     /*!
      * \brief intersection this Set with disjointSet
      * \param disjointSet
@@ -38,5 +38,7 @@ public:
      * result of merge is in this Set
      */
     virtual void merge(Set<T> *mergeSet) = 0;
+
+    int size = 0;
 };
 
