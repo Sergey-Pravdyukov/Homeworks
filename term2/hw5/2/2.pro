@@ -14,9 +14,5 @@ SOURCES += main.cpp
 
 HEADERS += \
     set.h \
-    redblacktree.h \
-    testredblacktree.h \
-    redblacktree.h \
-    set.h \
-    testredblacktree.h
-
+    avltree.h \
+    testavltree.h
