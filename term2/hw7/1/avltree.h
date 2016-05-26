@@ -3,13 +3,13 @@
 #include <QVector>
 #include <algorithm>
 
-#include "set.h"
+#include "bag.h"
 
 template <typename T>
 /*!
- * \brief This class for definition basis methods for working with Set as an AVLTree
+ * \brief This class for definition basis methods for working with Bag as an AVLTree
  */
-class AVLTree : public Set<T>
+class AVLTree : public Bag<T>
 {
 public:
     /*!
@@ -34,15 +34,15 @@ public:
      */
     int find(const T &currentValue) const;
     /*!
-     * \brief intersection this AVLTree with disjointSet
-     * \param disjointSet
+     * \brief intersection this AVLTree with disjointBag
+     * \param disjointBag
      */
-    void intersection(Set<T> *disjointSet);
+    void intersection(Bag<T> *disjointBag);
     /*!
-     * \brief merge this AVLTree with mergeSet
-     * \param mergeSet
+     * \brief merge this AVLTree with mergeBag
+     * \param mergeBag
      */
-    void merge(Set<T> *mergeSet);
+    void merge(Bag<T> *mergeBag);
     /*!
      * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
      */
@@ -436,9 +436,9 @@ void AVLTree<T>::intersection(AVLTree<T> *disjointTree, TreeNode *currentNode)
 }
 
 template <typename T>
-void AVLTree<T>::intersection(Set<T> *disjointSet)
+void AVLTree<T>::intersection(Bag<T> *disjointBag)
 {
-    intersection(dynamic_cast<AVLTree<T> *>(disjointSet), root);
+    intersection(dynamic_cast<AVLTree<T> *>(disjointBag), root);
 }
 
 template <typename T>
@@ -464,7 +464,7 @@ void AVLTree<T>::merge(AVLTree<T> *mergeTree)
 }
 
 template <typename T>
-void AVLTree<T>::merge(Set<T> *mergeSet)
+void AVLTree<T>::merge(Bag<T> *mergeBag)
 {
-    merge(dynamic_cast<AVLTree<T> *>(mergeSet));
+    merge(dynamic_cast<AVLTree<T> *>(mergeBag));
 }

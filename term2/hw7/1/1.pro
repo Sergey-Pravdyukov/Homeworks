@@ -14,5 +14,5 @@ SOURCES += main.cpp
 
 HEADERS += \
     avltree.h \
-    set.h \
-    testavltree.h
+    testavltree.h \
+    bag.h

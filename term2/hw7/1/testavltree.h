@@ -170,26 +170,26 @@ private slots:
             arrayForTree[i] = value;
             tree->add(value);
         }
-        Set<int> *disjointSet = new AVLTree<int>();
-        const int disjointSetSize = rand() % maxSize + 1;
-        int arrayForDisjointSet[maxSize];
-        bool usedForDisjointSet[maxSize];
-        std::fill(usedForDisjointSet, usedForDisjointSet + maxSize, false);
-        for (int i = 0; i < disjointSetSize; ++i)
+        Bag<int> *disjointBag = new AVLTree<int>();
+        const int disjointBagSize = rand() % maxSize + 1;
+        int arrayForDisjointBag[maxSize];
+        bool usedForDisjointBag[maxSize];
+        std::fill(usedForDisjointBag, usedForDisjointBag + maxSize, false);
+        for (int i = 0; i < disjointBagSize; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForDisjointSet[i] = value;
-            disjointSet->add(value);
+            arrayForDisjointBag[i] = value;
+            disjointBag->add(value);
         }
-        tree->intersection(disjointSet);
+        tree->intersection(disjointBag);
         int intersectionArray[maxSize];
         int intersectionArraySize = intersectionArraySizeInit;
         for (int i = 0; i < treeSize; ++i)
-            for (int j = 0; j < disjointSetSize; ++j)
-                if (arrayForTree[i] == arrayForDisjointSet[j] && !usedForTree[i] && !usedForDisjointSet[j])
+            for (int j = 0; j < disjointBagSize; ++j)
+                if (arrayForTree[i] == arrayForDisjointBag[j] && !usedForTree[i] && !usedForDisjointBag[j])
                 {
                     intersectionArray[intersectionArraySize++] = arrayForTree[i];
-                    usedForDisjointSet[j] = usedForTree[i] = true;
+                    usedForDisjointBag[j] = usedForTree[i] = true;
                 }
         const int correctSize = intersectionArraySize;
         tree->record();
@@ -216,44 +216,44 @@ private slots:
             tree->add(value);
         }
         std::sort(arrayForTree, arrayForTree + treeSize);
-        Set<int> *mergeSet = new AVLTree<int>();
-        const int mergeSetSize = rand() % maxSize + 1;
-        int arrayForMergeSet[maxSize];
-        for (int i = 0; i < mergeSetSize; ++i)
+        Bag<int> *mergeBag = new AVLTree<int>();
+        const int mergeBagSize = rand() % maxSize + 1;
+        int arrayForMergeBag[maxSize];
+        for (int i = 0; i < mergeBagSize; ++i)
         {
             const int value = rand() % maxNumber;
-            arrayForMergeSet[i] = value;
-            mergeSet->add(value);
+            arrayForMergeBag[i] = value;
+            mergeBag->add(value);
         }
-        std::sort(arrayForMergeSet, arrayForMergeSet + mergeSetSize);
-        tree->merge(mergeSet);
+        std::sort(arrayForMergeBag, arrayForMergeBag + mergeBagSize);
+        tree->merge(mergeBag);
         recordedTree.clear();
         tree->recordedTree.clear();
         tree->record();
         recordedTree = tree->recordedTree;
-        int mergedSet[maxSize * 2];
+        int mergedBag[maxSize * 2];
         int i = 0;
         int j = 0;
-        int mergedSetSize = 0;
-        while (i < treeSize && j < mergeSetSize)
+        int mergedBagSize = 0;
+        while (i < treeSize && j < mergeBagSize)
         {
-            if (arrayForTree[i] < arrayForMergeSet[j])
-                mergedSet[mergedSetSize++] = arrayForTree[i++];
-            else if (arrayForMergeSet[j] < arrayForTree[i])
-                mergedSet[mergedSetSize++] = arrayForMergeSet[j++];
+            if (arrayForTree[i] < arrayForMergeBag[j])
+                mergedBag[mergedBagSize++] = arrayForTree[i++];
+            else if (arrayForMergeBag[j] < arrayForTree[i])
+                mergedBag[mergedBagSize++] = arrayForMergeBag[j++];
             else
             {
-                mergedSet[mergedSetSize++] = arrayForTree[i++];
+                mergedBag[mergedBagSize++] = arrayForTree[i++];
                 ++j;
             }
         }
         while (i < treeSize)
-            mergedSet[mergedSetSize++] = arrayForTree[i++];
-        while (j < mergeSetSize)
-            mergedSet[mergedSetSize++] = arrayForMergeSet[j++];
-        std::sort(mergedSet, mergedSet + mergedSetSize);
-        for (int i = 0; i < mergedSetSize; ++i)
-            QCOMPARE(recordedTree[i], mergedSet[i]);
+            mergedBag[mergedBagSize++] = arrayForTree[i++];
+        while (j < mergeBagSize)
+            mergedBag[mergedBagSize++] = arrayForMergeBag[j++];
+        std::sort(mergedBag, mergedBag + mergedBagSize);
+        for (int i = 0; i < mergedBagSize; ++i)
+            QCOMPARE(recordedTree[i], mergedBag[i]);
     }
 
 };
