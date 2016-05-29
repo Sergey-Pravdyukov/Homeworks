@@ -2,16 +2,24 @@
 
 #include <QVector>
 #include <algorithm>
-
-#include "bag.h"
+#include <exception>
 
 template <typename T>
 /*!
  * \brief This class for definition basis methods for working with Bag as an AVLTree
  */
-class AVLTree : public Bag<T>
+class AVLTree
 {
 public:
+
+    class RemoveNonexistentElementException : public std::exception
+    {
+        const char *what() const noexcept
+        {
+            return "Removal of a non-existent element.";
+        }
+    };
+
     /*!
      * \brief record AVLTree from leftmost TreeNode to rightmost TreeNode
      */
@@ -26,7 +34,7 @@ public:
      * \param removingValue
      * \return
      */
-    T remove(const T &removingValue);
+    int remove(const T &removingValue) throw(RemoveNonexistentElementException);
     /*!
      * \brief find
      * \param currentValue
@@ -37,12 +45,12 @@ public:
      * \brief intersection this AVLTree with disjointBag
      * \param disjointBag
      */
-    void intersection(Bag<T> *disjointBag);
+    void intersection(AVLTree<T> *disjointBag);
     /*!
      * \brief merge this AVLTree with mergeBag
      * \param mergeBag
      */
-    void merge(Bag<T> *mergeBag);
+    void merge(AVLTree<T> *mergeBag);
     /*!
      * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
      */
@@ -159,11 +167,6 @@ private:
      * \param mergeTreeNode
      */
     void merge(AVLTree<T> *mergeTree, TreeNode *mergeTreeNode);
-    /*!
-     * \brief merge mergeTree with this AVLTree
-     * \param mergeTree
-     */
-    void merge(AVLTree<T> *mergeTree);
     /*!
      * \brief record subtree with root in currentNode from left most to rightmost nodes
      * \param currentNode
@@ -392,8 +395,10 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::remove(TreeNode *currentNode, const T
 }
 
 template <typename T>
-T AVLTree<T>::remove(const T &removingValue)
+int AVLTree<T>::remove(const T &removingValue) throw(RemoveNonexistentElementException)
 {
+    if (find(removingValue) == 0)
+        throw RemoveNonexistentElementException();
     remove(root, removingValue);
     return removedNode->value;
 }
@@ -436,7 +441,7 @@ void AVLTree<T>::intersection(AVLTree<T> *disjointTree, TreeNode *currentNode)
 }
 
 template <typename T>
-void AVLTree<T>::intersection(Bag<T> *disjointBag)
+void AVLTree<T>::intersection(AVLTree<T> *disjointBag)
 {
     intersection(dynamic_cast<AVLTree<T> *>(disjointBag), root);
 }
@@ -461,10 +466,4 @@ template <typename T>
 void AVLTree<T>::merge(AVLTree<T> *mergeTree)
 {
     merge(mergeTree, mergeTree->getRoot());
-}
-
-template <typename T>
-void AVLTree<T>::merge(Bag<T> *mergeBag)
-{
-    merge(dynamic_cast<AVLTree<T> *>(mergeBag));
 }
