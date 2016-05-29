@@ -22,6 +22,22 @@ private:
     AVLTree<int> *tree;
     QVector<int> recordedTree;
 
+    const int maxSize = 17;
+    const int maxNumber = 29;
+
+    void addElementsWithRecording(AVLTree<int> *&tree, int &size, int elements[])
+    {
+        for (int i = 0; i < size; ++i)
+        {
+            const int value = rand() % maxNumber;
+            if (tree->find(value))
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
+            elements[i] = value;
+            tree->add(value);
+        }
+        std::sort(elements, elements + size);
+    }
+
 private slots:
     void init()
     {
@@ -59,16 +75,16 @@ private slots:
     void testAddElements()
     {
         srand(time(NULL));
-        const int maxSize = 17;
-        const int numberOfElements = rand() % maxSize + 1;
-        int correctSize = numberOfElements;
-        const int maxNumber = 29;
-        for (int i = 0; i < numberOfElements; ++i)
+        const int correctSize = rand() % maxSize + 1;
+        for (int i = 0; i < correctSize; ++i)
         {
             const int value = rand() % maxNumber;
-            correctSize -= tree->find(value);
+            std::cout << value << " ";
+            if (tree->find(value))
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
             tree->add(value);
         }
+        std::cout << std::endl;
         tree->record();
         recordedTree = tree->recordedTree;
         const int size = recordedTree.size();
@@ -81,30 +97,26 @@ private slots:
     {
         const int value = 26;
         tree->add(value);
-        const int removedValue = tree->remove(value);
-        QCOMPARE(removedValue, value);
+        QVERIFY(tree->remove(value));
     }
 
     void testRemoveElements()
     {
         srand(time(NULL));
-        const int maxSize = 17;
-        const int numberOfElements = rand() % maxSize + 1;
-        int correctSize = numberOfElements;
-        const int maxNumber = 29;
+        const int correctSize = rand() % maxSize + 1;
         int array[maxSize];
-        int counter = 0;
-        for (int i = 0; i < numberOfElements; ++i)
+        for (int i = 0; i < correctSize; ++i)
         {
             const int value = rand() % maxNumber;
-            (tree->find(value)) ? --correctSize : array[counter++] = value;
+            if (tree->find(value))
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
+            array[i] = value;
             tree->add(value);
         }
         for (int i = 0; i < correctSize; ++i)
         {
             const int correctValue = array[i];
-            const int removedValue = tree->remove(correctValue);
-            QCOMPARE(removedValue, correctValue);
+            QVERIFY(tree->remove(correctValue));
             recordedTree.clear();
             tree->recordedTree.clear();
             tree->record();
@@ -130,14 +142,17 @@ private slots:
     void testFindElements()
     {
         srand(time(NULL));
-        const int maxSize = 17;
         const int correctSize = rand() % maxSize + 1;
-        const int maxNumber = 29;
         int array[maxSize];
+        bool foundEqualElements = false;
         for (int i = 0; i < correctSize; ++i)
         {
             const int value = rand() % maxNumber;
             array[i] = value;
+            for (int j = 0; j < i; ++j)
+                foundEqualElements = (foundEqualElements || (array[j] == value));
+            if (foundEqualElements)
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
             tree->add(value);
         }
         const int sizeForFind = rand() % maxSize + 1;
@@ -160,51 +175,35 @@ private slots:
 
     void testIntersection()
     {
-        const int maxSize = 17;
-        const int maxNumber = 29;
-        const int intersectionArraySizeInit = 0;
         srand(time(NULL));
-        const int numberOfElementsForTree = rand() % maxSize + 1;
-        int treeSize = numberOfElementsForTree;
-        int arrayForTree[maxSize];
-        bool usedForTree[maxSize];
-        std::fill(usedForTree, usedForTree + maxSize, false);
-        int counter = 0;
-        for (int i = 0; i < numberOfElementsForTree; ++i)
-        {
-            const int value = rand() % maxNumber;
-            (tree->find(value)) ? --treeSize : arrayForTree[counter++] = value;
-            tree->add(value);
-        }
-        Set<int> *disjointSet = new AVLTree<int>();
-        const int numberOfElementsForDisjointSet = rand() % maxSize + 1;
-        int disjointSetSize = numberOfElementsForDisjointSet;
-        int arrayForDisjointSet[maxSize];
-        bool usedForDisjointSet[maxSize];
-        std::fill(usedForDisjointSet, usedForDisjointSet + maxSize, false);
-        counter = 0;
-        for (int i = 0; i < numberOfElementsForDisjointSet; ++i)
-        {
-            const int value = rand() % maxNumber;
-            (disjointSet->find(value)) ? --disjointSetSize : arrayForDisjointSet[counter++] = value;
-            disjointSet->add(value);
-        }
-        tree->intersection(disjointSet);
+        const int treeElementsNumber = rand() % maxSize + 1;
+        int treeSize = treeElementsNumber;
+        int treeElements[maxSize];
+        bool treeUsed[maxSize];
+        std::fill(treeUsed, treeUsed + maxSize, false);
+        addElementsWithRecording(tree, treeSize, treeElements);
+        AVLTree<int> *disjointTree = new AVLTree<int>();
+        const int disjointTreeElementsNumber = rand() % maxSize + 1;
+        int disjointTreeSize = disjointTreeElementsNumber;
+        int disjointTreeElements[maxSize];
+        bool disjointTreeUsed[maxSize];
+        std::fill(disjointTreeUsed, disjointTreeUsed + maxSize, false);
+        addElementsWithRecording(disjointTree, disjointTreeSize, disjointTreeElements);
+        tree->intersection(disjointTree);
         int intersectionArray[maxSize];
-        int intersectionArraySize = intersectionArraySizeInit;
+        int intersectionArraySize = 0;
         for (int i = 0; i < treeSize; ++i)
-            for (int j = 0; j < disjointSetSize; ++j)
-                if (arrayForTree[i] == arrayForDisjointSet[j] && !usedForTree[i] && !usedForDisjointSet[j])
+            for (int j = 0; j < disjointTreeSize; ++j)
+                if (treeElements[i] == disjointTreeElements[j] && !treeUsed[i] && !disjointTreeUsed[j])
                 {
-                    intersectionArray[intersectionArraySize++] = arrayForTree[i];
-                    usedForDisjointSet[j] = usedForTree[i] = true;
+                    intersectionArray[intersectionArraySize++] = treeElements[i];
+                    disjointTreeUsed[j] = treeUsed[i] = true;
                 }
         const int correctSize = intersectionArraySize;
         tree->record();
         recordedTree = tree->recordedTree;
         const int size = recordedTree.size();
         QCOMPARE(size, correctSize);
-        std::sort(intersectionArray, intersectionArray + intersectionArraySize);
         for (int i = 0; i < correctSize; ++i)
             QCOMPARE(recordedTree[i], intersectionArray[i]);
     }
@@ -212,60 +211,43 @@ private slots:
 
     void testMerge()
     {
-        const int maxSize = 17;
-        const int maxNumber = 29;
         srand(time(NULL));
-        const int numberOfElementsForTree = rand() % maxSize + 1;
-        int treeSize = numberOfElementsForTree;
-        int arrayForTree[maxSize];
-        int counter = 0;
-        for (int i = 0; i < numberOfElementsForTree; ++i)
-        {
-            const int value = rand() % maxNumber;
-            (tree->find(value)) ? --treeSize : arrayForTree[counter++] = value;
-            tree->add(value);
-        }
-        std::sort(arrayForTree, arrayForTree + treeSize);
-        Set<int> *mergeSet = new AVLTree<int>();
-        const int numberOfElementsForMergeSet = rand() % maxSize + 1;
-        int mergeSetSize = numberOfElementsForMergeSet;
-        int arrayForMergeSet[maxSize];
-        counter = 0;
-        for (int i = 0; i < numberOfElementsForMergeSet; ++i)
-        {
-            const int value = rand() % maxNumber;
-            (mergeSet->find(value)) ? --mergeSetSize : arrayForMergeSet[counter++] = value;
-            mergeSet->add(value);
-        }
-        std::sort(arrayForMergeSet, arrayForMergeSet + mergeSetSize);
-        tree->merge(mergeSet);
+        const int treeElementsNumber = rand() % maxSize + 1;
+        int treeSize = treeElementsNumber;
+        int treeElements[maxSize];
+        addElementsWithRecording(tree, treeSize, treeElements);
+        AVLTree<int> *mergeTree = new AVLTree<int>();
+        const int mergeTreeElementsNumber = rand() % maxSize + 1;
+        int mergeTreeSize = mergeTreeElementsNumber;
+        int mergeTreeElements[maxSize];
+        addElementsWithRecording(mergeTree, mergeTreeSize, mergeTreeElements);
+        tree->merge(mergeTree);
         recordedTree.clear();
         tree->recordedTree.clear();
         tree->record();
         recordedTree = tree->recordedTree;
-        int mergedSet[maxSize * 2];
+        int mergedTreeElements[maxSize * 2];
         int i = 0;
         int j = 0;
-        int mergedSetSize = 0;
-        while (i < treeSize && j < mergeSetSize)
+        int mergedTreeSize = 0;
+        while (i < treeSize && j < mergeTreeSize)
         {
-            if (arrayForTree[i] < arrayForMergeSet[j])
-                mergedSet[mergedSetSize++] = arrayForTree[i++];
-            else if (arrayForMergeSet[j] < arrayForTree[i])
-                mergedSet[mergedSetSize++] = arrayForMergeSet[j++];
+            if (treeElements[i] < mergeTreeElements[j])
+                mergedTreeElements[mergedTreeSize++] = treeElements[i++];
+            else if (mergeTreeElements[j] < treeElements[i])
+                mergedTreeElements[mergedTreeSize++] = mergeTreeElements[j++];
             else
             {
-                mergedSet[mergedSetSize++] = arrayForTree[i++];
+                mergedTreeElements[mergedTreeSize++] = treeElements[i++];
                 ++j;
             }
         }
         while (i < treeSize)
-            mergedSet[mergedSetSize++] = arrayForTree[i++];
-        while (j < mergeSetSize)
-            mergedSet[mergedSetSize++] = arrayForMergeSet[j++];
-        std::sort(mergedSet, mergedSet + mergedSetSize);
-        for (int i = 0; i < mergedSetSize; ++i)
-            QCOMPARE(recordedTree[i], mergedSet[i]);
+            mergedTreeElements[mergedTreeSize++] = treeElements[i++];
+        while (j < mergeTreeSize)
+            mergedTreeElements[mergedTreeSize++] = mergeTreeElements[j++];
+        for (int i = 0; i < mergedTreeSize; ++i)
+            QCOMPARE(recordedTree[i], mergedTreeElements[i]);
     }
 
 };

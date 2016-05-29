@@ -1,44 +1,100 @@
 #pragma once
 
+#include "avltree.h"
+
 template <typename T>
 /*!
- * \brief This abstract class for declare basis set methods
+ * \brief This class for definition basis set methods
  */
 class Set
 {
 public:
+    Set();
+    ~Set();
+
     /*!
      * \brief add value to Set
      * \param currentValue
      */
-    virtual void add(const T &currentValue) = 0;
+    bool add(const T &currentValue);
     /*!
      * \brief remove value from Set
      * \param currentValue
      * \return removed value
      */
-    virtual T remove(const T &currentValue) = 0;
+    bool remove(const T &currentValue);
     /*!
      * \brief find value in Set
      * \param currentValue
      * \return
      */
-    virtual bool find(const T &currentValue) const = 0;
+    bool find(const T &currentValue);
     /*!
      * \brief intersection this Set with disjointSet
      * \param disjointSet
      *
      * result of intersection is in this Set
      */
-    virtual void intersection(Set<T> *disjointSet) = 0;
+    Set<T> intersection(Set<T> *disjointSet);
     /*!
      * \brief merge this Set with mergeSet
      * \param mergeSet
      *
      * result of merge is in this Set
      */
-    virtual void merge(Set<T> *mergeSet) = 0;
+    Set<T> merge(Set<T> *mergeSet);
 
-    int size = 0;
+private:
+    AVLTree<T> *tree;
 };
+
+//--------------------------------------------------------------------------
+
+template <typename T>
+Set<T>::Set()
+{
+    tree = new AVLTree();
+}
+
+template <typename T>
+Set<T>::~Set()
+{
+    delete tree;
+}
+
+template <typename T>
+bool Set<T>::find(const T &currentValue)
+{
+    return tree->find(currentValue);
+}
+
+template <typename T>
+bool Set<T>::add(const T &currentValue)
+{
+    if (tree->find(currentValue))
+        throw AddExistingElement();
+    return tree->add(currentValue);
+}
+
+template <typename T>
+bool Set<T>::remove(const T &currentValue)
+{
+    if (!tree->find(currentValue))
+        throw RemoveNonexistentElement();
+    return tree->remove(currentValue);
+}
+
+template <typename T>
+Set<T> Set<T>::intersection(Set<T> *disjointSet)
+{
+    tree->intersection(disjointSet);
+    return tree;
+}
+
+template <typename T>
+Set<T> Set<T>::merge(Set<T> *mergeSet)
+{
+    tree->merge(mergeSet);
+    return tree;
+}
 

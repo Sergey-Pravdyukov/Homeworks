@@ -2,16 +2,32 @@
 
 #include <QVector>
 #include <algorithm>
-
-#include "set.h"
+#include <exception>
 
 template <typename T>
 /*!
  * \brief This class for definition basis methods for working with Set as an AVLTree
  */
-class AVLTree : public Set<T>
+class AVLTree
 {
 public:
+
+    class AddExistingElement : public std::exception
+    {
+        const char *what() const noexcept
+        {
+            return "Add to an existing element.";
+        }
+    };
+
+    class RemoveNonexistentElement : public std::exception
+    {
+        const char *what() const noexcept
+        {
+            return "Removal of a non-existent element.";
+        }
+    };
+
     /*!
      * \brief record AVLTree from leftmost TreeNode to rightmost TreeNode
      */
@@ -20,13 +36,13 @@ public:
      * \brief add
      * \param currentValue
      */
-    void add(const T &currentValue);
+    void add(const T &currentValue) throw (AddExistingElement);
     /*!
      * \brief remove
      * \param removingValue
      * \return
      */
-    T remove(const T &removingValue);
+    bool remove(const T &removingValue) throw (RemoveNonexistentElement);
     /*!
      * \brief find value in AVLTree
      * \param currentValue
@@ -37,12 +53,12 @@ public:
      * \brief intersection this AVLTree with disjointSet
      * \param disjointSet
      */
-    void intersection(Set<T> *disjointSet);
+    void intersection(AVLTree<T> *disjointSet);
     /*!
      * \brief merge this AVLTree with mergeSet
      * \param mergeSet
      */
-    void merge(Set<T> *mergeSet);
+    void merge(AVLTree<T> *mergeSet);
     /*!
      * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
      */
@@ -151,11 +167,6 @@ private:
      * \param mergeTreeNode
      */
     void merge(AVLTree<T> *mergeTree, TreeNode *mergeTreeNode);
-    /*!
-     * \brief merge mergeTree with this AVLTree
-     * \param mergeTree
-     */
-    void merge(AVLTree<T> *mergeTree);
     /*!
      * \brief record subtree with root in currentNode from left most to rightmost nodes
      * \param currentNode
@@ -295,8 +306,10 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::add(TreeNode *currentNode, TreeNode *
 }
 
 template <typename T>
-void AVLTree<T>::add(const T &currentValue)
+void AVLTree<T>::add(const T &currentValue) throw(AddExistingElement)
 {
+    if (find(currentValue))
+        throw AddExistingElement();
     TreeNode *currentNode = new TreeNode(currentValue);
     add(root, currentNode);
 }
@@ -349,10 +362,12 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::remove(TreeNode *currentNode, const T
 }
 
 template <typename T>
-T AVLTree<T>::remove(const T &removingValue)
+bool AVLTree<T>::remove(const T &removingValue) throw(RemoveNonexistentElement)
 {
+    if (!find(removingValue))
+        throw RemoveNonexistentElement();
     remove(root, removingValue);
-    return removedNode->value;
+    return (removedNode->value == removingValue);
 }
 
 template <typename T>
@@ -392,9 +407,9 @@ void AVLTree<T>::intersection(AVLTree<T> *disjointTree, TreeNode *currentNode)
 }
 
 template <typename T>
-void AVLTree<T>::intersection(Set<T> *disjointSet)
+void AVLTree<T>::intersection(AVLTree<T> *disjointSet)
 {
-    intersection(dynamic_cast<AVLTree<T> *>(disjointSet), root);
+    intersection(disjointSet, root);
 }
 
 template <typename T>
@@ -415,10 +430,4 @@ template <typename T>
 void AVLTree<T>::merge(AVLTree<T> *mergeTree)
 {
     merge(mergeTree, mergeTree->getRoot());
-}
-
-template <typename T>
-void AVLTree<T>::merge(Set<T> *mergeSet)
-{
-    merge(dynamic_cast<AVLTree<T> *>(mergeSet));
 }
