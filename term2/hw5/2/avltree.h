@@ -12,7 +12,7 @@ class AVLTree
 {
 public:
 
-    class AddExistingElement : public std::exception
+    class AddExistingElementException : public std::exception
     {
         const char *what() const noexcept
         {
@@ -20,7 +20,7 @@ public:
         }
     };
 
-    class RemoveNonexistentElement : public std::exception
+    class RemoveNonexistentElementException : public std::exception
     {
         const char *what() const noexcept
         {
@@ -36,13 +36,13 @@ public:
      * \brief add
      * \param currentValue
      */
-    void add(const T &currentValue) throw (AddExistingElement);
+    void add(const T &currentValue) throw (AddExistingElementException);
     /*!
      * \brief remove
      * \param removingValue
      * \return
      */
-    bool remove(const T &removingValue) throw (RemoveNonexistentElement);
+    bool remove(const T &removingValue) throw (RemoveNonexistentElementException);
     /*!
      * \brief find value in AVLTree
      * \param currentValue
@@ -306,10 +306,10 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::add(TreeNode *currentNode, TreeNode *
 }
 
 template <typename T>
-void AVLTree<T>::add(const T &currentValue) throw(AddExistingElement)
+void AVLTree<T>::add(const T &currentValue) throw(AddExistingElementException)
 {
     if (find(currentValue))
-        throw AddExistingElement();
+        throw AddExistingElementException();
     TreeNode *currentNode = new TreeNode(currentValue);
     add(root, currentNode);
 }
@@ -362,10 +362,10 @@ typename AVLTree<T>::TreeNode *AVLTree<T>::remove(TreeNode *currentNode, const T
 }
 
 template <typename T>
-bool AVLTree<T>::remove(const T &removingValue) throw(RemoveNonexistentElement)
+bool AVLTree<T>::remove(const T &removingValue) throw(RemoveNonexistentElementException)
 {
     if (!find(removingValue))
-        throw RemoveNonexistentElement();
+        throw RemoveNonexistentElementException();
     remove(root, removingValue);
     return (removedNode->value == removingValue);
 }

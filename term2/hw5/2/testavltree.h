@@ -27,12 +27,18 @@ private:
 
     void addElementsWithRecording(AVLTree<int> *&tree, int &size, int elements[])
     {
-        for (int i = 0; i < size; ++i)
+        const int elementsNumber = size;
+        int counter = 0;
+        for (int i = 0; i < elementsNumber; ++i)
         {
             const int value = rand() % maxNumber;
             if (tree->find(value))
-                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
-            elements[i] = value;
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElementException);
+                --size;
+                continue;
+            }
+            elements[counter++] = value;
             tree->add(value);
         }
         std::sort(elements, elements + size);
@@ -75,16 +81,19 @@ private slots:
     void testAddElements()
     {
         srand(time(NULL));
-        const int correctSize = rand() % maxSize + 1;
-        for (int i = 0; i < correctSize; ++i)
+        const int elementsNumber = rand() % maxSize + 1;
+        int correctSize = elementsNumber;
+        for (int i = 0; i < elementsNumber; ++i)
         {
             const int value = rand() % maxNumber;
-            std::cout << value << " ";
             if (tree->find(value))
-                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElementException);
+                --correctSize;
+                continue;
+            }
             tree->add(value);
         }
-        std::cout << std::endl;
         tree->record();
         recordedTree = tree->recordedTree;
         const int size = recordedTree.size();
@@ -103,19 +112,29 @@ private slots:
     void testRemoveElements()
     {
         srand(time(NULL));
-        const int correctSize = rand() % maxSize + 1;
+        const int elementsNumber = rand() % maxSize + 1;
+        int correctSize = elementsNumber;
         int array[maxSize];
-        for (int i = 0; i < correctSize; ++i)
+        for (int i = 0; i < elementsNumber; ++i)
         {
             const int value = rand() % maxNumber;
             if (tree->find(value))
-                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElementException);
+                --correctSize;
+                continue;
+            }
             array[i] = value;
             tree->add(value);
         }
         for (int i = 0; i < correctSize; ++i)
         {
             const int correctValue = array[i];
+            if (!tree->find(correctValue))
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->remove(correctValue), AVLTree<int>::RemoveNonexistentElementException);
+                continue;
+            }
             QVERIFY(tree->remove(correctValue));
             recordedTree.clear();
             tree->recordedTree.clear();
@@ -144,15 +163,18 @@ private slots:
         srand(time(NULL));
         const int correctSize = rand() % maxSize + 1;
         int array[maxSize];
-        bool foundEqualElements = false;
         for (int i = 0; i < correctSize; ++i)
         {
             const int value = rand() % maxNumber;
             array[i] = value;
+            bool foundEqualElements = false;
             for (int j = 0; j < i; ++j)
                 foundEqualElements = (foundEqualElements || (array[j] == value));
             if (foundEqualElements)
-                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElement);
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->add(value), AVLTree<int>::AddExistingElementException);
+                continue;
+            }
             tree->add(value);
         }
         const int sizeForFind = rand() % maxSize + 1;
