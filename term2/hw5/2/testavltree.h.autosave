@@ -195,7 +195,7 @@ private slots:
         }
     }
 
-    void testIntersection() // сократить
+    void testIntersection()
     {
         srand(time(NULL));
         const int treeElementsNumber = rand() % maxSize + 1;
