@@ -6,6 +6,7 @@
 #include <ctime>
 #include <iostream>
 #include <QVector>
+#include <set>
 
 #include "avltree.h"
 
@@ -25,15 +26,92 @@ private:
     const int maxSize = 17;
     const int maxNumber = 29;
 
-    void addElementsWithRecording(AVLTree<int> *&tree, const int &size, int elements[])
+    void addElementsWithRecording(AVLTree<int> *&tree, const int &elementsNumber, std::multiset<int> &elements)
     {
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < elementsNumber; ++i)
         {
-            const int value = rand() % maxNumber;
-            elements[i] = value;
+            int value = rand() % maxNumber + 1;
+            elements.insert(value);
             tree->add(value);
         }
-        std::sort(elements, elements + size);
+    }
+
+    void removeElementsWithRecording(AVLTree<int> *&tree, std::multiset<int> &elements)
+    {
+        for (std::multiset<int>::iterator it = elements.begin(); it != elements.end(); ++it)
+        {
+            if (tree->find(*it) == 0)
+            {
+                QVERIFY_EXCEPTION_THROWN(tree->remove(*it), AVLTree<int>::RemoveNonexistentElementException);
+                continue;
+            }
+            QVERIFY(tree->remove(*it));
+            recordedTree.clear();
+            recordedTree = tree->recordingTree();
+            for (int j = 1; j < recordedTree.size(); ++j)
+                QVERIFY(recordedTree[j - 1] <= recordedTree[j]);
+        }
+    }
+
+    void intersectSets(std::multiset<int> elements, std::multiset<int> disjointElements, std::multiset<int> &intersectionElements)
+    {
+        std::multiset<int>::iterator it = elements.begin();
+        std::multiset<int>::iterator disjointIt = disjointElements.begin();
+        while (it != elements.end() && disjointIt != disjointElements.end())
+        {
+            if (*it < *disjointIt)
+                ++it;
+            else if (*disjointIt < *it)
+                ++disjointIt;
+            else
+            {
+                intersectionElements.insert(*it);
+                ++it;
+                ++disjointIt;
+            }
+        }
+    }
+
+    void mergeSets(std::multiset<int> elements, std::multiset<int> mergingElements, std::multiset<int> &mergedElements)
+    {
+        std::multiset<int>::iterator it = elements.begin();
+        std::multiset<int>::iterator mergingIt = mergingElements.begin();
+        while (it != elements.end() && mergingIt != mergingElements.end())
+        {
+            if (*it < *mergingIt)
+            {
+                mergedElements.insert(*it);
+                ++it;
+            }
+            else if (*mergingIt < *it)
+            {
+                mergedElements.insert(*mergingIt);
+                ++mergingIt;
+            }
+            else
+            {
+                mergedElements.insert(*it);
+                ++it;
+                ++mergingIt;
+            }
+        }
+        while (it != elements.end())
+        {
+            mergedElements.insert(*it);
+            ++it;
+        }
+        while (mergingIt != mergingElements.end())
+        {
+            mergedElements.insert(*mergingIt);
+            ++mergingIt;
+        }
+    }
+
+    void printMultiset(std::multiset<int> currentMultiset)
+    {
+        for (std::multiset<int>::iterator it = currentMultiset.begin(); it != currentMultiset.end(); ++it)
+            std::cout << *it << " ";
+        std::cout << std::endl;
     }
 
 private slots:
@@ -50,212 +128,106 @@ private slots:
 
     void testEmptyTree()
     {
-        const int correctSize = 0;
-        tree->record();
-        recordedTree = tree->recordedTree;
-        const int size = recordedTree.size();
-        QCOMPARE(size, correctSize);
+        recordedTree = tree->recordingTree();
+        QCOMPARE(recordedTree.size(), 0);
     }
 
     void testAddElement()
     {
-        const int correctValue = 26;
-        const int correctSize = 1;
-        tree->add(correctValue);
-        tree->record();
-        recordedTree = tree->recordedTree;
-        const int size = recordedTree.size();
-        QCOMPARE(size, correctSize);
-        const int value = recordedTree[0];
-        QCOMPARE(value, correctValue);
+        const int value = 26;
+        tree->add(value);
+        recordedTree = tree->recordingTree();
+        QCOMPARE(recordedTree.size(), 1);
+        QCOMPARE(recordedTree[0], value);
     }
 
     void testAddElements()
     {
         srand(time(NULL));
-        const int correctSize = rand() % maxSize + 1;
-        for (int i = 0; i < correctSize; ++i)
-        {
-            const int value = rand() % maxNumber;
-            tree->add(value);
-        }
-        tree->record();
-        recordedTree = tree->recordedTree;
-        const int size = recordedTree.size();
-        QCOMPARE(size, correctSize);
-        for (int i = 1; i < correctSize; ++i)
-            QVERIFY(recordedTree[i - 1] <= recordedTree[i]);
+        const int treeElementsNumber = rand() % maxSize + 1;
+        std::multiset<int> treeElements;
+        addElementsWithRecording(tree, treeElementsNumber, treeElements);
+        recordedTree = tree->recordingTree();
+        QCOMPARE(treeElements.size(), (unsigned int)recordedTree.size());
+        int counter = 0;
+        for (std::multiset<int>::iterator it = treeElements.begin(); it != treeElements.end(); ++it)
+            QCOMPARE(*it, recordedTree[counter++]);
     }
 
     void testRemoveElement()
     {
-        const int correctValue = 26;
-        tree->add(correctValue);
-        const int removedValue = tree->remove(correctValue);
-        QCOMPARE(removedValue, correctValue);
+        const int value = 26;
+        tree->add(value);
+        QVERIFY(tree->remove(value));
     }
 
     void testRemoveElements()
     {
         srand(time(NULL));
-        const int correctSize = rand() % maxSize + 1;
-        const int notaddedElementsNumber = rand() % correctSize;
-        int elements[maxSize];
-        int i = 0;
-        for (; i < correctSize - notaddedElementsNumber; ++i)
-        {
-            const int value = rand() % maxNumber;
-            elements[i] = value;
-            tree->add(value);
-        }
-        for (; i < correctSize; ++i)
-        {
-            const int value = rand() % maxNumber;
-            elements[i] = value;
-        }
-        std::random_shuffle(elements, elements + correctSize);
-        for (int i = 0; i < correctSize; ++i)
-        {
-            const int correctValue = elements[i];
-            if (!tree->find(elements[i]))
-            {
-                QVERIFY_EXCEPTION_THROWN(tree->remove(elements[i]), AVLTree<int>::RemoveNonexistentElementException);
-                continue;
-            }
-            const int removedValue = tree->remove(correctValue);
-            QCOMPARE(removedValue, correctValue);
-            recordedTree.clear();
-            tree->recordedTree.clear();
-            tree->record();
-            recordedTree = tree->recordedTree;
-            for (int j = 1; j < recordedTree.size(); ++j)
-                QVERIFY(recordedTree[j - 1] <= recordedTree[j]);
-        }
+        const int treeElementsNumber = rand() % maxSize + 1;
+        std::multiset<int> treeElements;
+        addElementsWithRecording(tree, treeElementsNumber, treeElements);
+        removeElementsWithRecording(tree, treeElements);
     }
 
     void testFindElement()
     {
         int value = 26;
-        bool correctResult = true;
         tree->add(value);
-        bool result = (tree->find(value) > 0);
-        QCOMPARE(result, correctResult);
+        QCOMPARE((tree->find(value) > 0), true);
         value = 271;
-        correctResult = false;
-        result = (tree->find(value) > 0);
-        QCOMPARE(result, correctResult);
+        QCOMPARE((tree->find(value) > 0), false);
     }
 
     void testFindElements()
     {
-        srand(time(NULL));
-        const int correctSize = rand() % maxSize + 1;
-        int elements[maxSize];
-        for (int i = 0; i < correctSize; ++i)
+        const int treeElementsNumber = rand() % maxSize + 1;
+        std::multiset<int> treeElements;
+        addElementsWithRecording(tree, treeElementsNumber, treeElements);
+        const int findAttemptsNumber = rand() % maxSize;
+        for (int i = 0; i < findAttemptsNumber; ++i)
         {
             const int value = rand() % maxNumber;
-            elements[i] = value;
-            tree->add(value);
-        }
-        const int sizeForFind = rand() % maxSize + 1;
-        int elementsForFind[maxSize];
-        for (int i = 0; i < sizeForFind; ++i)
-            elementsForFind[i] = rand() % maxNumber;
-        for (int i = 0; i < sizeForFind; ++i)
-        {
-            bool correctResult = false;
-            for (int j = 0; j < correctSize; ++j)
-                if (elements[j] == elementsForFind[i])
-                {
-                    correctResult = true;
-                    break;
-                }
-            const bool result = (tree->find(elementsForFind[i]) > 0);
-            QCOMPARE(result, correctResult);
+            QCOMPARE((tree->find(value) > 0), treeElements.find(value) != treeElements.end());
         }
     }
 
     void testIntersection()
     {
-        const int intersectionArraySizeInit = 0;
-        srand(time(NULL));
-        const int treeSize = rand() % maxSize + 1;
-        int treeElements[maxSize];
-        bool treeUsed[maxSize];
-        std::fill(treeUsed, treeUsed + maxSize, false);
-        addElementsWithRecording(tree, treeSize, treeElements);
+        const int treeElementsNumber = rand() % maxSize;
+        std::multiset<int> treeElements;
+        addElementsWithRecording(tree, treeElementsNumber, treeElements);
+        const int disjointTreeElementsNumber = rand() % maxSize;
         AVLTree<int> *disjointTree = new AVLTree<int>();
-        const int disjointTreeSize = rand() % maxSize + 1;
-        int disjointTreeElements[maxSize];
-        bool disjointTreeUsed[maxSize];
-        std::fill(disjointTreeUsed, disjointTreeUsed + maxSize, false);
-        for (int i = 0; i < disjointTreeSize; ++i)
-        {
-            const int value = rand() % maxNumber;
-            disjointTreeElements[i] = value;
-            disjointTree->add(value);
-        }
+        std::multiset<int> disjointTreeElements;
+        addElementsWithRecording(disjointTree, disjointTreeElementsNumber, disjointTreeElements);
         tree->intersection(disjointTree);
-        int intersectionArray[maxSize];
-        int intersectionArraySize = intersectionArraySizeInit;
-        for (int i = 0; i < treeSize; ++i)
-            for (int j = 0; j < disjointTreeSize; ++j)
-                if (treeElements[i] == disjointTreeElements[j] && !treeUsed[i] && !disjointTreeUsed[j])
-                {
-                    intersectionArray[intersectionArraySize++] = treeElements[i];
-                    disjointTreeUsed[j] = treeUsed[i] = true;
-                }
-        const int correctSize = intersectionArraySize;
-        tree->record();
-        recordedTree = tree->recordedTree;
-        const int size = recordedTree.size();
-        QCOMPARE(size, correctSize);
-        std::sort(intersectionArray, intersectionArray + intersectionArraySize);
-        for (int i = 0; i < correctSize; ++i)
-            QCOMPARE(recordedTree[i], intersectionArray[i]);
+        std::multiset<int> intersectionElements;
+        intersectSets(treeElements, disjointTreeElements, intersectionElements);
+        recordedTree = tree->recordingTree();
+        QCOMPARE((unsigned int)recordedTree.size(), intersectionElements.size());
+        int counter = 0;
+        for (std::multiset<int>::iterator it = intersectionElements.begin(); it != intersectionElements.end(); ++it)
+            QCOMPARE(*it, recordedTree[counter++]);
     }
-
 
     void testMerge()
     {
-        const int maxSize = 5;
-        const int maxNumber = 29;
-        srand(time(NULL));
-        const int treeSize = rand() % maxSize + 1;
-        int treeElements[maxSize];
-        addElementsWithRecording(tree, treeSize, treeElements);
+        const int treeElementsNumber = rand() % maxSize;
+        std::multiset<int> treeElements;
+        addElementsWithRecording(tree, treeElementsNumber, treeElements);
+        const int mergeTreeElementsNumber = rand() % maxSize;
         AVLTree<int> *mergeTree = new AVLTree<int>();
-        const int mergeTreeSize = rand() % maxSize + 1;
-        int mergeTreeElements[maxSize];
-        addElementsWithRecording(mergeTree, mergeTreeSize, mergeTreeElements);
+        std::multiset<int> mergeTreeElements;
+        addElementsWithRecording(mergeTree, mergeTreeElementsNumber, mergeTreeElements);
         tree->merge(mergeTree);
-        recordedTree.clear();
-        tree->recordedTree.clear();
-        tree->record();
-        recordedTree = tree->recordedTree;
-        int mergedTree[maxSize * 2];
-        int i = 0;
-        int j = 0;
-        int mergedTreeSize = 0;
-        while (i < treeSize && j < mergeTreeSize)
-        {
-            if (treeElements[i] < mergeTreeElements[j])
-                mergedTree[mergedTreeSize++] = treeElements[i++];
-            else if (mergeTreeElements[j] < treeElements[i])
-                mergedTree[mergedTreeSize++] = mergeTreeElements[j++];
-            else
-            {
-                mergedTree[mergedTreeSize++] = treeElements[i++];
-                ++j;
-            }
-        }
-        while (i < treeSize)
-            mergedTree[mergedTreeSize++] = treeElements[i++];
-        while (j < mergeTreeSize)
-            mergedTree[mergedTreeSize++] = mergeTreeElements[j++];
-        std::sort(mergedTree, mergedTree + mergedTreeSize);
-        for (int i = 0; i < mergedTreeSize; ++i)
-            QCOMPARE(recordedTree[i], mergedTree[i]);
+        std::multiset<int> mergedElements;
+        mergeSets(treeElements, mergeTreeElements, mergedElements);
+        recordedTree = tree->recordingTree();
+        QCOMPARE((unsigned int)recordedTree.size(), mergedElements.size());
+        int counter = 0;
+        for (std::multiset<int>::iterator it = mergedElements.begin(); it != mergedElements.end(); ++it)
+            QCOMPARE(*it, recordedTree[counter++]);
     }
 
 };
