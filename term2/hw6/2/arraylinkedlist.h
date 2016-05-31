@@ -45,17 +45,19 @@ public:
      * \return lenght of ArrayLinkedList
      */
     int getLenght();
-
-    int *elements = new int[maxSize];
+    /*!
+     * \brief records ArrayLinkedList to array
+     * \return
+     */
+    int *toArray();
 
     const int notFoundIndex = -1;
 
 protected:
-    const int maxSizeInit = 1;
-
-    int maxSize = maxSizeInit;
+    int maxSize = 100;
 
 private:
+    int *elements = new int[maxSize];
 
     void updateMaxSize(int &maxSize);
 };

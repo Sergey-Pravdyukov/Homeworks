@@ -4,9 +4,7 @@
 #include <QtTest/QtTest>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 
-#include "list.h"
 #include "arraylinkedlist.h"
 
 class ArrayListTest : public QObject
@@ -22,12 +20,32 @@ private:
     ArrayLinkedList *list;
 
     const int maxNumber = 26;
-    int size = 15;
-    const int valueInit = 0;
-    const int counterInit = 0;
+    const int maxSize = 17;
 
-    int currentValue = valueInit;
-    int counter = counterInit;
+    void addElements(int elements[], int &listSize)
+    {
+        int addedElementsCounter = 0;
+        for (int i = 0; i < listSize; ++i)
+        {
+            const int value = rand() % maxNumber + 1;
+            elements[addedElementsCounter++] = value;
+            list->add(value);
+        }
+        listSize = addedElementsCounter;
+    }
+
+    void removeElements(int elements[], const int &listSize)
+    {
+        for (int i = 0; i < listSize; ++i)
+        {
+            if (list->find(elements[i]) == list->notFoundIndex)
+            {
+                QVERIFY_EXCEPTION_THROWN(list->remove(elements[i]), ArrayLinkedList::RemoveNonexistedElementException);
+                continue;
+            }
+            QCOMPARE(list->remove(elements[i]), elements[i]);
+        }
+    }
 
 private slots:
     void init()
@@ -35,7 +53,7 @@ private slots:
         list = new ArrayLinkedList();
     }
 
-    void clean()
+    void cleanup()
     {
         delete list;
     }
@@ -48,28 +66,27 @@ private slots:
     void testAddElement()
     {
         list->add(7238);
-        QCOMPARE(list->elements[0], 7238);
+        int *listElements = list->toArray();
+        QCOMPARE(listElements[0], 7238);
     }
 
     void testAddElements()
     {
         srand(time(NULL));
+        int size = rand() % maxSize + 1;
+        int elements[maxSize];
+        addElements(elements, size);
+        int *listElements = list->toArray();
         for (int i = 0; i < size; ++i)
-        {
-            currentValue = rand() % maxNumber;
-            list->add(currentValue);
-            QCOMPARE(list->elements[i], currentValue);
-        }
+            QCOMPARE(listElements[i], elements[i]);
     }
 
     void testSizeOfList()
     {
         srand(time(NULL));
-        for (int i = 0; i < size; ++i)
-        {
-            currentValue = rand() % maxNumber;
-            list->add(currentValue);
-        }
+        int size = rand() % maxSize + 1;
+        int elements[maxSize];
+        addElements(elements, size);
         QCOMPARE(list->getLenght(), size);
     }
 
@@ -83,30 +100,18 @@ private slots:
     void testRemoveElements()
     {
         srand(time(NULL));
-        int elements[2 * size];
-        for (int i = 0; i < size; ++i)
-        {
-            currentValue = rand() % maxNumber;
-            elements[i] = currentValue;
-            list->add(currentValue);
-        }
-        const int notAddedElementsNumber = rand() % size;
+        int size = rand() % maxSize;
+        int elements[2 * maxSize];
+        addElements(elements, size);
+        const int notAddedElementsNumber = rand() % maxSize + 1;
         for (int i = size; i < size + notAddedElementsNumber; ++i)
         {
-            currentValue = rand() % maxNumber;
-            elements[i] = currentValue;
+            const int value = rand() % maxNumber;
+            elements[i] = value;
         }
         size += notAddedElementsNumber;
         std::random_shuffle(elements, elements + size);
-        for (int i = 0; i < size; ++i)
-        {
-            if (list->find(elements[i]) == list->notFoundIndex)
-            {
-                QVERIFY_EXCEPTION_THROWN(list->remove(elements[i]), ArrayLinkedList::RemoveNonexistedElementException);
-                continue;
-            }
-            int removedValue = list->remove(elements[i]);
-            QCOMPARE(removedValue, elements[i]);
-        }
+        removeElements(elements, size);
     }
+
 };

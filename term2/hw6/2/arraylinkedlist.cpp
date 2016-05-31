@@ -49,6 +49,14 @@ int ArrayLinkedList::getLenght()
     return size;
 }
 
+int *ArrayLinkedList::toArray()
+{
+    int *result = new int[maxSize];
+    for (int i = 0; i < size; ++i)
+        result[i] = elements[i];
+    return result;
+}
+
 ArrayLinkedList::~ArrayLinkedList()
 {
     delete []elements;
