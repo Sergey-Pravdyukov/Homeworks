@@ -15,3 +15,4 @@ SOURCES += main.cpp
 HEADERS += \
     testvector.h \
     vector.h
+

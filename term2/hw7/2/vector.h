@@ -133,3 +133,5 @@ void Vector<T, dimension>::print()
         std::cout << elements[i] << " ";
     std::cout << std::endl;
 }
+
+
