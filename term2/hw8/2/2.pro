@@ -12,3 +12,4 @@ SOURCES += main.cpp\
 HEADERS += bash.h
 
 FORMS += bash.ui
+

@@ -147,3 +147,4 @@ Bash::~Bash()
     delete ui;
     delete view;
 }
+

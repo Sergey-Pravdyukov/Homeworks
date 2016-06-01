@@ -20,19 +20,44 @@ public:
     static const int size = 10;
 
 private slots:
+    /*!
+     * \brief load all web elements
+     */
     void load();
+    /*!
+     * \brief switch to the next article
+     */
     void nextClicked();
+    /*!
+     * \brief switch to the previous article
+     */
     void prevClicked();
+    /*!
+     * \brief plus this article
+     */
     void plusClicked();
+    /*!
+     * \brief minus this article
+     */
     void minusClicked();
+    /*!
+     * \brief this article is bayan =(
+     */
     void bayanClicked();
 
 private:
+    /*!
+     * \brief show text and rating of this article
+     * \param id
+     */
     void generate(int id);
     /*!
      * \brief This method makes buttons enabled
      */
     void makeEnabled();
+    /*!
+     * \brief This method makes buttons disabled
+     */
     void makeDisabled();
     Ui::Bash *ui;
     QWebView *view;
@@ -51,3 +76,4 @@ private:
     QString minusLinks[size];
     QString bayanLinks[size];
 };
+
