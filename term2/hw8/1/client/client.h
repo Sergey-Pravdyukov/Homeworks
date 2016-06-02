@@ -9,8 +9,8 @@
 #include <QLayout>
 #include <QMessageBox>
 
-/**
- * @brief The Client class - клиент чата
+/*!
+ * \brief The Client class - chat client
  */
 class Client : public QDialog
 {
@@ -21,19 +21,28 @@ public:
 
 private slots:
     void sessionOpened();
-    /**
-     * @brief displayError - обработка ошибок
+    /*!
+     * \brief error handling
      */
     void displayError(QAbstractSocket::SocketError socketError);
+    /*!
+     * \brief send message to server
+     */
     void sendMessage();
+    /*!
+     * \brief reading message from server
+     */
     void readingMessage();
+    /*!
+     * \brief enable sendButton after connection
+     */
     void enableSendButton();
-    /**
-     * @brief serverDisconnected - действия при разрыве связи с сервером
+    /*!
+     * \brief disconnection with server
      */
     void serverDisconnected();
-    /**
-     * @brief connectServer - соединение с сервером
+    /*!
+     * \brief connection to server
      */
     void connectServer();
 

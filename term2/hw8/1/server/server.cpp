@@ -10,39 +10,29 @@ Server::Server(QWidget *parent) :
     quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
     sendMessageButton = new QPushButton(tr("Send Message"));
-
     chatBox = new QTextEdit;
     chatBox->setReadOnly(true);
-
     messageLineEdit = new QLineEdit;
     messageLineEdit->setEnabled(false);
-
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired)
     {
-        // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
         settings.beginGroup(QLatin1String("QtNetwork"));
         const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
         settings.endGroup();
-
-        // If the saved network configuration is not currently discovered use the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
         if ((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered)
         {
             config = manager.defaultConfiguration();
         }
-
         networkSession = new QNetworkSession(config, this);
         connect(networkSession, SIGNAL(opened()), this, SLOT(sessionOpened()));
-
         serverStatusLabel->setText("Opening network session.");
         networkSession->open();
     }
     else
         sessionOpened();
-
-
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(serverStatusLabel, 0, 0);
     mainLayout->addWidget(messageLabel, 2, 0);
@@ -51,18 +41,14 @@ Server::Server(QWidget *parent) :
     mainLayout->addWidget(chatBox, 5, 0);
     mainLayout->addWidget(quitButton, 6, 0, 1, 2);
     setLayout(mainLayout);
-
-
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(sendMessageButton, SIGNAL(clicked()), this, SLOT(sendMessage()));
     connect(tcpServer, SIGNAL(newConnection()), this, SLOT(clientProcessing()));
-
     setWindowTitle("Server");
 }
 
 void Server::sessionOpened()
  {
-     // Save the used configuration
      if (networkSession)
      {
          QNetworkConfiguration config = networkSession->configuration();
@@ -100,22 +86,18 @@ void Server::readingMessage()
 {
     QDataStream in(clientSocket);
     in.setVersion(QDataStream::Qt_5_1);
-
     if (blockSize == 0)
     {
         if (clientSocket->bytesAvailable() < (int)sizeof(quint16))
             return;
-
         in >> blockSize;
     }
-
     if (clientSocket->bytesAvailable() < blockSize)
              return;
-
     blockSize = 0;
     QString newMessage;
     in >> newMessage;
-    chatBox->textCursor().insertText("- " + newMessage + '\n');
+    chatBox->textCursor().insertText("-client: " + newMessage + '\n');
 }
 
 void Server::sendMessage()

@@ -7,7 +7,9 @@
 #include <QDialog>
 #include <QMessageBox>
 
-
+/*!
+ * \brief The Server class - chat server
+ */
 class Server : public QDialog
 {
     Q_OBJECT
@@ -16,15 +18,24 @@ public:
     explicit Server(QWidget *parent = 0);
 
 private slots:
+    /*!
+     * \brief open network session
+     */
     void sessionOpened();
-    /**
-     * @brief clientProcessing - обработка клиентского сокета
+    /*!
+     * \brief processing client socket
      */
     void clientProcessing();
+    /*!
+     * \brief send message to client
+     */
     void sendMessage();
+    /*!
+     * \brief reading message from server
+     */
     void readingMessage();
-    /**
-     * @brief clientDisconnected - действия при разрыве связи с клиентом
+    /*!
+     * \brief disconnect with client
      */
     void clientDisconnected();
 
