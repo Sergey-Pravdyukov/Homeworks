@@ -4,7 +4,7 @@
 
 template <typename T>
 /*!
- * \brief This abstract class for definition basis Bag methods
+ * \brief This class for definition basis bag methods
  */
 class Bag
 {
@@ -22,37 +22,43 @@ public:
      * \param currentValue
      * \return removed value
      */
-    int remove(const T &currentValue);
+    bool remove(const T &currentValue);
     /*!
      * \brief find value in Bag
      * \param currentValue
-     * \return number of found elements in Bag
+     * \return
      */
-    int find(const T &currentValue) const;
+    bool find(const T &currentValue);
     /*!
      * \brief intersection this Bag with disjointBag
      * \param disjointBag
      *
      * result of intersection is in this Bag
      */
-    void intersection(Bag<T> *disjointBag);
+    Bag<T> intersection(Bag<T> *disjointBag);
     /*!
      * \brief merge this Bag with mergeBag
      * \param mergeBag
      *
      * result of merge is in this Bag
      */
-    void merge(Bag<T> *mergeBag);
+    Bag<T> merge(Bag<T> *mergeBag);
+    /*!
+     * \brief recording all elements in QVector
+     * \return
+     */
+    QVector<T> recording();
 
 private:
     AVLTree<T> *tree;
 };
 
+//--------------------------------------------------------------------------
 
 template <typename T>
 Bag<T>::Bag()
 {
-    tree = new AVLTree();
+    tree = new AVLTree<T>();
 }
 
 template <typename T>
@@ -68,31 +74,33 @@ bool Bag<T>::find(const T &currentValue)
 }
 
 template <typename T>
-bool Bag<T>::add(const T &currentValue)
+void Bag<T>::add(const T &currentValue)
 {
-    return tree->add(currentValue);
+    tree->add(currentValue);
 }
 
 template <typename T>
-int Bag<T>::remove(const T &currentValue)
+bool Bag<T>::remove(const T &currentValue)
 {
-    if (!tree->find(currentValue))
-        throw RemoveNonexistentElement();
     return tree->remove(currentValue);
 }
 
 template <typename T>
 Bag<T> Bag<T>::intersection(Bag<T> *disjointBag)
 {
-    tree->intersection(disjointBag);
-    return tree;
+    tree->intersection(disjointBag->tree);
+    return *disjointBag;
 }
 
 template <typename T>
 Bag<T> Bag<T>::merge(Bag<T> *mergeBag)
 {
-    tree->merge(mergeBag);
-    return tree;
+    tree->merge(mergeBag->tree);
+    return *mergeBag;
 }
 
-
+template <typename T>
+QVector<T> Bag<T>::recording()
+{
+    return tree->recordingTree();
+}

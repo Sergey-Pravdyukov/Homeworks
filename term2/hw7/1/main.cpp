@@ -1,13 +1,16 @@
 #include "testavltree.h"
+#include "testbag.h"
 
 using namespace std;
 
 int main()
 {
-    for (int i = 0; i < 100; ++i)
-    {
-        TestAVLTree testAVLTree;
-        QTest::qExec(&testAVLTree);
-    }
+
+    TestAVLTree testAVLTree;
+    QTest::qExec(&testAVLTree);
+
+    TestBag testBag;
+    QTest::qExec(&testBag);
+
     return 0;
 }

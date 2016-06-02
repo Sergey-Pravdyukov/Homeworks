@@ -21,9 +21,10 @@ public:
     };
 
     /*!
-     * \brief record AVLTree from leftmost TreeNode to rightmost TreeNode
+     * \brief records AVLTree from leftmost to rightmost element
+     * \return recordedTree
      */
-    void record();
+    QVector<T> recordingTree();
     /*!
      * \brief add
      * \param currentValue
@@ -51,10 +52,7 @@ public:
      * \param mergeBag
      */
     void merge(AVLTree<T> *mergeBag);
-    /*!
-     * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
-     */
-    QVector<T> recordedTree;
+
 private:
     /*!
      * \brief This class contains TreeNode for working with AVLTree
@@ -69,15 +67,11 @@ private:
             count = currentCount;
         }
 
-        int height = heightInit;
-        T value = valueInit;
-        int count = countInit;
+        int height;
+        T value;
+        int count;
         TreeNode *left = nullptr;
         TreeNode *right = nullptr;
-    private:
-        const T valueInit = 0;
-        const int heightInit = 0;
-        const int countInit = 0;
     };
     /*!
      * \brief balanced AVLTree
@@ -190,11 +184,13 @@ private:
      */
     int getCount(TreeNode *currentNode) const;
 
-    const int sizeInit = 0;
-
-    int size = sizeInit;
+    int size = 0;
     TreeNode *removedNode = nullptr;
     TreeNode *root = nullptr;
+    /*!
+     * \brief contains all TreeNodes of AVLTree from leftmost to rightmost
+     */
+    QVector<T> recordedTree;
 };
 
 //-----------------------------------------------------------
@@ -231,9 +227,11 @@ void AVLTree<T>::record(TreeNode *currentNode)
 }
 
 template <typename T>
-void AVLTree<T>::record()
+QVector<T> AVLTree<T>::recordingTree()
 {
+    recordedTree.clear();
     record(getRoot());
+    return recordedTree;
 }
 
 template <typename T>
