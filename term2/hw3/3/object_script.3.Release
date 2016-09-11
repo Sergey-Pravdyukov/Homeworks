@@ -1,0 +1,14 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\calculator.o
+./release\stack.o
+./release\sortingfacility.o
+./release\parser.o
+./release\token.o
+./release\moc_mainwindow.o
+./release\moc_testtoken.o
+./release\moc_testparser.o
+./release\moc_testsortingfacility.o
+./release\moc_teststack.o
+);
