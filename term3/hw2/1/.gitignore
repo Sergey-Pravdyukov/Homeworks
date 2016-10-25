@@ -3,6 +3,9 @@
 
 *~
 *.autosave
+*.user.*
+*.fuse*
+*.jpg
 *.a
 *.core
 *.moc
