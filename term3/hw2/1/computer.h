@@ -15,6 +15,9 @@ public:
     Computer(const OperationSystem& operationSystem) : operationSystem(operationSystem) {}
 
     bool wasInfected = false;
+
+    const double infectionProbability = operationSystem.infectionProbability;
+private:
     OperationSystem operationSystem;
 };
 

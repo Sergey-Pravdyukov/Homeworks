@@ -16,18 +16,23 @@ public:
     Virus(Computer*&);
 
     /*!
-     * \brief try to infect any uninfected computer int the Net
+     * \brief try to infect any uninfected computer in the Net
      * \return index of infected computer
      */
     int tryInfectComputer(Net*&);
 
-    Computer *computer = nullptr;
-
     static const int notInfected = -1;
 protected:
+    /*!
+     * \brief findUninfectedComputer
+     * \return each uninfected computer in the Net, otherwise source computer for current step
+     */
+    Computer* findUninfectedComputer(Net*&) const;
     /*!
      * \brief get uninfected computer from the Net
      * \return pointer to chosen computer
      */
     virtual Computer* getUninfectedComputer(Net*&) const;
+private:
+    Computer *computer = nullptr;
 };

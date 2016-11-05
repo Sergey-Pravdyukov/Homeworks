@@ -3,6 +3,9 @@
 #include <virus.h>
 #include <net.h>
 
+/*!
+ * \brief The TestVirus modified class for unit testing
+ */
 class TestVirus : public Virus
 {
 public:

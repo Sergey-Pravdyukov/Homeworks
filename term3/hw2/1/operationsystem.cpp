@@ -6,17 +6,17 @@ OperationSystem::OperationSystem(OperationSystemType currentType)
     {
     case Mac:
     {
-        infectionProbability = MacInfectionProbability;
+        infectionProbability = macInfectionProbability;
         break;
     }
     case Linux:
     {
-        infectionProbability = LinuxInfectionProbability;
+        infectionProbability = linuxInfectionProbability;
         break;
     }
     case Windows:
     {
-        infectionProbability = WindowsInfectioProbability;
+        infectionProbability = windowsInfectioProbability;
         break;
     }
     }

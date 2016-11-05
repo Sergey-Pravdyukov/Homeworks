@@ -11,12 +11,10 @@ class Net
 {
 public:
     Net() {}
-    Net(std::vector <Computer*>, std::vector <std::vector<Computer*> >);
+    Net(std::vector <Computer*> computers, std::vector <std::vector<Computer*> > edges);
 
     std::vector <Computer*> computers;
     std::vector <std::vector <Computer*> > computersNet;
-
-    bool haveUninfectedComputers = true;
 
     /*!
      * \brief get computer index from computers vector

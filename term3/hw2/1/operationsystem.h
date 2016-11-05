@@ -21,7 +21,6 @@ class OperationSystem
 {
 public:
     OperationSystem() {}
-
     /*!
      * \brief constructor with fixed OperationSystemType
      */
@@ -36,7 +35,7 @@ public:
 private:
     OperationSystemType type;
 
-    const double LinuxInfectionProbability = 0.7;
-    const double MacInfectionProbability = 0.5;
-    const double WindowsInfectioProbability = 0.3;
+    const double linuxInfectionProbability = 0.7;
+    const double macInfectionProbability = 0.5;
+    const double windowsInfectioProbability = 0.3;
 };
