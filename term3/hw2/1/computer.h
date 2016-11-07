@@ -12,7 +12,7 @@ public:
     /*!
      * \brief Computer's constructor with fixed OperationSystem
      */
-    Computer(const OperationSystem& operationSystem) : operationSystem(operationSystem) {}
+    Computer(const OperationSystem &operationSystem) : operationSystem(operationSystem) {}
 
     bool wasInfected = false;
 

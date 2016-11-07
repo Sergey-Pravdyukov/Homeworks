@@ -24,7 +24,7 @@ public:
     /*!
      * \brief constructor with fixed OperationSystemType
      */
-    OperationSystem(OperationSystemType);
+    OperationSystem(OperationSystemType currentType);
 
     static const int operationSystemsAmount = 3;
 

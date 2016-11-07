@@ -10,7 +10,7 @@ class TestVirus : public Virus
 {
 public:
     TestVirus() {}
-    TestVirus(Computer*& );
+    TestVirus(Computer *&computer);
 
-    Computer* getUninfectedComputer(Net *&) const;
+    Computer* getUninfectedComputer(Net *&net) const;
 };

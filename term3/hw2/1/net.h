@@ -20,5 +20,5 @@ public:
      * \brief get computer index from computers vector
      * \return index of fixed computer
      */
-    int getComputerIndex(Computer*) const;
+    int getComputerIndex(Computer *computer) const;
 };

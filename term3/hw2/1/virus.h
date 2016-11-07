@@ -13,13 +13,13 @@ public:
     /*!
      * \brief Virus's constructor originating from fixed Computer
      */
-    Virus(Computer*&);
+    Virus(Computer *&computer);
 
     /*!
      * \brief try to infect any uninfected computer in the Net
      * \return index of infected computer
      */
-    int tryInfectComputer(Net*&);
+    int tryInfectComputer(Net *&net);
 
     static const int notInfected = -1;
 protected:
@@ -27,12 +27,12 @@ protected:
      * \brief findUninfectedComputer
      * \return each uninfected computer in the Net, otherwise source computer for current step
      */
-    Computer* findUninfectedComputer(Net*&) const;
+    Computer* findUninfectedComputer(Net *&net) const;
     /*!
      * \brief get uninfected computer from the Net
      * \return pointer to chosen computer
      */
-    virtual Computer* getUninfectedComputer(Net*&) const;
+    virtual Computer* getUninfectedComputer(Net *&net) const;
 private:
     Computer *computer = nullptr;
 };
