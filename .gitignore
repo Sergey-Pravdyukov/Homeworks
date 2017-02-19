@@ -16,6 +16,9 @@
 *.log
 *.user
 *Makefile*
+*moc*
+*.pro.user*
+*.qmake*
 
 
 # Precompiled Headers
@@ -41,18 +44,10 @@
 *.out
 *.app
 *.rar
+*.dia
 *debug*
 *dox*
 *html*
 *latex*
 *txt*
-<<<<<<< HEAD
-*.png
-*.html
-*.js
-*.css
-*.tex
-*.eps
 
-=======
->>>>>>> 8b3d0ba482d69e8badd9249afa4f9501006d4495
