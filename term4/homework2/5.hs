@@ -1,9 +1,11 @@
+sum1 :: Num a => [a] -> a
+sum1 []     = 0
+sum1 (a:as) = a 
+
+remainder :: Num a => [a] -> [a]
+remainder []     = []
+remainder (a:as) = as
+
 sum3 :: Num a => [a] -> [a] -> [a] -> [a]
-sum3 (a:as) (b:bs) (c:cs) = (a + b + c) : sum3 as bs cs
-sum3 (a:as) (b:bs) []     = (a + b    ) : sum3 as bs []
-sum3 (a:as) []     (c:cs) = (a +     c) : sum3 as [] cs
-sum3 (a:as) []     []     = (a        ) : sum3 as [] []
-sum3 []     (b:bs) (c:cs) = (    b + c) : sum3 [] bs cs
-sum3 []     (b:bs) []     = (    b    ) : sum3 [] bs []   
-sum3 []     []     (c:cs) = (        c) : sum3 [] [] cs
 sum3 []     []     []     = []
+sum3 a      b      c      = (sum1 a + sum1 b + sum1 c) : sum3 (remainder a) (remainder b) (remainder c) 
