@@ -10,10 +10,14 @@ isSameTypeBrackets open close | open == '(' && close == ')' = True
                               | open == '{' && close == '}' = True
                               | otherwise                   = False
 
-correctBracketSeq :: [Char] -> [Char] -> Bool
-correctBracketSeq []     []     = True
-correctBracketSeq []     _      = False
-correctBracketSeq (c:cs) (b:bs) | isAlpha c || isSeparator c = correctBracketSeq cs (b:bs)
-                                | isOpenBracket c            = correctBracketSeq cs (c:b:bs)
-                                | isSameTypeBrackets c b     = correctBracketSeq cs bs
-                                | otherwise                  = False
+checkCorrect :: [Char] -> [Char] -> Bool
+checkCorrect []     []     = True
+checkCorrect []     _      = False
+checkCorrect (c:cs) bs | isOpenBracket c       = checkCorrect cs (c:bs)
+                       | isAlpha c || c == ' ' = checkCorrect cs bs
+checkCorrect (c:cs) [] = False
+checkCorrect (c:cs) (b:bs) | isSameTypeBrackets b c = checkCorrect cs bs
+                           | otherwise              = False
+
+correctBracketSeq :: [Char] -> Bool
+correctBracketSeq list = checkCorrect list []
