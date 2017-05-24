@@ -43,7 +43,7 @@ maximum' (e:es) = max e (maximum' es)
 add :: Int -> [Int] -> [Int] -> [Int]
 add value prev []                                                     = prev ++ [value]
 add value []   next | value <= head next                              = value : next
-add value prev next | maximum' prev < value && value <= head next = prev ++ (value : next) 
+add value prev next | maximum' prev < value && value <= head next     = prev ++ (value : next) 
                     | otherwise                                       = add value (prev ++ [head next]) (tail next)
 
 remove :: (Eq a) => a -> [a] -> [a] -> [a]
