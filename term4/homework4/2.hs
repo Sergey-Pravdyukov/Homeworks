@@ -36,15 +36,19 @@ handler list = do
     else do
         putStrLn "Good bye!" 
 
-maximum' :: [Int] -> Int
-maximum' []     = (minBound::Int)
-maximum' (e:es) = max e (maximum' es)
+last' :: [Int] -> Int
+last' [] = (minBound::Int)
+last' x  = last x
+
+head' :: [Int] -> Int
+head' [] = (maxBound::Int)
+head' x  = head x
 
 add :: Int -> [Int] -> [Int] -> [Int]
-add value prev []                                                     = prev ++ [value]
-add value []   next | value <= head next                              = value : next
-add value prev next | maximum' prev < value && value <= head next     = prev ++ (value : next) 
-                    | otherwise                                       = add value (prev ++ [head next]) (tail next)
+add value prev []                                               = prev ++ [value]
+add value []   next | value <= head next                        = value : next
+add value prev next | last' prev < value && value <= head' next = prev ++ (value : next) 
+                    | otherwise                                 = add value (prev ++ [head next]) (tail next)
 
 remove :: (Eq a) => a -> [a] -> [a] -> [a]
 remove value prev next | next  == []        = prev
