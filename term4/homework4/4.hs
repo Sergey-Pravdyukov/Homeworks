@@ -3,7 +3,7 @@ import System.IO
 import Data.List hiding (find)
 import System.Directory
 
-data Subscriber = Subscriber { name :: String, phoneNumber :: String} --deriving (Show)
+data Subscriber = Subscriber { name :: String, phoneNumber :: String}
 data Phonebook  = Phonebook  [Subscriber]    deriving (Show)
 
 instance Show Subscriber where
