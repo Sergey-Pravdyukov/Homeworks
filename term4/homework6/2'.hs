@@ -25,7 +25,7 @@ replace (Node left _ right) (l, r) = do
     putStr (show (fst (randomR(l+1, r-1) g)) ++ " ")
     replace right (fst (randomR(l+1, r-1) g)+1, r)
     putStr ") "
-replace x                   _      = putStr (show x)
+replace Empty                   _      = putStr (show Empty)
 
 add :: (Ord a) => BST a -> a -> BST a
 add Empty        val             = Leaf val
