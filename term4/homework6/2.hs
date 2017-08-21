@@ -14,18 +14,20 @@ instance Show a => Show (BST a) where
 
 tree = (Node (Node (Leaf 3) 4 (Empty)) 9 (Leaf 10))
 
-replace :: (Num a, Show t, Show a, Random a) => BST t -> (a, a) -> IO ()
-replace (Leaf _)            (l, r) = do
-    g <- newStdGen
-    putStr (show (Leaf (fst (randomR (l + 1, r - 1) g))) ++ " ")
-replace (Node left _ right) (l, r) = do
-    g <- newStdGen
-    putStr "(Node "
-    replace left (l, fst (randomR(l+1, r-1) g)-1) 
-    putStr (show (fst (randomR(l+1, r-1) g)) ++ " ")
-    replace right (fst (randomR(l+1, r-1) g)+1, r)
-    putStr ") "
-replace x                   _      = putStr (show x)
+replace :: Show t => BST t -> IO ()
+replace tree = helper tree ((1::Int), (1000::Int)) where
+    helper :: (Num a, Show t, Show a, Random a) => BST t -> (a, a) -> IO ()
+    helper (Leaf _)            (l, r) = do
+        g <- newStdGen
+        putStr (show (Leaf (fst (randomR (l + 1, r - 1) g))) ++ " ")
+    helper (Node left _ right) (l, r) = do
+        g <- newStdGen
+        putStr "(Node "
+        helper left (l, fst (randomR(l+1, r-1) g)-1) 
+        putStr (show (fst (randomR(l+1, r-1) g)) ++ " ")
+        helper right (fst (randomR(l+1, r-1) g)+1, r)
+        putStr ") "
+    helper x                   _      = putStr (show x)
 
 add :: (Ord a) => BST a -> a -> BST a
 add Empty        val             = Leaf val
