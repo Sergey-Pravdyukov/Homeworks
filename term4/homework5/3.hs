@@ -1,7 +1,7 @@
 import Control.Monad
 
-maxAmongNeigbors :: [Int] -> Maybe Int
-maxAmongNeigbors list = foldl mplus Nothing (getMax list)
+maxAmongNeighbors :: [Int] -> Maybe Int
+maxAmongNeighbors list = foldl mplus Nothing (getMax list)
 
 getMax :: [Int] -> [Maybe Int]
 getMax _                                                                       = []
