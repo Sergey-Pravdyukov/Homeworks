@@ -1,22 +1,9 @@
-last' :: [Int] -> Int
-last' [] = (maxBound::Int)
-last' l  = last l
+import Control.Monad
 
-maxAmongNeighbsList :: [Int] -> [Int]
-maxAmongNeighbsList list = do
-    x <- list
-    True <- return ((last' (takeWhile' (/= x) list)) < x && last' (takeWhile' (/= x) (reverse' list)) < x)
-    return (x)
+maxAmongNeigbors :: [Int] -> Maybe Int
+maxAmongNeigbors list = foldl mplus Nothing (getMax list)
 
-maxAmongNeighbs :: [Int] -> Int
-maxAmongNeighbs = head . maxAmongNeighbsList
-
-reverse' :: [Int] -> [Int]
-reverse' l = do
-    True <- return (l /= [])
-    ((reverse' (tail l)) ++ [head l])
-
-takeWhile' :: (Int -> Bool) -> [Int] -> [Int]
-takeWhile' p l = do
-    True <- return (l /= [] && p (head l))
-    (head l) : (takeWhile' p (tail l))
+getMax :: [Int] -> [Maybe Int]
+getMax _                                                                       = []
+getMax (previous:current:next:elements) | previous < current && current > next = Just current : getMax (current:next:elements)
+                                        | otherwise                            = Nothing : getMax (current:next:elements)
