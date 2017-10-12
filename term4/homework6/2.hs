@@ -1,5 +1,6 @@
-import System.Random
-
+import Control.Monad.Random
+import Data.Monoid (mempty, (<>))
+    
 data BST a = Empty | Leaf a | Node (BST a) a (BST a) 
 
 instance Eq a => Eq (BST a) where
@@ -12,22 +13,24 @@ instance Show a => Show (BST a) where
     show (Leaf x)     = "(Leaf " ++ show x ++ ")"
     show (Node l x r) = "(Node " ++ show l ++ " " ++ show x ++ " " ++ show r ++ ")"
 
+instance Functor BST where
+    fmap _ Empty        = Empty
+    fmap f (Leaf a)     = Leaf (f a)
+    fmap f (Node l x r) = Node (fmap f l) (f x) (fmap f r)
+
+instance Foldable BST where
+    foldMap _ Empty        = mempty
+    foldMap f (Leaf a)     = f a
+    foldMap f (Node l x r) = (foldMap f l) <> (f x) <> (foldMap f r)
+
+instance Traversable BST where
+   traverse _ Empty        = pure Empty
+   traverse f (Leaf a)     = Leaf <$> f a
+   traverse f (Node l x r) = Node <$> traverse f l <*> f x <*> traverse f r
+
 tree = (Node (Node (Leaf 3) 4 (Empty)) 9 (Leaf 10))
 
-replace :: Show t => BST t -> IO ()
-replace tree = helper tree ((1::Int), (1000::Int)) where
-    helper :: (Num a, Show t, Show a, Random a) => BST t -> (a, a) -> IO ()
-    helper (Leaf _)            (l, r) = do
-        g <- newStdGen
-        putStr (show (Leaf (fst (randomR (l + 1, r - 1) g))) ++ " ")
-    helper (Node left _ right) (l, r) = do
-        g <- newStdGen
-        putStr "(Node "
-        helper left (l, fst (randomR(l+1, r-1) g)-1) 
-        putStr (show (fst (randomR(l+1, r-1) g)) ++ " ")
-        helper right (fst (randomR(l+1, r-1) g)+1, r)
-        putStr ") "
-    helper x                   _      = putStr (show x)
+replace tree = mapM (const $ getRandomR (1, 10000)) tree
 
 add :: (Ord a) => BST a -> a -> BST a
 add Empty        val             = Leaf val
