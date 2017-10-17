@@ -1,79 +1,65 @@
 import Control.Monad.Random
 import Data.Monoid (mempty, (<>))
-    
-data BST a = Empty | Leaf a | Node (BST a) a (BST a) 
+  
+data BST a = Empty | Node (BST a) a (BST a)
 
 instance Eq a => Eq (BST a) where
     Empty == Empty = True
-    Leaf x == Leaf y = x == y
     Node l x r == Node l' x' r' = l == l' && x == x' && r == r'
 
 instance Show a => Show (BST a) where
     show Empty        = "Empty"
-    show (Leaf x)     = "(Leaf " ++ show x ++ ")"
     show (Node l x r) = "(Node " ++ show l ++ " " ++ show x ++ " " ++ show r ++ ")"
 
 instance Functor BST where
     fmap _ Empty        = Empty
-    fmap f (Leaf a)     = Leaf (f a)
     fmap f (Node l x r) = Node (fmap f l) (f x) (fmap f r)
 
 instance Foldable BST where
     foldMap _ Empty        = mempty
-    foldMap f (Leaf a)     = f a
     foldMap f (Node l x r) = (foldMap f l) <> (f x) <> (foldMap f r)
 
 instance Traversable BST where
    traverse _ Empty        = pure Empty
-   traverse f (Leaf a)     = Leaf <$> f a
    traverse f (Node l x r) = Node <$> traverse f l <*> f x <*> traverse f r
 
-tree = (Node (Node (Leaf 3) 4 (Empty)) 9 (Leaf 10))
+tree = (Node (Node (Node Empty 2 Empty) 4 (Empty)) 9 (Node Empty 10 Empty))
 
-replace tree = mapM (const $ getRandomR (1, 10000)) tree
+replace t = mapM (const $ getRandomR (1, 10000)) t
 
 add :: (Ord a) => BST a -> a -> BST a
-add Empty        val             = Leaf val
-add (Leaf x)     val | val < x   = Node (Leaf val) x Empty     
-                     | otherwise = Node Empty      x (Leaf val)
+add Empty        val             = Node Empty val Empty 
 add (Node l x r) val | val < x   = Node (add l val) x r
                      | otherwise = Node l           x (add r val)
 
 findRightMost :: (Eq a) => BST a -> BST a
 findRightMost Empty        = Empty
-findRightMost (Leaf x)     = Leaf x
-findRightMost (Node l x r) | r == Empty = Leaf x
+findRightMost (Node l x r) | r == Empty = Node Empty x Empty 
                            | otherwise  = findRightMost r
 
 remove :: (Eq a, Ord a) => BST a -> a -> BST a
 remove t value = case t of
     Empty        -> Empty
-    Leaf x       -> if (x == value) then Empty
-                    else Leaf x
     (Node l x r) -> if (x == value) then 
                         case (findRightMost l) of
                             Empty  -> Empty   
-                            Leaf y -> case (remove l y) of 
-                                Empty  -> if (r == Empty) then Leaf y
+                            Node Empty y Empty -> case (remove l y) of 
+                                Empty  -> if (r == Empty) then Node Empty y Empty
                                           else Node Empty y r
-                                Leaf x -> Node (Leaf x) y r 
+                                Node Empty x Empty -> Node (Node Empty x Empty) y r 
                     else if (value < x) then Node (remove l value) x r
                     else Node l x (remove r value)
 
 find :: (Ord a, Show a) => BST a -> a -> IO ()
 find Empty    value                  = putStrLn ("value " ++ (show value) ++ " not found")
-find (Leaf x) value     | value /= x = putStrLn ("value " ++ (show value) ++ " not found")
-                        | otherwise  = putStrLn ("value " ++ (show value) ++ " found")
 find (Node l x r) value | value < x  = find l value
                         | value > x  = find r value
                         | otherwise  = putStrLn ("value " ++ (show value) ++ " found")
 
 height :: BST a -> Int
 height Empty        = 0
-height (Leaf x)     = 1
 height (Node l x r) = 1 + (max (height l) (height r))
 
 size :: BST a -> Int
 size Empty        = 0
-size (Leaf x)     = 1
 size (Node l x r) = 1 + (size l) + (size r)
